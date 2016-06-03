@@ -1,33 +1,25 @@
 var React = require('react');
+import {Router, Route, Link, hashHistory} from 'react-router';
 var Input = require('./components/Input.js');
 var _ = require('underscore');
 var Select = require('./components/Select');
 var STATES = require('./components/data/states');
 var Icon = require('./components/Icon.js');
-import {Router, Route, Link, hashHistory} from 'react-router';
-
-var CreateAccountScreen = React.createClass({
-  getInitialState: function () {
+var LoginScreen = React.createClass({
+getInitialState: function () {
     return {
-      yourName: null,
-      phonenumber: null,
       passwordType: "password",
       email: null,
-      companyName: null,
       password: null,
       statesValue: null,
       forbiddenWords: ["password", "user", "username"]
     }
   },
-
-  handlePasswordInput: function (event) {
+handlePasswordInput: function (event) {
     this.setState({
       password: event.target.value
     });
   },
-
-  
-
   saveAndContinue: function (e) {
     e.preventDefault();
 
@@ -39,17 +31,12 @@ var CreateAccountScreen = React.createClass({
         email: this.state.email
       }
      var self = this;
-     $.ajax({type: 'POST', url: "https://dev.thrillophilia.com/api/v1/suppliers/sign_up", data: { 
-                  "vendor": {
-                              "name": this.state.yourName,
+     $.ajax({type: 'POST', url: "http://dev.thrillophilia.com/api/v1/suppliers/sign_in", data: {
                               "email": this.state.email,
-                              "password": this.state.password,
-                              "phone1": this.state.phonenumber,
-                              "company_name": this.state.companyName,
-                              "company_website": this.state.companyWebsite
-                            }
+                              "password": this.state.password
+                            
                       },success: function (result) {
-                        this.props.route.notification._addNotification(e, "success", "Successfully registered !!!");
+                        self.props.route.notification._addNotification(e, "success", "Successfully login !!!");
             window.location.href="/#/thank-you";
         },error: function(result){
           console.log(result.responseText);
@@ -59,32 +46,13 @@ var CreateAccountScreen = React.createClass({
         }}); 
      
     } else {
-      this.refs.yourName.isValid();
-      this.refs.phonenumber.isValid();
+    
       this.refs.email.isValid();
-      this.refs.companyName.isValid();
       this.refs.password.isValid();
       
     }
   },
-
-  
-  handleCompanyInput: function(event) {
-    this.setState({
-      companyName: event.target.value
-    })
-  },
-  handleNameInput: function(event) {
-    this.setState({
-      yourName: event.target.value
-    })
-  },
-  handlephoneInput: function(event) {
-    this.setState({
-      phonenumber: event.target.value
-    })
-  },
-  handleEmailInput: function(event){
+handleEmailInput: function(event){
     this.setState({
       email: event.target.value
     });
@@ -126,24 +94,10 @@ var CreateAccountScreen = React.createClass({
       <div className="create_account_screen">
 
         <div className="create_account_form">
-          <h1>Register account</h1>
+          <h1>Login</h1>
+         
           <form onSubmit={this.saveAndContinue}>
-            <Input 
-              text="Your Name" 
-              ref="yourName"
-              validate={this.isEmpty}
-              value={this.state.yourName}
-              onChange={this.handleNameInput} 
-              emptyMessage="Your name can't be empty"
-            /> 
-            <Input 
-              text="Phone Number" 
-              ref="phonenumber"
-              validate={this.isEmpty}
-              value={this.state.phonenumber}
-              onChange={this.handlephoneInput} 
-              emptyMessage="Phone number can't be empty"
-            /> 
+            
             <Input 
               text="Email Address" 
               ref="email"
@@ -160,43 +114,26 @@ var CreateAccountScreen = React.createClass({
            
 
             <Input 
-              text="Create Password" 
+              text="Password" 
               type={this.state.passwordType}
               ref="password"
-              validator="true"
-              minCharacters="8"
-              requireCapitals="1"
-              requireNumbers="1"
+              validate={this.isEmpty}
               forbiddenWords={this.state.forbiddenWords}
               value={this.state.password}
-              emptyMessage="Password is invalid"
+              emptyMessage="Email can't be empty"
               onChange={this.handlePasswordInput} 
+             
             /> 
-            <a href="#" onClick={this.showHidePassword}>Show</a>
-            <Input 
-              text="Company Name" 
-              ref="companyName"
-              validate={this.isEmpty}
-              value={this.state.companyName}
-              onChange={this.handleCompanyInput} 
-              emptyMessage="Company name can't be empty"
-            /> 
-             <Input 
-              text="Company Website" 
-              ref="companyWebiste"
-              value={this.state.companyWebsite}
-              onChange={this.handleCompanyWebsiteInput} 
-            /> 
-            
+            <a href="javascript:void(0);" onClick={this.showHidePassword}>Show</a>
+            <Link to="reset-password">Reset Password</Link>
             <button 
               type="submit" 
               className="button button_wide">
-              CREATE ACCOUNT
+             Login
             </button>
 
           </form>
 
-          
 
         </div>
 
@@ -205,7 +142,7 @@ var CreateAccountScreen = React.createClass({
       </div>
     );
   }
-    
+  
 });
-    
-module.exports = CreateAccountScreen;
+  
+module.exports = LoginScreen;

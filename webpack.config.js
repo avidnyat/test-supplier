@@ -2,10 +2,12 @@
 var webpack = require('webpack');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 module.exports = {
-   entry: {
-	'app': './app/main.js'
+   entry: [
+   './app/pageslider-react.js',
+	'./app/main.js',
+  'whatwg-fetch'
        
-   },
+   ],
    output: {
    	 path: './built/',
         filename: 'index.js'
