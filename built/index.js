@@ -46,7 +46,7 @@
 
 	__webpack_require__(1);
 	__webpack_require__(2);
-	module.exports = __webpack_require__(250);
+	module.exports = __webpack_require__(253);
 
 
 /***/ },
@@ -20344,14 +20344,16 @@
 
 	var React = __webpack_require__(3);
 
-
 	var CreateAccountScreen = __webpack_require__(232);
 	var ThankYouScreen = __webpack_require__(241);
 	var LoginScreen = __webpack_require__(242);
-	var NotificationSystem = __webpack_require__(243);
+	var ResetPasswordScreen = __webpack_require__(244);
+	var DashboardScreen = __webpack_require__(245);
+	var NotificationSystem = __webpack_require__(246);
 	var App = React.createClass({
 	  displayName: 'App',
 
+	  mixins: [ConfigMixin],
 	  _notificationSystem: null,
 
 	  _addNotification: function _addNotification(event, level, message) {
@@ -20371,13 +20373,85 @@
 	      'div',
 	      null,
 	      React.createElement(
-	        _reactRouter.Router,
-	        { history: _reactRouter.hashHistory },
-	        React.createElement(_reactRouter.Route, { path: '/', component: CreateAccountScreen, notification: this }),
-	        React.createElement(_reactRouter.Route, { path: 'thank-you', component: ThankYouScreen }),
-	        React.createElement(_reactRouter.Route, { path: 'login', component: LoginScreen, notification: this })
+	        'div',
+	        { className: 'main-banner' },
+	        React.createElement(
+	          'nav',
+	          { className: 'navbar' },
+	          React.createElement(
+	            'div',
+	            { className: 'container' },
+	            React.createElement(
+	              'div',
+	              { className: 'navbar-header' },
+	              React.createElement(
+	                'button',
+	                { type: 'button', className: 'navbar-toggle collapsed', 'data-toggle': 'collapse', 'data-target': '#bs-example-navbar-collapse-1', 'aria-expanded': 'false' },
+	                ' ',
+	                React.createElement(
+	                  'span',
+	                  { 'class': 'sr-only' },
+	                  'Toggle navigation'
+	                ),
+	                ' ',
+	                React.createElement('span', { 'class': 'icon-bar' }),
+	                ' ',
+	                React.createElement('span', { 'class': 'icon-bar' }),
+	                ' ',
+	                React.createElement('span', { 'class': 'icon-bar' }),
+	                ' '
+	              ),
+	              React.createElement(
+	                'a',
+	                { className: 'navbar-brand', href: '#' },
+	                React.createElement('img', { src: 'images/logo.png', alt: 'logo' })
+	              ),
+	              ' '
+	            ),
+	            React.createElement(
+	              'div',
+	              { className: 'collapse navbar-collapse', id: 'bs-example-navbar-collapse-1' },
+	              React.createElement(
+	                'ul',
+	                { className: 'nav navbar-nav navbar-right' },
+	                React.createElement(
+	                  'li',
+	                  null,
+	                  React.createElement(
+	                    'a',
+	                    { href: '#' },
+	                    React.createElement('i', { className: 'fa fa-life-ring', 'aria-hidden': 'true' }),
+	                    ' Help'
+	                  )
+	                ),
+	                React.createElement(
+	                  'li',
+	                  null,
+	                  React.createElement(
+	                    'a',
+	                    { href: '/#/register', className: 'btn btn-login' },
+	                    'Register Now'
+	                  )
+	                )
+	              )
+	            )
+	          )
+	        )
 	      ),
-	      React.createElement(NotificationSystem, { ref: 'notificationSystem' })
+	      React.createElement(
+	        'div',
+	        null,
+	        React.createElement(
+	          _reactRouter.Router,
+	          { history: _reactRouter.hashHistory },
+	          React.createElement(_reactRouter.Route, { path: 'register', component: CreateAccountScreen, notification: this, config: this }),
+	          React.createElement(_reactRouter.Route, { path: 'thank-you', component: ThankYouScreen }),
+	          React.createElement(_reactRouter.Route, { path: '/', component: LoginScreen, notification: this, config: this.utils }),
+	          React.createElement(_reactRouter.Route, { path: 'reset-password', component: ResetPasswordScreen, notification: this, config: this.utils }),
+	          React.createElement(_reactRouter.Route, { path: 'dashboard', component: DashboardScreen, notification: this, config: this.utils })
+	        ),
+	        React.createElement(NotificationSystem, { ref: 'notificationSystem' })
+	      )
 	    );
 	  }
 
@@ -25911,7 +25985,6 @@
 	var STATES = __webpack_require__(240);
 	var Icon = __webpack_require__(235);
 
-
 	var CreateAccountScreen = React.createClass({
 	  displayName: 'CreateAccountScreen',
 
@@ -25944,23 +26017,23 @@
 	        email: this.state.email
 	      };
 	      var self = this;
-	      $.ajax({ type: 'POST', url: "https://dev.thrillophilia.com/api/v1/suppliers/sign_up", data: {
-	          "vendor": {
-	            "name": this.state.yourName,
-	            "email": this.state.email,
-	            "password": this.state.password,
-	            "phone1": this.state.phonenumber,
-	            "company_name": this.state.companyName,
-	            "company_website": this.state.companyWebsite
-	          }
-	        }, success: function success(result) {
-	          this.props.route.notification._addNotification(e, "success", "Successfully registered !!!");
-	          window.location.href = "/#/thank-you";
-	        }, error: function error(result) {
-	          console.log(result.responseText);
-	          var message = JSON.parse(result.responseText);
-	          self.props.route.notification._addNotification(e, "error", message.message);
-	        } });
+	      var data = {
+	        "vendor": {
+	          "name": this.state.yourName,
+	          "email": this.state.email,
+	          "password": this.state.password,
+	          "phone1": this.state.phonenumber,
+	          "company_name": this.state.companyName,
+	          "company_website": this.state.companyWebsite
+	        }
+	      };
+	      this.props.route.config().httpInterceptor(this.props.route.config().url().CREATE_ACCOUNT, 'POST', data).then(function (result) {
+	        self.props.route.notification._addNotification(e, "success", "Successfully registered !!!");
+	        window.location.href = "/#/thank-you";
+	      }, function (result) {
+	        var message = JSON.parse(result.responseText);
+	        self.props.route.notification._addNotification(e, "error", message.message);
+	      });
 	    } else {
 	      this.refs.yourName.isValid();
 	      this.refs.phonenumber.isValid();
@@ -26023,87 +26096,192 @@
 	      { className: 'application_wrapper' },
 	      React.createElement(
 	        'div',
-	        { className: 'application_routeHandler' },
+	        { className: 'page-body grey2' },
 	        React.createElement(
 	          'div',
-	          { className: 'create_account_screen' },
+	          { className: 'container text-center' },
+	          React.createElement(
+	            'h2',
+	            null,
+	            'Secure your listing by ',
+	            React.createElement(
+	              'span',
+	              { className: 'secondary' },
+	              'creating an account!'
+	            )
+	          ),
+	          React.createElement(
+	            'p',
+	            null,
+	            'Thrillophilia helps you market your products to millions of its customers!'
+	          )
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'page-body bg-img' },
+	        React.createElement(
+	          'div',
+	          { className: 'container' },
 	          React.createElement(
 	            'div',
-	            { className: 'create_account_form' },
+	            { className: 'register' },
 	            React.createElement(
-	              'h1',
-	              null,
-	              'Register account'
-	            ),
-	            React.createElement(
-	              'form',
-	              { onSubmit: this.saveAndContinue },
-	              React.createElement(Input, {
-	                text: 'Your Name',
-	                ref: 'yourName',
-	                validate: this.isEmpty,
-	                value: this.state.yourName,
-	                onChange: this.handleNameInput,
-	                emptyMessage: 'Your name can\'t be empty'
-	              }),
-	              React.createElement(Input, {
-	                text: 'Phone Number',
-	                ref: 'phonenumber',
-	                validate: this.isEmpty,
-	                value: this.state.phonenumber,
-	                onChange: this.handlephoneInput,
-	                emptyMessage: 'Phone number can\'t be empty'
-	              }),
-	              React.createElement(Input, {
-	                text: 'Email Address',
-	                ref: 'email',
-	                type: 'text',
-	                defaultValue: this.state.email,
-	                validate: this.validateEmail,
-	                value: this.state.email,
-	                onChange: this.handleEmailInput,
-	                errorMessage: 'Email is invalid',
-	                emptyMessage: 'Email can\'t be empty',
-	                errorVisible: this.state.showEmailError
-	              }),
-	              React.createElement(Input, {
-	                text: 'Create Password',
-	                type: this.state.passwordType,
-	                ref: 'password',
-	                validator: 'true',
-	                minCharacters: '8',
-	                requireCapitals: '1',
-	                requireNumbers: '1',
-	                forbiddenWords: this.state.forbiddenWords,
-	                value: this.state.password,
-	                emptyMessage: 'Password is invalid',
-	                onChange: this.handlePasswordInput
-	              }),
+	              'div',
+	              { className: 'row' },
 	              React.createElement(
-	                'a',
-	                { href: '#', onClick: this.showHidePassword },
-	                'Show'
+	                'div',
+	                { className: 'col-sm-6' },
+	                React.createElement(
+	                  'form',
+	                  { onSubmit: this.saveAndContinue },
+	                  React.createElement(
+	                    'div',
+	                    { className: 'form' },
+	                    React.createElement(
+	                      'div',
+	                      { className: 'form-field' },
+	                      React.createElement(
+	                        'i',
+	                        { className: 'icon' },
+	                        React.createElement('img', { src: 'images/icon-profile.png' })
+	                      ),
+	                      React.createElement(Input, {
+	                        text: 'Your Name',
+	                        ref: 'yourName',
+	                        validate: this.isEmpty,
+	                        value: this.state.yourName,
+	                        onChange: this.handleNameInput,
+	                        emptyMessage: 'Your name can\'t be empty'
+	                      })
+	                    ),
+	                    React.createElement(
+	                      'div',
+	                      { className: 'form-field' },
+	                      React.createElement(
+	                        'i',
+	                        { className: 'icon' },
+	                        React.createElement('img', { src: 'images/icon-phone2.png' })
+	                      ),
+	                      React.createElement(Input, {
+	                        text: 'Phone Number',
+	                        ref: 'phonenumber',
+	                        validate: this.isEmpty,
+	                        value: this.state.phonenumber,
+	                        onChange: this.handlephoneInput,
+	                        emptyMessage: 'Phone number can\'t be empty'
+	                      })
+	                    ),
+	                    React.createElement(
+	                      'div',
+	                      { className: 'form-field' },
+	                      React.createElement(
+	                        'i',
+	                        { className: 'icon' },
+	                        React.createElement('img', { src: 'images/icon-email.png' })
+	                      ),
+	                      React.createElement(Input, {
+	                        text: 'Email Address',
+	                        ref: 'email',
+	                        type: 'text',
+	                        defaultValue: this.state.email,
+	                        validate: this.validateEmail,
+	                        value: this.state.email,
+	                        onChange: this.handleEmailInput,
+	                        errorMessage: 'Email is invalid',
+	                        emptyMessage: 'Email can\'t be empty',
+	                        errorVisible: this.state.showEmailError
+	                      })
+	                    ),
+	                    React.createElement(
+	                      'div',
+	                      { className: 'form-field' },
+	                      React.createElement(
+	                        'i',
+	                        { className: 'icon' },
+	                        React.createElement('img', { src: 'images/icon-password.png' })
+	                      ),
+	                      React.createElement(
+	                        'i',
+	                        { className: 'icon view-pw', onClick: this.showHidePassword },
+	                        React.createElement('img', { src: 'images/icon-view-pw.png' })
+	                      ),
+	                      React.createElement(Input, {
+	                        text: 'Create Password',
+	                        type: this.state.passwordType,
+	                        ref: 'password',
+	                        validator: 'true',
+	                        minCharacters: '8',
+	                        requireCapitals: '1',
+	                        requireNumbers: '1',
+	                        forbiddenWords: this.state.forbiddenWords,
+	                        value: this.state.password,
+	                        emptyMessage: 'Password is invalid',
+	                        onChange: this.handlePasswordInput
+	                      })
+	                    ),
+	                    React.createElement(
+	                      'div',
+	                      { className: 'form-field' },
+	                      React.createElement(
+	                        'i',
+	                        { className: 'icon' },
+	                        React.createElement('img', { src: 'images/icon-company.png' })
+	                      ),
+	                      React.createElement(Input, {
+	                        text: 'Company Name',
+	                        ref: 'companyName',
+	                        validate: this.isEmpty,
+	                        value: this.state.companyName,
+	                        onChange: this.handleCompanyInput,
+	                        emptyMessage: 'Company name can\'t be empty'
+	                      })
+	                    ),
+	                    React.createElement(
+	                      'div',
+	                      { className: 'form-field' },
+	                      React.createElement(
+	                        'i',
+	                        { className: 'icon' },
+	                        React.createElement('img', { src: 'images/icon-web.png' })
+	                      ),
+	                      React.createElement(Input, {
+	                        text: 'Company Website',
+	                        ref: 'companyWebiste',
+	                        value: this.state.companyWebsite,
+	                        onChange: this.handleCompanyWebsiteInput
+	                      })
+	                    ),
+	                    React.createElement(
+	                      'button',
+	                      { type: 'submit', className: 'btn btn-secondary btn-block' },
+	                      'Create an Account'
+	                    )
+	                  )
+	                )
 	              ),
-	              React.createElement(Input, {
-	                text: 'Company Name',
-	                ref: 'companyName',
-	                validate: this.isEmpty,
-	                value: this.state.companyName,
-	                onChange: this.handleCompanyInput,
-	                emptyMessage: 'Company name can\'t be empty'
-	              }),
-	              React.createElement(Input, {
-	                text: 'Company Website',
-	                ref: 'companyWebiste',
-	                value: this.state.companyWebsite,
-	                onChange: this.handleCompanyWebsiteInput
-	              }),
 	              React.createElement(
-	                'button',
-	                {
-	                  type: 'submit',
-	                  className: 'button button_wide' },
-	                'CREATE ACCOUNT'
+	                'div',
+	                { className: 'col-sm-6' },
+	                React.createElement(
+	                  'div',
+	                  { className: 'right' },
+	                  React.createElement(
+	                    'p',
+	                    { className: 'or' },
+	                    React.createElement(
+	                      'span',
+	                      null,
+	                      'OR'
+	                    )
+	                  ),
+	                  React.createElement(
+	                    'a',
+	                    { className: 'fb-signup', href: '#' },
+	                    React.createElement('i', { className: 'fa fa-facebook', 'aria-hidden': 'true' }),
+	                    'Signup with Facebook'
+	                  )
+	                )
 	              )
 	            )
 	          )
@@ -29133,6 +29311,12 @@
 
 	var _reactRouter = __webpack_require__(171);
 
+	var _FacebookButton = __webpack_require__(243);
+
+	var _FacebookButton2 = _interopRequireDefault(_FacebookButton);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 	var React = __webpack_require__(3);
 
 	var Input = __webpack_require__(233);
@@ -29140,15 +29324,17 @@
 	var Select = __webpack_require__(239);
 	var STATES = __webpack_require__(240);
 	var Icon = __webpack_require__(235);
+
 	var LoginScreen = React.createClass({
 	  displayName: 'LoginScreen',
 
 	  getInitialState: function getInitialState() {
 	    return {
 	      passwordType: "password",
-	      email: null,
-	      password: null,
-	      statesValue: null,
+	      resetEmail: '',
+	      email: '',
+	      password: '',
+	      statesValue: '',
 	      forbiddenWords: ["password", "user", "username"]
 	    };
 	  },
@@ -29167,27 +29353,61 @@
 	        email: this.state.email
 	      };
 	      var self = this;
-	      $.ajax({ type: 'POST', url: "http://dev.thrillophilia.com/api/v1/suppliers/sign_in", data: {
-	          "email": this.state.email,
-	          "password": this.state.password
+	      var data = {
+	        "email": this.state.email,
+	        "password": this.state.password
 
-	        }, success: function success(result) {
-	          self.props.route.notification._addNotification(e, "success", "Successfully login !!!");
-	          window.location.href = "/#/thank-you";
-	        }, error: function error(result) {
-	          console.log(result.responseText);
-	          var message = JSON.parse(result.responseText);
-	          self.props.route.notification._addNotification(e, "error", message.message);
-	        } });
+	      };
+	      this.props.route.config().httpInterceptor(this.props.route.config().url().LOGIN, 'POST', data).then(function (result) {
+	        self.props.route.notification._addNotification(e, "success", "Successfully login !!!");
+	        localStorage.setItem("clientInfo", JSON.stringify(result));
+	        console.log(JSON.parse(localStorage.getItem("clientInfo")));
+	        window.location.href = "/#/dashboard";
+	      }, function (result) {
+	        var message = JSON.parse(result.responseText);
+	        self.props.route.notification._addNotification(e, "error", message.message);
+	      });
 	    } else {
 
 	      this.refs.email.isValid();
 	      this.refs.password.isValid();
 	    }
 	  },
+
+	  sendResetMail: function sendResetMail(e) {
+	    e.preventDefault();
+
+	    var canProceed = this.validateEmail(this.state.resetEmail);
+
+	    if (canProceed) {
+	      var data = {
+	        "vendor": {
+	          email: this.state.resetEmail
+	        }
+	      };
+	      var self = this;
+
+	      this.props.route.config().httpInterceptor(this.props.route.config().url().SEND_RESET_PASSWORD_EMAIL, 'POST', data).then(function (result) {
+	        self.props.route.notification._addNotification(e, "success", "Successfully Email Sent !!!");
+	        $('#forgotPwModal').modal('hide');
+	        //window.location.href="/#/thank-you";
+	      }, function (result) {
+	        var message = JSON.parse(result.responseText);
+	        self.props.route.notification._addNotification(e, "error", message.message);
+	      });
+	    } else {
+
+	      this.refs.resetEmail.isValid();
+	    }
+	  },
 	  handleEmailInput: function handleEmailInput(event) {
 	    this.setState({
 	      email: event.target.value
+	    });
+	  },
+	  handleResetEmailInput: function handleResetEmailInput(event) {
+	    this.setState({
+	      resetEmail: event.target.value
 	    });
 	  },
 	  showHidePassword: function showHidePassword(event) {
@@ -29220,63 +29440,198 @@
 	  render: function render() {
 	    return React.createElement(
 	      'div',
-	      { className: 'application_wrapper' },
+	      null,
 	      React.createElement(
 	        'div',
-	        { className: 'application_routeHandler' },
+	        { className: 'page-body grey2' },
 	        React.createElement(
 	          'div',
-	          { className: 'create_account_screen' },
+	          { className: 'container text-center' },
+	          React.createElement(
+	            'h2',
+	            null,
+	            'Secure your ',
+	            React.createElement(
+	              'span',
+	              { className: 'secondary' },
+	              'listing by Login'
+	            )
+	          ),
+	          React.createElement(
+	            'p',
+	            null,
+	            'Thrillophilia helps you market your products to millions of its customers!'
+	          )
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'page-body bg-img' },
+	        React.createElement(
+	          'div',
+	          { className: 'login' },
 	          React.createElement(
 	            'div',
-	            { className: 'create_account_form' },
-	            React.createElement(
-	              'h1',
-	              null,
-	              'Login'
-	            ),
+	            { className: 'container' },
 	            React.createElement(
 	              'form',
 	              { onSubmit: this.saveAndContinue },
-	              React.createElement(Input, {
-	                text: 'Email Address',
-	                ref: 'email',
-	                type: 'text',
-	                defaultValue: this.state.email,
-	                validate: this.validateEmail,
-	                value: this.state.email,
-	                onChange: this.handleEmailInput,
-	                errorMessage: 'Email is invalid',
-	                emptyMessage: 'Email can\'t be empty',
-	                errorVisible: this.state.showEmailError
-	              }),
-	              React.createElement(Input, {
-	                text: 'Password',
-	                type: this.state.passwordType,
-	                ref: 'password',
-	                validate: this.isEmpty,
-	                forbiddenWords: this.state.forbiddenWords,
-	                value: this.state.password,
-	                emptyMessage: 'Email can\'t be empty',
-	                onChange: this.handlePasswordInput
-
-	              }),
 	              React.createElement(
-	                'a',
-	                { href: 'javascript:void(0);', onClick: this.showHidePassword },
-	                'Show'
+	                'div',
+	                { className: 'form' },
+	                React.createElement(
+	                  'div',
+	                  { className: 'form-field' },
+	                  React.createElement(
+	                    'i',
+	                    { className: 'icon' },
+	                    React.createElement('img', { src: 'images/icon-email.png' })
+	                  ),
+	                  React.createElement(Input, {
+	                    text: 'Email Address',
+	                    ref: 'email',
+	                    type: 'text',
+	                    defaultValue: this.state.email,
+	                    validate: this.validateEmail,
+	                    value: this.state.email,
+	                    onChange: this.handleEmailInput,
+	                    errorMessage: 'Email is invalid',
+	                    emptyMessage: 'Email can\'t be empty',
+	                    errorVisible: this.state.showEmailError
+	                  })
+	                ),
+	                React.createElement(
+	                  'div',
+	                  { className: 'form-field' },
+	                  React.createElement(
+	                    'i',
+	                    { className: 'icon' },
+	                    React.createElement('img', { src: 'images/icon-password.png' })
+	                  ),
+	                  React.createElement(
+	                    'i',
+	                    { className: 'icon view-pw' },
+	                    React.createElement(
+	                      'a',
+	                      { href: 'javascript:void(0);', onClick: this.showHidePassword },
+	                      React.createElement('img', { src: 'images/icon-view-pw.png' })
+	                    )
+	                  ),
+	                  React.createElement(Input, {
+	                    text: 'Password',
+	                    type: this.state.passwordType,
+	                    ref: 'password',
+	                    validate: this.isEmpty,
+	                    forbiddenWords: this.state.forbiddenWords,
+	                    value: this.state.password,
+	                    emptyMessage: 'Email can\'t be empty',
+	                    onChange: this.handlePasswordInput
+
+	                  })
+	                ),
+	                React.createElement(
+	                  'p',
+	                  { className: 'text-right' },
+	                  React.createElement(
+	                    'a',
+	                    { href: '#', 'data-toggle': 'modal', 'data-target': '#forgotPwModal' },
+	                    'Forget Password?'
+	                  )
+	                ),
+	                React.createElement(
+	                  'button',
+	                  { type: 'submit', className: 'btn btn-secondary btn-block' },
+	                  'Login'
+	                ),
+	                React.createElement(
+	                  'p',
+	                  { className: 'or' },
+	                  React.createElement(
+	                    'span',
+	                    null,
+	                    'OR'
+	                  )
+	                ),
+	                React.createElement(
+	                  'a',
+	                  { className: 'fb-signup', href: '#' },
+	                  React.createElement('i', { className: 'fa fa-facebook', 'aria-hidden': 'true' }),
+	                  'Signin with Facebook'
+	                )
+	              )
+	            )
+	          )
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'modal forgot-pw-modal fade', id: 'forgotPwModal', tabindex: '-1', role: 'dialog' },
+	        React.createElement(
+	          'div',
+	          { className: 'modal-dialog', role: 'document' },
+	          React.createElement(
+	            'div',
+	            { className: 'modal-content' },
+	            React.createElement(
+	              'div',
+	              { className: 'modal-body text-center' },
+	              React.createElement(
+	                'button',
+	                { type: 'button', className: 'close', 'data-dismiss': 'modal', 'aria-label': 'Close' },
+	                React.createElement(
+	                  'span',
+	                  { 'aria-hidden': 'true' },
+	                  '×'
+	                )
 	              ),
 	              React.createElement(
-	                _reactRouter.Link,
-	                { to: 'reset-password' },
+	                'div',
+	                { className: 'lock-img' },
+	                React.createElement('img', { src: 'images/lock.png' })
+	              ),
+	              React.createElement(
+	                'h3',
+	                null,
 	                'Reset Password'
 	              ),
 	              React.createElement(
-	                'button',
-	                {
-	                  type: 'submit',
-	                  className: 'button button_wide' },
-	                'Login'
+	                'p',
+	                null,
+	                'Please provide the email address that you used when you signed up for your account. We will send you an email that allow you to reset your password. '
+	              ),
+	              React.createElement(
+	                'form',
+	                { id: 'resetEmailSend' },
+	                React.createElement(
+	                  'div',
+	                  { className: 'form' },
+	                  React.createElement(
+	                    'div',
+	                    { className: 'form-field' },
+	                    React.createElement(
+	                      'i',
+	                      { className: 'icon' },
+	                      React.createElement('img', { src: 'images/icon-email.png' })
+	                    ),
+	                    React.createElement(Input, {
+	                      text: 'Email Address',
+	                      ref: 'resetEmail',
+	                      type: 'text',
+	                      defaultValue: this.state.resetEmail,
+	                      validate: this.validateEmail,
+	                      value: this.state.resetEmail,
+	                      onChange: this.handleResetEmailInput,
+	                      errorMessage: 'Email is invalid',
+	                      emptyMessage: 'Email can\'t be empty',
+	                      errorVisible: this.state.showResetEmailError
+	                    })
+	                  ),
+	                  React.createElement(
+	                    'button',
+	                    { onClick: this.sendResetMail, className: 'btn btn-secondary btn-block' },
+	                    'Submit'
+	                  )
+	                )
 	              )
 	            )
 	          )
@@ -29293,11 +29648,379 @@
 /* 243 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	   value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(3);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var FacebookButton = function (_React$Component) {
+	   _inherits(FacebookButton, _React$Component);
+
+	   function FacebookButton(props) {
+	      _classCallCheck(this, FacebookButton);
+
+	      var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(FacebookButton).call(this, props));
+
+	      _this.FB = props.fb;
+
+	      _this.state = {
+	         message: ""
+	      };
+
+	      return _this;
+	   }
+
+	   _createClass(FacebookButton, [{
+	      key: 'componentDidMount',
+	      value: function componentDidMount() {
+	         this.FB.Event.subscribe('auth.logout', this.onLogout.bind(this));
+	         this.FB.Event.subscribe('auth.statusChange', this.onStatusChange.bind(this));
+	      }
+	   }, {
+	      key: 'onStatusChange',
+	      value: function onStatusChange(response) {
+	         console.log(response);
+	         var self = this;
+
+	         if (response.status === "connected") {
+	            this.FB.api('/me', function (response) {
+	               var message = "Welcome " + response.name;
+	               self.setState({
+	                  message: message
+	               });
+	            });
+	         }
+	      }
+	   }, {
+	      key: 'onLogout',
+	      value: function onLogout(response) {
+	         this.setState({
+	            message: ""
+	         });
+	      }
+	   }, {
+	      key: 'render',
+	      value: function render() {
+	         return _react2.default.createElement(
+	            'div',
+	            null,
+	            _react2.default.createElement('div', {
+	               className: 'fb-login-button',
+	               'data-max-rows': '1',
+	               'data-size': 'xlarge',
+	               'data-show-faces': 'false',
+	               'data-auto-logout-link': 'true',
+	               'data-app-id': '553244261358164'
+	            }),
+	            _react2.default.createElement(
+	               'div',
+	               null,
+	               this.state.message
+	            )
+	         );
+	      }
+	   }]);
+
+	   return FacebookButton;
+	}(_react2.default.Component);
+
+	exports.default = FacebookButton;
+	;
+
+/***/ },
+/* 244 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _reactRouter = __webpack_require__(171);
+
 	var React = __webpack_require__(3);
-	var merge = __webpack_require__(244);
-	var NotificationContainer = __webpack_require__(245);
-	var Constants = __webpack_require__(247);
-	var Styles = __webpack_require__(249);
+
+	var Input = __webpack_require__(233);
+	var _ = __webpack_require__(234);
+	var Select = __webpack_require__(239);
+	var STATES = __webpack_require__(240);
+	var Icon = __webpack_require__(235);
+	var ResetPasswordScreen = React.createClass({
+	  displayName: 'ResetPasswordScreen',
+
+	  getInitialState: function getInitialState() {
+	    return {
+	      passwordType: "password",
+	      resetEmail: '',
+	      password: '',
+	      passwordConfirmation: '',
+	      statesValue: '',
+	      forbiddenWords: ["password", "user", "username"]
+	    };
+	  },
+	  handlePasswordInput: function handlePasswordInput(event) {
+	    this.setState({
+	      password: event.target.value
+	    });
+	  },
+	  handlePasswordConfirmationInput: function handlePasswordConfirmationInput(event) {
+	    this.setState({
+	      password: event.target.value
+	    });
+	  },
+	  saveAndContinue: function saveAndContinue(e) {
+	    e.preventDefault();
+
+	    var canProceed = this.validateEmail(this.state.email) && this.refs.password.isValid();
+
+	    if (canProceed) {
+	      var data = {
+	        email: this.state.email
+	      };
+	      var self = this;
+	      var data = {
+	        "email": this.state.email,
+	        "password": this.state.password
+
+	      };
+	      this.props.route.config().httpInterceptor(this.props.route.config().url().LOGIN, 'POST', data).then(function (result) {
+	        self.props.route.notification._addNotification(e, "success", "Successfully login !!!");
+	        window.location.href = "/#/thank-you";
+	      }, function (result) {
+	        var message = JSON.parse(result.responseText);
+	        self.props.route.notification._addNotification(e, "error", message.message);
+	      });
+	    } else {
+
+	      this.refs.email.isValid();
+	      this.refs.password.isValid();
+	    }
+	  },
+	  showHidePassword: function showHidePassword(event) {
+	    if (this.state.passwordType == "password") {
+	      this.setState({
+	        passwordType: "text"
+	      });
+	    } else {
+	      this.setState({
+	        passwordType: "password"
+	      });
+	    }
+	  },
+	  isEmpty: function isEmpty(value) {
+	    return !_.isEmpty(value);
+	  },
+
+	  updateStatesValue: function updateStatesValue(value) {
+	    this.setState({
+	      statesValue: value
+	    });
+	  },
+
+	  render: function render() {
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'div',
+	        { className: 'page-body grey2' },
+	        React.createElement(
+	          'div',
+	          { className: 'container text-center' },
+	          React.createElement(
+	            'h2',
+	            null,
+	            'Secure your ',
+	            React.createElement(
+	              'span',
+	              { className: 'secondary' },
+	              'listing by Login'
+	            )
+	          ),
+	          React.createElement(
+	            'p',
+	            null,
+	            'Thrillophilia helps you market your products to millions of its customers!'
+	          )
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'page-body bg-img' },
+	        React.createElement(
+	          'div',
+	          { className: 'reset-pw' },
+	          React.createElement(
+	            'div',
+	            { className: 'container' },
+	            React.createElement(
+	              'div',
+	              { className: 'form' },
+	              React.createElement(
+	                'div',
+	                { className: 'form-field' },
+	                React.createElement(
+	                  'i',
+	                  { className: 'icon' },
+	                  React.createElement('img', { src: 'images/icon-email.png' })
+	                ),
+	                React.createElement(
+	                  'i',
+	                  { className: 'icon view-pw' },
+	                  React.createElement('img', { src: 'images/icon-view-pw.png' })
+	                ),
+	                React.createElement('input', { type: 'password', placeholder: 'New Password' })
+	              ),
+	              React.createElement(
+	                'div',
+	                { className: 'form-field' },
+	                React.createElement(
+	                  'i',
+	                  { className: 'icon' },
+	                  React.createElement('img', { src: 'images/icon-password.png' })
+	                ),
+	                React.createElement('input', { type: 'password', placeholder: 'Confirm password' })
+	              ),
+	              React.createElement(
+	                'button',
+	                { className: 'btn btn-secondary btn-block' },
+	                'Reset Password'
+	              )
+	            )
+	          )
+	        )
+	      )
+	    );
+	  }
+
+	});
+
+	module.exports = ResetPasswordScreen;
+
+/***/ },
+/* 245 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _reactRouter = __webpack_require__(171);
+
+	var React = __webpack_require__(3);
+
+	var STATES = __webpack_require__(240);
+	var DashboardScreen = React.createClass({
+	  displayName: 'DashboardScreen',
+
+	  getInitialState: function getInitialState() {
+	    return {
+	      bookingCount: null,
+	      enquiryCount: null,
+	      pastRevenue: "password",
+	      revenue: null,
+	      reviewsCount: null,
+	      viewsCount: null
+	    };
+	  },
+	  componentDidMount: function componentDidMount() {
+	    this.props.route.config().redirectWithoutSession();
+	    var self = this;
+	    //console.log(JSON.parse(localStorage.getItem("clientInfo")).client.client_id);
+	    var data = {};
+	    this.props.route.config().httpInterceptor(this.props.route.config().url().DASHBOARD, 'GET', data).then(function (result) {
+
+	      console.log(result);
+	      self.setState({
+	        bookingCount: result.bookings_count,
+	        enquiryCount: result.enquiry_count,
+	        pastRevenue: result.past_revenue,
+	        revenue: result.revenue,
+	        reviewsCount: result.reviews_count,
+	        viewsCount: result.views_count
+	      });
+
+	      $("#pageloader").fadeOut();
+	    }, function (result) {
+	      var message = JSON.parse(result.responseText);
+	      self.props.route.notification._addNotification(window.event, "error", message.message);
+	    });
+	  },
+	  render: function render() {
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'div',
+	        { id: 'pageloader' },
+	        React.createElement(
+	          'div',
+	          { className: 'loader-inner' },
+	          React.createElement('img', { src: 'images/preloader-color.gif', alt: '' })
+	        )
+	      ),
+	      React.createElement(
+	        'p',
+	        null,
+	        'Bookings count: ',
+	        this.state.bookingCount
+	      ),
+	      React.createElement(
+	        'p',
+	        null,
+	        'Enquiry count: ',
+	        this.state.enquiryCount
+	      ),
+	      React.createElement(
+	        'p',
+	        null,
+	        'Past Revenue: ',
+	        this.state.pastRevenue
+	      ),
+	      React.createElement(
+	        'p',
+	        null,
+	        'Revenue: ',
+	        this.state.revenue
+	      ),
+	      React.createElement(
+	        'p',
+	        null,
+	        'Reviews count: ',
+	        this.state.reviewsCount
+	      ),
+	      React.createElement(
+	        'p',
+	        null,
+	        'Views count: ',
+	        this.state.viewsCount
+	      )
+	    );
+	  }
+
+	});
+
+	module.exports = DashboardScreen;
+
+/***/ },
+/* 246 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(3);
+	var merge = __webpack_require__(247);
+	var NotificationContainer = __webpack_require__(248);
+	var Constants = __webpack_require__(250);
+	var Styles = __webpack_require__(252);
 
 	var NotificationSystem = React.createClass({displayName: "NotificationSystem",
 
@@ -29503,7 +30226,7 @@
 
 
 /***/ },
-/* 244 */
+/* 247 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -29592,12 +30315,12 @@
 
 
 /***/ },
-/* 245 */
+/* 248 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(3);
-	var NotificationItem = __webpack_require__(246);
-	var Constants = __webpack_require__(247);
+	var NotificationItem = __webpack_require__(249);
+	var Constants = __webpack_require__(250);
 
 	var NotificationContainer = React.createClass({displayName: "NotificationContainer",
 
@@ -29653,14 +30376,14 @@
 
 
 /***/ },
-/* 246 */
+/* 249 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(3);
 	var ReactDOM = __webpack_require__(40);
-	var Constants = __webpack_require__(247);
-	var Helpers = __webpack_require__(248);
-	var merge = __webpack_require__(244);
+	var Constants = __webpack_require__(250);
+	var Helpers = __webpack_require__(251);
+	var merge = __webpack_require__(247);
 
 	/* From Modernizr */
 	var whichTransitionEvent = function() {
@@ -29978,7 +30701,7 @@
 
 
 /***/ },
-/* 247 */
+/* 250 */
 /***/ function(module, exports) {
 
 	var CONSTANTS = {
@@ -30018,7 +30741,7 @@
 
 
 /***/ },
-/* 248 */
+/* 251 */
 /***/ function(module, exports) {
 
 	var Helpers = {
@@ -30050,7 +30773,7 @@
 
 
 /***/ },
-/* 249 */
+/* 252 */
 /***/ function(module, exports) {
 
 	// Used for calculations
@@ -30313,7 +31036,7 @@
 
 
 /***/ },
-/* 250 */
+/* 253 */
 /***/ function(module, exports) {
 
 	(function(self) {

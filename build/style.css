@@ -1,0 +1,271 @@
+@font-face {
+  font-family: 'black_jackregular';
+  src: url("../fonts/blackjack-webfont.eot");
+  src: url("../fonts/blackjack-webfont.eot?#iefix") format("embedded-opentype"), url("../fonts/blackjack-webfont.woff2") format("woff2"), url("../fonts/blackjack-webfont.woff") format("woff"), url("../fonts/blackjack-webfont.ttf") format("truetype"), url("../fonts/blackjack-webfont.svg#black_jackregular") format("svg");
+  font-weight: normal;
+  font-style: normal; }
+@font-face {
+  font-family: 'BariolRegular';
+  src: url("../fonts/BariolRegular.eot");
+  src: local("BariolRegular"), url("../fonts/BariolRegular.woff") format("woff"), url("../fonts/BariolRegular.ttf") format("truetype"); }
+button {
+  cursor: pointer; }
+
+html, body {
+  height: 100%;
+  font-family: 'Source Sans Pro', sans-serif; }
+.input{
+  z-index: 100 !important;
+}
+.container {
+  max-width: 1000px;
+  width: 100%; }
+
+.btn {
+  -webkit-border-radius: 25px;
+  -moz-border-radius: 25px;
+  -ms-border-radius: 25px;
+  -o-border-radius: 25px;
+  border-radius: 25px;
+  font-weight: 600;
+  font-size: 15px;
+  margin: 0 5px;
+  border-width: 2px;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s; }
+  .btn.btn-primary {
+    background: #fcaf17;
+    color: #fff;
+    border-color: #fcaf17; }
+    .btn.btn-primary.btn-line {
+      background: none;
+      color: #fcaf17; }
+    .btn.btn-primary:hover {
+      background: #fcaf17;
+      color: #fff;
+      opacity: 0.8; }
+  .btn.btn-secondary {
+    background: #f36f22;
+    color: #fff;
+    border-color: #f36f22; }
+    .btn.btn-secondary.btn-line {
+      background: none;
+      color: #f36f22; }
+    .btn.btn-secondary:hover {
+      background: #f36f22;
+      color: #fff;
+      opacity: 0.8; }
+
+/* ------------ Main  Banner ------------- */
+.navbar {
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 0px;
+  margin-bottom: 0; }
+  .navbar .navbar-toggle {
+    margin-top: 20px; }
+    .navbar .navbar-toggle .icon-bar {
+      background: #acafb2; }
+  .navbar .navbar-nav li a {
+    color: #fff;
+    padding-left: 30px;
+    font-size: 14px; }
+  .navbar .navbar-nav li:hover a {
+    background-color: transparent; }
+  .navbar .get-app {
+    background: url(../images/icon-mobile.png) no-repeat 13px center;
+    background-size: 9px; }
+  .navbar .call-us {
+    background: url(../images/icon-phone.png) no-repeat 10px center;
+    background-size: 20px; }
+  .navbar .profile-pic {
+    float: right;
+    width: 40px;
+    margin: -10px 10px 0 0; }
+    .navbar .profile-pic img {
+      width: 100%; }
+
+.navbar-brand {
+  max-width: 200px;
+  height: auto;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s; }
+  .navbar-brand img {
+    max-width: 100%; }
+
+/* ---------- page body -------------------- */
+.page-body {
+  padding: 60px 0;
+  font-size: 17px; }
+  .page-body.grey2 {
+    background: #f9f9f9;
+    padding: 35px 0 0; }
+
+.or {
+  line-height: 55px;
+  display: block;
+  text-align: center;
+  text-transform: uppercase;
+  opacity: 0.6;
+  font-weight: 600; }
+
+.form-field {
+  background: #fff;
+  padding: 8px 8px 4px;
+  border: 1px solid #ececec;
+  margin-bottom: 10px; }
+  .form-field .field-name {
+    text-transform: uppercase;
+    opacity: 0.4;
+    font-weight: 600;
+    font-size: 11px; }
+  .form-field select {
+    outline: none; }
+  .form-field input, .form-field textarea {
+    background: none;
+    outline: none;
+    border: none;
+    width: 100%; }
+
+/* -------------- before login ----------- */
+.before-login .main-banner {
+  height: auto;
+  padding: 0;
+  background: none; }
+  .before-login .main-banner:before {
+    display: none; }
+  .before-login .main-banner .navbar {
+    background: #323941; }
+    .before-login .main-banner .navbar .nav li {
+      padding: 20px 10px;
+      display: inline-block;
+      vertical-align: middle;
+      float: none; }
+      .before-login .main-banner .navbar .nav li a {
+        padding: 10px; }
+        .before-login .main-banner .navbar .nav li a.btn-login {
+          background: #f36f22;
+          padding: 4px 15px; }
+          .before-login .main-banner .navbar .nav li a.btn-login:hover {
+            background: #f68f52; }
+.before-login .grey2 {
+  padding: 40px 0;
+  border-bottom: 1px solid #e5e5e5; }
+  .before-login .grey2 h2 {
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 25px; }
+    .before-login .grey2 h2 span.secondary {
+      color: #f36f22; }
+  .before-login .grey2 p {
+    font-size: 14px;
+    opacity: 0.7; }
+.before-login .bg-img {
+  background: url(../images/bg3.png) no-repeat center bottom;
+  background-size: 100%;
+  padding-bottom: 240px; }
+  .before-login .bg-img .container {
+    max-width: 720px; }
+  .before-login .bg-img .right {
+    padding-left: 30px; }
+  .before-login .bg-img p.or {
+    border-top: 1px solid #dbdbdb;
+    margin-top: 40px;
+    height: 30px; }
+    .before-login .bg-img p.or span {
+      background: #fff;
+      display: inline-block;
+      padding: 0 20px;
+      position: relative;
+      top: -30px; }
+
+.register .form, .login .form, .reset-pw .form, .forgot-pw-modal .form {
+  border-right: 1px solid #ececec;
+  padding-right: 30px; }
+.register .icon, .login .icon, .reset-pw .icon, .forgot-pw-modal .icon {
+  background: none;
+  position: absolute;
+  -webkit-transform: scale(1);
+  -moz-transform: scale(1);
+  -ms-transform: scale(1);
+  -o-transform: scale(1);
+  transform: scale(1);
+  width: auto; }
+  .register .icon.view-pw, .login .icon.view-pw, .reset-pw .icon.view-pw, .forgot-pw-modal .icon.view-pw {
+    right: 0;
+    cursor: pointer; z-index: 100}
+.register .form-field, .login .form-field, .reset-pw .form-field, .forgot-pw-modal .form-field {
+  border-width: 0 0 1px;
+  margin-bottom: 20px;
+  background: none;
+  padding: 0 0 8px;
+  position: relative; }
+  .register .form-field input, .login .form-field input, .reset-pw .form-field input, .forgot-pw-modal .form-field input {
+    font-family: 'Source Sans Pro', sans-serif;
+    padding: 0 0 0 35px; }
+.register .btn, .login .btn, .reset-pw .btn, .forgot-pw-modal .btn {
+  font-size: 19px;
+  padding: 10px;
+  margin-top: 20px; }
+
+.login, .reset-pw {
+  padding-bottom: 100px; }
+  .login .container, .reset-pw .container {
+    width: 360px; }
+  .login .form, .reset-pw .form {
+    padding: 0;
+    border: none; }
+  .login p, .reset-pw p {
+    margin: 0; }
+    .login p a, .reset-pw p a {
+      display: inline-block;
+      font-style: italic;
+      font-size: 12px;
+      color: #3b444e; }
+
+.reset-pw {
+  padding-bottom: 200px; }
+
+.forgot-pw-modal .modal-body {
+  padding: 15px 30px 60px; }
+.forgot-pw-modal .lock-img {
+  padding-top: 20px; }
+.forgot-pw-modal h3 {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 25px 0; }
+.forgot-pw-modal p {
+  font-size: 15px; }
+.forgot-pw-modal .form {
+  width: 370px;
+  margin: 40px auto 0;
+  border: none; }
+  .forgot-pw-modal .form .form-field {
+    margin-bottom: 30px; }
+
+.fb-signup {
+  background: #3865a4;
+  color: #fff;
+  padding: 10px;
+  text-align: center;
+  display: block;
+  -webkit-border-radius: 30px;
+  -moz-border-radius: 30px;
+  -ms-border-radius: 30px;
+  -o-border-radius: 30px;
+  border-radius: 30px;
+  font-size: 19px;
+  font-weight: 600; }
+  .fb-signup i.fa {
+    margin-right: 15px; }
+  .fb-signup:hover {
+    color: #fff;
+    text-decoration: none;
+    background: #2b4e7e; }
+
+/*# sourceMappingURL=style.css.map */

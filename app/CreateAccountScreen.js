@@ -4,6 +4,7 @@ var _ = require('underscore');
 var Select = require('./components/Select');
 var STATES = require('./components/data/states');
 var Icon = require('./components/Icon.js');
+
 import {Router, Route, Link, hashHistory} from 'react-router';
 
 var CreateAccountScreen = React.createClass({
@@ -39,7 +40,7 @@ var CreateAccountScreen = React.createClass({
         email: this.state.email
       }
      var self = this;
-     $.ajax({type: 'POST', url: "https://dev.thrillophilia.com/api/v1/suppliers/sign_up", data: { 
+         var data = { 
                   "vendor": {
                               "name": this.state.yourName,
                               "email": this.state.email,
@@ -48,15 +49,18 @@ var CreateAccountScreen = React.createClass({
                               "company_name": this.state.companyName,
                               "company_website": this.state.companyWebsite
                             }
-                      },success: function (result) {
-                        this.props.route.notification._addNotification(e, "success", "Successfully registered !!!");
-            window.location.href="/#/thank-you";
-        },error: function(result){
-          console.log(result.responseText);
-          let message = JSON.parse(result.responseText);
-          self.props.route.notification._addNotification(e, "error", message.message);
-          
-        }}); 
+                      }
+         this.props.route.config().httpInterceptor(this.props.route.config().url().CREATE_ACCOUNT, 'POST', data).then(
+                        function(result){
+                          self.props.route.notification._addNotification(e, "success", "Successfully registered !!!");
+                          window.location.href="/#/thank-you";
+                        },
+                        function(result){
+                              let message = JSON.parse(result.responseText);
+                              self.props.route.notification._addNotification(e, "error", message.message);
+                        }
+          );
+    
      
     } else {
       this.refs.yourName.isValid();
@@ -120,89 +124,126 @@ var CreateAccountScreen = React.createClass({
 
   render: function() {
     return (
+
+
        <div className="application_wrapper">
+<div className="page-body grey2">
+  <div className="container text-center">
+        <h2>Secure your listing by <span className="secondary">creating an account!</span></h2>
+      <p>Thrillophilia helps you market your products to millions of its customers!</p>
 
-        <div className="application_routeHandler">
-      <div className="create_account_screen">
+  </div>
+</div>
+<div className="page-body bg-img">
+  <div className="container">
+      <div className="register">
+       
+            <div className="row">
 
-        <div className="create_account_form">
-          <h1>Register account</h1>
-          <form onSubmit={this.saveAndContinue}>
-            <Input 
-              text="Your Name" 
-              ref="yourName"
-              validate={this.isEmpty}
-              value={this.state.yourName}
-              onChange={this.handleNameInput} 
-              emptyMessage="Your name can't be empty"
-            /> 
-            <Input 
-              text="Phone Number" 
-              ref="phonenumber"
-              validate={this.isEmpty}
-              value={this.state.phonenumber}
-              onChange={this.handlephoneInput} 
-              emptyMessage="Phone number can't be empty"
-            /> 
-            <Input 
-              text="Email Address" 
-              ref="email"
-              type="text"
-              defaultValue={this.state.email} 
-              validate={this.validateEmail}
-              value={this.state.email}
-              onChange={this.handleEmailInput} 
-              errorMessage="Email is invalid"
-              emptyMessage="Email can't be empty"
-              errorVisible={this.state.showEmailError}
-            />
+              <div className="col-sm-6">
 
-           
+                  <form onSubmit={this.saveAndContinue}>
+                    <div className="form">
+                        <div className="form-field">
+                            <i className="icon"><img src="images/icon-profile.png" /></i>
+                            <Input 
+                              text="Your Name" 
+                              ref="yourName"
+                              validate={this.isEmpty}
+                              value={this.state.yourName}
+                              onChange={this.handleNameInput} 
+                              emptyMessage="Your name can't be empty"
+                            /> 
+                        </div>
+                        <div className="form-field">
+                            <i className="icon"><img src="images/icon-phone2.png" /></i>
+                             <Input 
+                              text="Phone Number" 
+                              ref="phonenumber"
+                              validate={this.isEmpty}
+                              value={this.state.phonenumber}
+                              onChange={this.handlephoneInput} 
+                              emptyMessage="Phone number can't be empty"
+                            /> 
+                        </div>
+                        <div className="form-field">
+                            <i className="icon"><img src="images/icon-email.png" /></i>
+                            <Input 
+                              text="Email Address" 
+                              ref="email"
+                              type="text"
+                              defaultValue={this.state.email} 
+                              validate={this.validateEmail}
+                              value={this.state.email}
+                              onChange={this.handleEmailInput} 
+                              errorMessage="Email is invalid"
+                              emptyMessage="Email can't be empty"
+                              errorVisible={this.state.showEmailError}
+                            />
+                        </div>
+                        <div className="form-field">
+                            <i className="icon"><img src="images/icon-password.png" /></i>
+                            <i className="icon view-pw" onClick={this.showHidePassword}><img src="images/icon-view-pw.png" /></i>
+                            <Input 
+                              text="Create Password" 
+                              type={this.state.passwordType}
+                              ref="password"
+                              validator="true"
+                              minCharacters="8"
+                              requireCapitals="1"
+                              requireNumbers="1"
+                              forbiddenWords={this.state.forbiddenWords}
+                              value={this.state.password}
+                              emptyMessage="Password is invalid"
+                              onChange={this.handlePasswordInput} 
+                            /> 
 
-            <Input 
-              text="Create Password" 
-              type={this.state.passwordType}
-              ref="password"
-              validator="true"
-              minCharacters="8"
-              requireCapitals="1"
-              requireNumbers="1"
-              forbiddenWords={this.state.forbiddenWords}
-              value={this.state.password}
-              emptyMessage="Password is invalid"
-              onChange={this.handlePasswordInput} 
-            /> 
-            <a href="#" onClick={this.showHidePassword}>Show</a>
-            <Input 
-              text="Company Name" 
-              ref="companyName"
-              validate={this.isEmpty}
-              value={this.state.companyName}
-              onChange={this.handleCompanyInput} 
-              emptyMessage="Company name can't be empty"
-            /> 
-             <Input 
-              text="Company Website" 
-              ref="companyWebiste"
-              value={this.state.companyWebsite}
-              onChange={this.handleCompanyWebsiteInput} 
-            /> 
-            
-            <button 
-              type="submit" 
-              className="button button_wide">
-              CREATE ACCOUNT
-            </button>
-
-          </form>
-
+                            
+                        </div>
+                        <div className="form-field">
+                            <i className="icon"><img src="images/icon-company.png" /></i>
+                             <Input 
+                              text="Company Name" 
+                              ref="companyName"
+                              validate={this.isEmpty}
+                              value={this.state.companyName}
+                              onChange={this.handleCompanyInput} 
+                              emptyMessage="Company name can't be empty"
+                            /> 
+                        </div>
+                        <div className="form-field">
+                            <i className="icon"><img src="images/icon-web.png" /></i>
+                            <Input 
+                              text="Company Website" 
+                              ref="companyWebiste"
+                              value={this.state.companyWebsite}
+                              onChange={this.handleCompanyWebsiteInput} 
+                            /> 
+                        </div>
+                        <button type="submit"  className="btn btn-secondary btn-block">Create an Account</button>
+                    </div>
+                  </form>
+                  
+              
+            </div> 
+            <div className="col-sm-6">
+                <div className="right">
+                    <p className="or"><span>OR</span></p>
+                    <a className="fb-signup" href="#">
+                    <i className="fa fa-facebook" aria-hidden="true"></i>
+                    Signup with Facebook
+                    </a>
+                </div>
+            </div>
           
-
         </div>
-
-      </div>
-      </div>
-      </div>
+     </div> 
+      
+    
+  </div>
+</div>
+</div>
+        
     );
   }
     

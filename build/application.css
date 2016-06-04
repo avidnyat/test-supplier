@@ -8,10 +8,7 @@ html {
   font-family: sans-serif;
 }
 html,
-body {
-  height: 100%;
-  min-height: 100%;
-}
+
 a {
   background: transparent;
 }
@@ -308,8 +305,6 @@ table td {
   -moz-align-items: center;
   -ms-align-items: center;
   align-items: center;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
   -webkit-user-select: none;
@@ -325,7 +320,7 @@ table td {
   position: absolute;
   z-index: 10;
   cursor: text;
-  padding: 0 0 0 15px;
+  padding: 0 0px 0px 35px;
 }
 .input_group label.input_label .label_text {
   font-size: 18px;
@@ -361,6 +356,7 @@ table td {
   color: #b8bdc4;
   letter-spacing: .7px;
   font-size: 11px;
+  padding-bottom: 20px;
 }
 .input_group.input_unfocused.input_hasValue.input_valid label.input_label {
   color: #b1b0b1;
@@ -441,7 +437,7 @@ table td {
   -o-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
   width: 20px;
-  height: 20px;
+  height: 30px;
 }
 .input_group i.input_error_icon {
   z-index: 10;
@@ -476,7 +472,7 @@ table td {
   line-height: 70px;
   width: auto;
   height: 70px;
-  background: #F16767;
+  background: #f36f22;
   -webkit-box-sizing: border-box;
   -khtml-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -1175,22 +1171,8 @@ table td {
   box-shadow: none;
   background: #6bc5e6;
 }
-html {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-body {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  -webkit-font-smoothing: subpixel-antialiased;
-  background: #f0f4f5;
-  overflow: hidden;
-  font: normal normal 100 14px/1.6 'Roboto', sans-serif;
-  -webkit-overflow-scrolling: touch;
-  display: block;
-}
+
+
 .application_wrapper {
   display: block;
   position: absolute;
@@ -1413,6 +1395,38 @@ body {
 .application_wrapper .create_account_screen form {
   width: 430px;
 }
+
+/* Page Loader */ 
+#pageloader {
+    background-color:#fff;
+    height: 50%;
+    position: fixed;
+    top: 238px;
+    width: 100%;
+    z-index: 99999;
+  overflow: hidden;
+}
+#pageloader .loader-inner {
+    position: absolute;
+    top: 50%;
+  left:0;
+  right:0;
+  margin: 0 auto;
+  -webkit-transform: translateY(-50%);
+     -moz-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+     -o-transform: translateY(-50%);
+      transform: translateY(-50%);
+}
+#pageloader .loader-inner  img{    
+  margin: 0 auto;
+  display: block;
+}
+
+
+
+
+
 @media only screen and (min-width : 0px) and (max-width : 870px) {
   .application_wrapper .create_account_screen form {
     width: 300px;
