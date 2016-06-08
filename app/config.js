@@ -9,19 +9,40 @@ var ConfigMixin = {
 		        "LOGIN": BASE_URL+"suppliers/sign_in",
 		        "SEND_RESET_PASSWORD_EMAIL": BASE_URL+"suppliers/password",
 		        "RESET_PASSWORD": BASE_URL+"suppliers/profile/change_password",
-		        "DASHBOARD": BASE_URL+"suppliers/dashboard"
+		        "DASHBOARD": BASE_URL+"suppliers/dashboard?",
+		        //"BOOKINGS_LIST": BASE_URL+"suppliers/bookings?",
+		        "BOOKINGS_LIST": "./../data/bookings.json?",   
+		        "BOOKINGS_DETAILS": "./../data/bookingDetails.json?",    //BOOKINGS_DETAILS": BASE_URL+"suppliers/bookings/"
+		       // "PROFILE": BASE_URL+"suppliers/profile"
+		        "PROFILE":  "./../data/profile.json"  ,
+		        "LISTING": "./../data/listing.json?",
+		        "LISTING_DETAILS": "./../data/listingDetails.json?"    
 
 			}
 		}
-		function httpInterceptor(url, methodType, bodyParams){
+		function httpInterceptor(url, methodType, bodyParams, headers={}, urlParams={}){
 			//setClientInfo();
-			var params = (methodType == 'GET') ? "?"+$.param(getClientInfo()): "";
+			var params = (!$.isEmptyObject(urlParams)) ? $.param(urlParams): "";
 			console.log(params);
+			if($.isEmptyObject(headers)){
+				var beforesend = function(){};
+			}else{
+				console.log(headers);
+				var beforesend = function(request)
+			            {
+			                request.setRequestHeader(headers[0][0], headers[0][1]);
+			                request.setRequestHeader(headers[1][0], headers[1][1]);
+			                request.setRequestHeader("Access-Control-Allow-Origin", "*");
+			                
+                        }
+			}
 			var promise = new Promise(function(resolve, reject)  {
 				$.ajax({type: methodType, url: url+params, data: bodyParams,
-	                   success: function (result) {
+					headers: headers,
+					
+					   success: function (result) {
 	                        //self.props.route.notification._addNotification(e, "success", "Successfully registered !!!");
-	            //window.location.href="/#/thank-you";
+	                        //window.location.href="/#/thank-you";
 				            resolve(result);
 				        },error: function(result){
 				          //console.log(result.responseText);

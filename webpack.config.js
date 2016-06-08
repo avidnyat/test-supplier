@@ -3,7 +3,7 @@ var webpack = require('webpack');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 module.exports = {
    entry: [
-   './app/pageslider-react.js',
+   
 	'./app/main.js',
   'whatwg-fetch'
        

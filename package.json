@@ -58,8 +58,12 @@
     "gulp-plumber": "~0.6.6",
     "html-webpack-plugin": "^2.19.0",
     "less-loader": "^2.2.3",
+    "moment": "^2.13.0",
     "react": "^15.1.0",
+    "react-addons-create-fragment": "^15.1.0",
     "react-dom": "^15.1.0",
+    "react-paginate": "^2.0.1",
+    "react-tab-view": "^1.0.4",
     "underscore": "^1.8.3",
     "webpack": "^1.13.1",
     "webpack-dev-server": "^1.14.1"

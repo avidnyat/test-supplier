@@ -42,6 +42,7 @@ handlePasswordInput: function (event) {
                         function(result){
                           self.props.route.notification._addNotification(e, "success", "Successfully login !!!");
                           localStorage.setItem("clientInfo", JSON.stringify(result));
+                          self.props.route.notification.login();
                           console.log(JSON.parse(localStorage.getItem("clientInfo")));
                           window.location.href="/#/dashboard";
                         },
