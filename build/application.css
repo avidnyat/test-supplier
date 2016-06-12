@@ -1459,6 +1459,7 @@ table td {
   text-align: center;
 }
 
+/*
 .react-tabs ul li {
   display: inline;
 }
@@ -1481,6 +1482,7 @@ table td {
   background-color: #b7b7b7;
   cursor: pointer;
 }
+*/
 .bookings-list{
       border: 1px solid #ccc;
     padding: 15px;

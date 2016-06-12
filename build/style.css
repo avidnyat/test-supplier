@@ -8,6 +8,13 @@
   font-family: 'BariolRegular';
   src: url("../fonts/BariolRegular.eot");
   src: local("BariolRegular"), url("../fonts/BariolRegular.woff") format("woff"), url("../fonts/BariolRegular.ttf") format("truetype"); }
+.application_wrapper{ position: relative;}
+.input_group{  min-height: 0;}
+.input_group i{  height: auto; right: 25px;}
+.input_group input.input{   height: auto; padding: 0;}
+.input_group label.input_label{ display: block; top:0; transition: all 0.3s; height: auto; text-align: left;}
+.input_group.input_focused label.input_label, .input_group.input_hasValue label.input_label{ top:-20px;}
+.error_container{ left: auto; right: 102%; height: auto; line-height: 1.6;border-radius: 4px;}
 button {
   cursor: pointer; }
 
@@ -240,22 +247,45 @@ hr {
       color: #3b444e;
       margin: 20px 0 5px; }
 
-.tab-section .nav-tabs {
-  border-bottom: 1px solid #f2f2f2; }
-  .tab-section .nav-tabs li {
+.react-tabs{
+    max-width: 1000px;
+    margin:  0 auto;
+}
+.react-tabs .header ul {
+  border-bottom: 1px solid #f2f2f2; text-align: left;}
+.react-tabs li {
     margin-right: 50px; }
-    .tab-section .nav-tabs li a {
+.react-tabs li{ display: inline-block;}
+.react-tabs li a {
       padding: 15px 0 12px;
+    display: block;
+    background: none;
       border-bottom: 3px solid transarent;
       font-weight: 600;
       font-size: 14px;
       color: #3b444e; }
-    .tab-section .nav-tabs li.active a, .tab-section .nav-tabs li:hover a {
+.react-tabs li.selected a, .react-tabs li:hover a {
       background: none;
+        cursor: pointer;
       outline: none;
       color: #f36f22;
       border-color: transparent;
       border-bottom: 3px solid #f36f22; }
+.react-tabs .react-tab{
+    border: none;
+    background: none;
+    margin: 30px 0 0;
+    padding: 0;
+}
+.react-tabs .bookings-list{
+    margin: 0 0 15px;
+    background: #f8f6f4;
+    border: none;
+    font-size: 14px;
+    font-weight: 400;
+    
+}
+
 .tab-section .tab-pane {
   padding: 30px 0; }
   .tab-section .tab-pane .highlights .item {
@@ -763,6 +793,27 @@ input[type='radio']:checked + label:before {
     background: url(../images/icon-phone.png) no-repeat center 15px;
     font-size: 18px;
     padding: 35px 0 10px; }
+.modal .form-field{
+    border-width: 0 0 1px;
+    position: relative;
+}
+.modal h3{
+    margin: 20px 0 10px;
+     font-size: 24px;
+}
+.modal .form{
+    width: 70%;
+    margin: 0 auto;
+}
+.modal .btn{
+    padding: 10px;
+}
+.password_validator:after{ top:7px; }
+.modal .form-field i.icon{ position: absolute; left: 0; }
+.password_validator .validator_container{ padding: 5px 10px; }
+.password_validator .validator_container h4.validator_title{ margin: 0; padding: 10px 0 0;}
+.password_validator .validator_container ul.rules_list > li{ margin: 8px 0; }
+
 
 /* ----------------- Booking Details ------------------ */
 .block {
@@ -1078,6 +1129,7 @@ input[type='radio']:checked + label:before {
     padding: 15px; }
   .listing-card h3 {
     font-size: 17px;
+      min-height: 46px;
     font-weight: 800;
     padding-bottom: 8px;
     margin: 0 0 10px;
@@ -1160,10 +1212,9 @@ input[type='radio']:checked + label:before {
       display: inline-block;
       vertical-align: middle;
       float: none; }
-      .before-login .main-banner .navbar .nav li a {
-        padding: 10px; }
+      
 .before-login .grey2 {
-  padding: 40px 0;
+ padding: 30px 0 10px;
   border-bottom: 1px solid #e5e5e5; }
   .before-login .grey2 h2 {
     font-weight: 800;
@@ -1208,11 +1259,11 @@ input[type='radio']:checked + label:before {
   .register .icon.view-pw, .login .icon.view-pw {
     right: 0;
     cursor: pointer; }
-.register .form-field, .login .form-field {
+.register .form-field, .login .form-field{
   border-width: 0 0 1px;
   margin-bottom: 20px;
   background: none;
-  padding: 0 0 8px;
+  padding: 0px;
   position: relative; }
   .register .form-field input, .login .form-field input {
     font-family: 'Source Sans Pro', sans-serif;
@@ -1221,6 +1272,7 @@ input[type='radio']:checked + label:before {
   font-size: 19px;
   padding: 10px;
   margin-top: 20px; }
+
 
 .login {
   padding-bottom: 100px; }

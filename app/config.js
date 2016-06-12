@@ -4,21 +4,43 @@ var ConfigMixin = {
 		var auth_token = "";
 		function url(){
 		 var BASE_URL = "https://dev.thrillophilia.com/api/v1/";
-			return {
+
+         var ENV = "dev"; // for development it is "dev" , for production it is "prod"
+         var devConfig = {
 				"CREATE_ACCOUNT": BASE_URL+"suppliers/sign_up",
 		        "LOGIN": BASE_URL+"suppliers/sign_in",
 		        "SEND_RESET_PASSWORD_EMAIL": BASE_URL+"suppliers/password",
 		        "RESET_PASSWORD": BASE_URL+"suppliers/profile/change_password",
 		        "DASHBOARD": BASE_URL+"suppliers/dashboard?",
-		        //"BOOKINGS_LIST": BASE_URL+"suppliers/bookings?",
 		        "BOOKINGS_LIST": "./../data/bookings.json?",   
-		        "BOOKINGS_DETAILS": "./../data/bookingDetails.json?",    //BOOKINGS_DETAILS": BASE_URL+"suppliers/bookings/"
-		       // "PROFILE": BASE_URL+"suppliers/profile"
+		        "BOOKINGS_DETAILS": "./../data/bookingDetails.json?", 
 		        "PROFILE":  "./../data/profile.json"  ,
 		        "LISTING": "./../data/listing.json?",
-		        "LISTING_DETAILS": "./../data/listingDetails.json?"    
+		        "LISTING_DETAILS": "./../data/listingDetails.json?" ,
+		        "NOTIFICATIONS": "./../data/notification.json?"   
 
 			}
+	     var prodConfig = {
+				"CREATE_ACCOUNT": BASE_URL+"suppliers/sign_up",
+		        "LOGIN": BASE_URL+"suppliers/sign_in",
+		        "SEND_RESET_PASSWORD_EMAIL": BASE_URL+"suppliers/password",
+		        "RESET_PASSWORD": BASE_URL+"suppliers/profile/change_password",
+		        "DASHBOARD": BASE_URL+"suppliers/dashboard?",
+		        "BOOKINGS_LIST": BASE_URL+"suppliers/bookings?",
+		        "BOOKINGS_DETAILS": BASE_URL+"suppliers/bookings/",
+		        "PROFILE": BASE_URL+"suppliers/profile",
+		        "LISTING": "./../data/listing.json?",
+		        "LISTING_DETAILS": "./../data/listingDetails.json?" ,
+		        "NOTIFICATIONS": "./../data/notification.json?"   
+
+			}
+
+		   if(ENV == "prod"){
+		   		return  prodConfig;
+		   }else{
+		   		return devConfig;
+		   }
+			
 		}
 		function httpInterceptor(url, methodType, bodyParams, headers={}, urlParams={}){
 			//setClientInfo();
@@ -67,6 +89,7 @@ var ConfigMixin = {
 				"auth_token": JSON.parse(localStorage.getItem("clientInfo")).client.authentication_token
 			}
 		}
+		
 		return {
 			url: url,
 			httpInterceptor: httpInterceptor,

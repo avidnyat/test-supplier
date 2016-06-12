@@ -11,7 +11,8 @@ getInitialState: function () {
       reviewsCount: null,
       viewsCount: null,
       photo: JSON.parse(localStorage.getItem("clientInfo")).vendor.photo,
-      name: JSON.parse(localStorage.getItem("clientInfo")).vendor.name
+      name: JSON.parse(localStorage.getItem("clientInfo")).vendor.name,
+      notifications: null
     }
   },
 componentDidMount: function() {
@@ -43,9 +44,38 @@ componentDidMount: function() {
                               self.props.route.notification._addNotification(window.event, "error", message.message);
                         }
           );
+         var data = {
+                       
+                    }
+         this.props.route.config().httpInterceptor(this.props.route.config().url().NOTIFICATIONS, 'GET', data, {},this.props.route.config().getClientInfo()).then(
+                        function(result){
+                          
+                          console.log(result);
+                          self.setState({
+                             notifications: result.user_notifications
+                            });
+                          
+                        
+                        },
+                        function(result){
+                              let message = JSON.parse(result.responseText);
+                              self.props.route.notification._addNotification(window.event, "error", message.message);
+                        }
+          );
     
   },
   render: function() {
+
+
+
+    var notificationsList = $.map( this.state.notifications, function( val, i ) {
+            
+      return (
+              <p>{val.message}</p>        
+          );
+    });
+
+
     return (
 
       <div>
@@ -182,9 +212,8 @@ componentDidMount: function() {
           </div>
       </div>
       <div className="notify">
-        <h3>Notifications(2)</h3>
-          <p>You have <a href="#">5 more steps</a> to complete your listing</p>
-          <p>You have <a href="#">7 awesome reviews</a> that have increased your rating to <a href="#">4.8</a></p>
+        <h3>Notifications(5)</h3>
+          {notificationsList}
       
     </div>
       

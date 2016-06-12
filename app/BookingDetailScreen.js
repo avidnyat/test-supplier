@@ -43,7 +43,7 @@ var BookingDetailsScreen = React.createClass({
                 function(result){
                   self.setState({
                     name : result.tour.name,
-                    bookable_pattern: result.variant.bookable_patterns.join(","),
+                    bookable_pattern: result.variant.bookable_patterns.join(", "),
                     discounted_price: result.variant.sub_variant.fixed_pricings[0].discounted_price,
                     no_of_people: result.no_of_people,
                     discount_amount: result.discount_amount,
@@ -67,71 +67,103 @@ var BookingDetailsScreen = React.createClass({
   },
   render: function() {
     return (
-    	<div className="container">
-      <div className="row">
-      	<div className="col-md-8">
-      		<div className="row">
-      			<div className="col-md-12">
-      				<p>{this.state.name}</p>
-      				<p>{this.state.bookable_pattern}</p>
-      				<p>Travellers</p>
-      				<div className="row">
-      					<div className="col-md-4">
-      						Adult
-      					</div>
-      					<div className="col-md-4">
-      						{this.state.no_of_people} X  {this.state.discounted_price}
-      					</div>
-      					<div className="col-md-4 text-right">
-      						 &#8377; {this.state.no_of_people*this.state.discounted_price}
-      					</div>
-      				</div>
-      				<div className="row">
-      					<div className="col-md-4">
-      						Discount
-      					</div>
-      					<div className="col-md-4">
-      						
-      					</div>
-      					<div className="col-md-4 text-right">
-      						 &#8377; {this.state.discount_amount}
-      					</div>
-      				</div>
-      				<div className="row">
-      					<div className="col-md-4">
-      						
-      					</div>
-      					<div className="col-md-4">
-      						
-      					</div>
-      					<div className="col-md-4 text-right">
-      						Total Price : &#8377; {this.state.amount}
-      					</div>
-      				</div>
-      			</div>
-
-      		</div>
-      		
-      	</div>
-        <div className="col-md-4">
-          <p>Booking Id</p>
-          <p> {this.state.bookingid}</p>
-          <p>Name</p>
-          <p> {this.state.customerName}</p>
-          <p>Contact Details</p>
-          <p>P: {this.state.phone}</p>
-          <p>E: {this.state.email}</p>
-          <p>Date Of Travel</p>
-          <p> {this.state.dot}</p>
-          <p>Time</p>
-          <p> {this.state.time}</p>
-          <p>Pickup Place</p>
-          <p> {this.state.place}</p>
-           
+      <div>
+      <div className="page-body grey2">
+  <div className="container">
+      <ol className="breadcrumb">
+          <li><img src="images/icon-home.png" /><a href="/#/dashboard"> Dashboard</a></li>
+          <li className="active">Bookings</li>
+        </ol>
+    </div>
+</div>
+    <div className="page-body">
+    <div className="container">
+        <div className="ticket-preview">
+          <div className="ticket">
+            <div className="bar">
+              <p>Booking Voucher</p>
+              <img src="images/watermark.png" /></div>
+            <table>
+              <tbody><tr>
+                <td><div className="details1">
+                    <h3>{this.state.name}</h3>
+                    <p>{this.state.bookable_pattern}</p>
+                    <hr />
+                    <h4>Travelers</h4>
+                    <p>Name : Giridhar, Pratheek</p>
+                    <p>Infant: Rakesh</p>
+                    <div className="block col">
+                      <div>
+                        <div className="left">
+                          <p>Adult </p>
+                          <p>{this.state.no_of_people}  x <i className="fa fa-inr"></i> {this.state.discounted_price}</p>
+                        </div>
+                        <div className="right">
+                          <p><i aria-hidden="true" className="fa fa-inr"></i> {this.state.no_of_people*this.state.discounted_price}</p>
+                        </div>
+                      </div>
+                      <div>
+                        <div className="left">
+                          <p>Adult </p>
+                          <p>1 x <i className="fa fa-inr"></i> 2400</p>
+                        </div>
+                        <div className="right">
+                          <p><i aria-hidden="true" className="fa fa-inr"></i> 2400</p>
+                        </div>
+                      </div>
+                      <div>
+                        <div className="left">
+                          <p>Discount (THRILL10) </p>
+                        </div>
+                        <div className="right">
+                          <p>- <i aria-hidden="true" className="fa fa-inr"></i> {this.state.discount_amount}</p>
+                        </div>
+                      </div>
+                      <div>
+                        <div className="left">
+                          <p>Tax </p>
+                        </div>
+                        <div className="right">
+                          <p><i aria-hidden="true" className="fa fa-inr"></i> 100</p>
+                        </div>
+                      </div>
+                      <div>
+                        <div className="left">
+                          <p>Wallet Deduction </p>
+                        </div>
+                        <div className="right">
+                          <p>- <i aria-hidden="true" className="fa fa-inr"></i> 500</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="block col grand-total">
+                      <div>
+                        <div className="right">
+                          <p>Total Price : <i aria-hidden="true" className="fa fa-inr"></i> {this.state.amount} </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div></td>
+                <td><div className="details2">
+                    <p>Date of Travel</p>
+                    <h3>{this.state.dot}</h3>
+                    <p>Time</p>
+                    <h3>{this.state.time}</h3>
+                    <p>Pickup Place</p>
+                    <h3>{this.state.place}</h3>
+                  </div></td>
+              </tr>
+            </tbody></table>
+          </div>
         </div>
-        
-      </div>
-      </div>
+    </div>   
+</div>    
+
+</div>
+
+
+
+   
     );
   }
   

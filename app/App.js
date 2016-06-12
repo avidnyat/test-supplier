@@ -8,6 +8,7 @@ var DashboardScreen = require("./DashboardScreen.js");
 var BookingScreen = require("./BookingScreen.js");
 var BookingDetailScreen = require("./BookingDetailScreen.js");
 var ProfileScreen = require("./ProfileScreen.js");
+var EditVariantScreen = require("./EditVariantScreen.js")
 var ListingScreen = require("./ListingScreen.js");
 var ListingDetailsScreen = require("./ListingDetailsScreen.js");
 var NotificationSystem = require('react-notification-system');
@@ -147,6 +148,7 @@ getInitialState: function () {
                   <Route path="bookings" component={BookingScreen}  notification={this} config={this.utils}></Route>
                   <Route path="profile" component={ProfileScreen}  notification={this} config={this.utils}></Route>
                   <Route path="listings" component={ListingScreen}  notification={this} config={this.utils}></Route>
+                  <Route path="edit-variant" component={EditVariantScreen}  notification={this} config={this.utils}></Route>
                    <Route path="listingDetails/:listingid" component={ListingDetailsScreen}  notification={this} config={this.utils}></Route>
                   <Route path="bookingDetails/:bookingid" component={BookingDetailScreen}  notification={this} config={this.utils}></Route>
                 </Router>

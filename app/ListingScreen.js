@@ -66,7 +66,17 @@ componentDidMount: function() {
 
 
     return (
-
+      <div>
+<div className="page-body grey2">
+  <div className="container">
+      <ol className="breadcrumb">
+          <li><img src="images/icon-home.png" /><a href="/#/dashboard"> Dashboard</a></li>
+          <li><a href="/#/listings">Listing </a></li>
+          
+        </ol>
+      
+    </div>
+</div>
       <div className="page-body">
     <div className="container">
         <div className="row">
@@ -75,7 +85,7 @@ componentDidMount: function() {
         </div>
     </div>   
 </div>
-
+</div>
     );
   }
   

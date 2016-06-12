@@ -68,8 +68,8 @@ componentDidMount: function() {
       <div className="page-body grey2">
   <div className="container">
       <ol className="breadcrumb">
-          <li><img src="images/icon-home.png" /><a href="#"> Dashboard</a></li>
-          <li><a href="#">Listing </a></li>
+          <li><img src="images/icon-home.png" /><a href="/#/dashboard"> Dashboard</a></li>
+          <li><a href="/#/listings">Listing </a></li>
           <li className="active">{this.state.listing.name}</li>
         </ol>
       <div className="row">
