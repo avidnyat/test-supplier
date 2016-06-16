@@ -29,22 +29,22 @@ const CalendarComponent = React.createClass({
     $(".rc-calendar-full-header-switcher").hide();
     $(".rc-calendar-table").first().find("th").each(function(i) {
         var weekday = (i==0)?7:i;
-        $(this).html("<span class='rc-calendar-column-header'><input type='checkbox' value='"+weekday+"' class='weekday'>"+$(this).prop("title")+"</span>");
+        $(this).html("<span class='rc-calendar-column-header'><input type='checkbox' value='"+weekday+"' class='weekday' id='week1_"+i+"'><label for='week1_"+i+"'> "+$(this).prop("title")+"</label></span>");
     });
     $(".rc-calendar-table:not(:first):not(:last)").find("th").each(function(i) {
         var weekday = (i==0)?7:i;
-        $(this).html("<span class='rc-calendar-column-header'><input type='checkbox' value='"+weekday+"' class='weekday'>"+$(this).prop("title")+"</span>");
+        $(this).html("<span class='rc-calendar-column-header'><input type='checkbox' value='"+weekday+"' class='weekday' id='week2_"+i+"'><label for='week2_"+i+"'> "+$(this).prop("title")+"</label></span>");
     });
     $(".rc-calendar-table").last().find("th").each(function(i) {
         var weekday = (i==0)?7:i;
-        $(this).html("<span class='rc-calendar-column-header'><input type='checkbox' value='"+weekday+"' class='weekday'>"+$(this).prop("title")+"</span>");
+        $(this).html("<span class='rc-calendar-column-header'><input type='checkbox' value='"+weekday+"' class='weekday' id='week3_"+i+"'><label for='week3_"+i+"'> "+$(this).prop("title")+"</label></span>");
     });
     
 
 
 
 $(document).off("click","td").on("click","td",function(e){
-    if(moment($(this).prop("title")).unix() >= moment($(".rc-calendar-today").prop("title")).unix()){
+    if(moment($(this).prop("title")).unix() >= moment($(".rc-calendar-today").props("title")).unix()){
         if(!$(e.target).closest("td").hasClass("active")){
           console.log($(e.target));
           $(e.target).closest("td").addClass("active");
