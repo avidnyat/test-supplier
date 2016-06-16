@@ -43,7 +43,7 @@ componentDidMount: function() {
                   self.setState({
                     listing: result
                   });
-                  console.log(result);
+                  self.props.route.config().setListing(self.state.listing);
                 },
                 function(result){
                       let message = JSON.parse(result.responseText);

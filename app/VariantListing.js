@@ -2,8 +2,8 @@ var React = require('react');
 import {Router, Route, Link, hashHistory} from 'react-router';
 var moment = require("moment");
 var VariantListing = React.createClass({
- showEditPage: function(){
-    window.location.href = "/#/edit-variant/" ;
+ showEditPage: function(listingid, variantid){
+    window.location.href = "/#/edit-variant/"+listingid +"/"+variantid;
  },
 
  
@@ -55,7 +55,7 @@ var subVariantsPrice = $.map( items.fixed_pricings, function( val, i ) {
     return (
         <div >
          <hr />
-           <h3>0{numberCount}. {item.name}<button className="btn btn-line btn-secondary" onClick={self.showEditPage}>Edit</button></h3> 
+           <h3>0{numberCount}. {item.name}<button className="btn btn-line btn-secondary" onClick={()=>self.showEditPage(self.props.listing.id,item.id)}>Edit</button></h3> 
                 <p>{item.description}</p>
                 <h4>Dates & Seats :</h4>
                 <div className="seat-details">

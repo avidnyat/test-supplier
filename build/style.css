@@ -15,9 +15,10 @@
 .input_group label.input_label{ display: block; top:0; transition: all 0.3s; height: auto; text-align: left;}
 .input_group.input_focused label.input_label, .input_group.input_hasValue label.input_label{ top:-20px;}
 .error_container{ left: auto; right: 102%; height: auto; line-height: 1.6;border-radius: 4px;}
-button {
-  cursor: pointer; }
-
+button { cursor: pointer; }
+a:active, button:active{
+    outline: none;
+}
 html, body {
   height: 100%;
   font-family: 'Source Sans Pro', sans-serif; }
@@ -158,8 +159,8 @@ html, body {
 
 .breadcrumb {
   background: none;
-  margin: 0;
-  padding: 7px 0 10px;
+  margin: 0 0 -1px;
+  padding: 7px 0 5px;
   border-bottom: 1px solid #dfdddb; }
   .breadcrumb > li + li:before {
     font-family: "Glyphicons Halflings";
@@ -239,7 +240,7 @@ hr {
   font-size: 14px; }
   .page-body.grey2 {
     background: #f9f9f9;
-    padding: 0 0 10px;
+    padding: 0;
     border-bottom: 1px solid #e5e5e5; }
     .page-body.grey2 h3 {
       font-size: 23px;
@@ -288,6 +289,12 @@ hr {
 
 .tab-section .tab-pane {
   padding: 30px 0; }
+.tab-pane ul li {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 10px;
+    text-align: left;
+}
   .tab-section .tab-pane .highlights .item {
     display: inline-block;
     text-align: center;
@@ -307,7 +314,7 @@ hr {
     -o-border-radius: 3px;
     border-radius: 3px;
     padding: 3px 12px;
-    margin: 0; }
+    margin: 2px; }
 .tab-section .details {
   border-left: 1px dotted #bdbdbd;
   margin-left: 10px;
@@ -608,13 +615,14 @@ input[type='radio']:checked + label:before {
   border-radius: 3px;
   padding: 5px 5px 3px;
   display: inline-block;
-  margin-bottom: 10px; }
+  margin:0 2px 10px 0; }
   .seat-options .item label {
     opacity: 0.5;
     padding: 0 5px;
     font-size: 11px; }
   .seat-options .item input[type='text'] {
     width: 50px;
+      font-size: 14px;
     border: 1px solid #ced0d3;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
@@ -648,14 +656,15 @@ input[type='radio']:checked + label:before {
     border: 1px solid #bdbdbc;
     color: #bdbdbc;
     font-weight: 600;
-    outline: none; }
+    outline: none;
+      padding: 6px 12px;}
   .pagination li:first-child a, .pagination li:last-child a {
     border-color: transparent; }
-  .pagination li.active a, .pagination li.active:hover a {
-    border: none;
-    border-bottom: 1px solid #ed6f33;
+  .pagination li.active a, .pagination li.active:hover a, .react-tabs .pagination li a:hover {
+    border-color: transparent;
+    border-bottom:1px solid #ed6f33;
     background: none;
-    color: #bdbdbc; }
+    color: #ed6f33; }
 
 /* ------------------ Booking ----------------- */
 .booking .page-body.grey2 {
@@ -679,6 +688,7 @@ input[type='radio']:checked + label:before {
       .sort-list .checkbox input[type='checkbox'] + label {
         vertical-align: middle;
         padding: 3px 14px;
+          font-size: 14px;
         -webkit-border-radius: 15px;
         -moz-border-radius: 15px;
         -ms-border-radius: 15px;
@@ -740,12 +750,16 @@ input[type='radio']:checked + label:before {
     vertical-align: middle; }
     .booking-card .info .details {
       width: 475px;
+        padding-left: 20px;
       display: inline-block;
       vertical-align: middle;
       border: solid #e5e4e3;
       border-width: 0 1px 0 0; }
       .booking-card .info .details h3 {
-        margin: 0 0 5px; }
+        margin: 0 0 5px;
+          font-size: 20px;
+          font-weight: 600;
+        }
       .booking-card .info .details p {
         padding: 0;
         margin: 0 0 5px; }
@@ -759,9 +773,11 @@ input[type='radio']:checked + label:before {
       display: inline-block;
       vertical-align: middle;
       text-align: center;
-      width: 250px; }
+      width: 220px; }
       .booking-card .info .contact .contact-info {
         display: inline-block;
+          font-size: 14px;
+          
         position: relative;
         border: 1px solid #ed6f33;
         padding: 6px 30px 6px 60px;
@@ -930,7 +946,7 @@ input[type='radio']:checked + label:before {
   border-radius: 3px;
   padding: 15px;
   height: 135px;
-  margin-bottom: 30px; }
+  margin-top: 30px; }
   .dashboard-item .profile {
     padding: 15px 0; }
     .dashboard-item .profile .pic {
@@ -1309,4 +1325,169 @@ input[type='radio']:checked + label:before {
     text-decoration: none;
     background: #2b4e7e; }
 
+
+/*--------------------- Calendar styles -------------- */
+.rc-calendar-full-header{
+    text-align: center;
+    border: solid #e5e5e5;
+    border-width: 1px 0;
+    
+}
+.rc-calendar-full-header-month-select, .rc-calendar-full-header-year-select{
+    float: none;
+    display: inline-block;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+.rc-calendar-calendar-body{
+    padding: 0;
+}
+.rc-calendar-calendar-body .rc-calendar-table{
+    width: 100%;
+    table-layout: fixed;
+}
+.rc-calendar-table thead{
+    padding: 5px;
+    border-bottom: 1px solid #e5e5e5;
+}
+.rc-calendar-fullscreen .rc-calendar-column-header{
+    text-align: left;
+    padding: 12px 0;
+    font-size: 14px;
+}
+.rc-calendar-table input[type='checkbox']{
+    display: inline-block;
+    vertical-align: middle;
+    margin:-2px 8px 0 0;
+}
+.rc-calendar-fullscreen .rc-calendar-cell{
+   padding: 3px;
+    vertical-align: top;
+}
+
+.rc-calendar-fullscreen .rc-calendar-cell .link, .rc-calendar-fullscreen .rc-calendar-cell .gray-section, .rc-calendar-fullscreen .rc-calendar-cell .gray-section2{
+    display: none;
+}
+.rc-calendar-fullscreen .rc-calendar-cell p {
+    color: #000;
+    line-height: 116px;
+}
+.rc-calendar-date{
+    margin: 3px;
+    background: #fff;
+    border: 1px solid #eaebec;
+    position: relative;
+    overflow: hidden;
+}
+.rc-calendar-last-month-cell{
+    visibility: hidden;
+}
+
+.rc-calendar-date .link{
+   position: absolute;
+    color: #fff;
+    font-size: 11px;
+    padding: 2px 5px;
+    line-height: 1.2;
+    text-transform: uppercase;
+    background: #ed6f26;
+    top:5px;
+    right: 5px;
+    border-radius: 3px;
+    text-decoration: none;
+}
+.rc-calendar-date > p {
+    font-size: 40px;
+    font-weight: 600;
+    margin: 0;
+    color: #000;
+}
+.rc-calendar-fullscreen .rc-calendar-cell.empty .rc-calendar-date{
+     background: #f8f8f8;
+    border: 1px solid #eaebec;
+    position: relative;
+}
+
+/* ------- Active date ------------ */
+.rc-calendar-cell.active .rc-calendar-date{
+    border-color: #ed6f26;
+    
+}
+.rc-calendar-cell.active .gray-section{
+    display: block;
+}
+.rc-calendar-cell.active:hover .link{
+    display: block;
+}
+.rc-calendar-cell.active p{
+    line-height: 66px;
+    font-size: 30px;
+    color: #ed6f26;
+}
+.rc-calendar-cell.active .gray-section{
+    min-height: 50px;
+    background: #f7f7f7;
+    display: table;
+    width: 100%;
+}
+.gray-section2 {
+    background: #f7f7f7;
+    font-size: 12px;
+    position: absolute;
+    width: 100%;
+    left: 0;
+    bottom: 0;
+    color: #ed6f26;
+    padding: 5px;
+}
+.gray-section2 .total input{
+    width: 40px;
+    border: 1px solid #ed6f26;
+    font-weight: 600;
+    margin-left: 6px;
+    padding: 3px 6px;
+    height: 22px;
+    display: inline-block;
+    vertical-align: middle;
+}
+.rc-calendar-cell.active .gray-section > div{
+    display: table-cell;
+    vertical-align: middle;
+    padding: 5px 5px 7px;
+    color: #ed6f26;
+    font-size: 15px;
+    text-align: center;
+    line-height: 1.3;
+}
+.rc-calendar-cell.active .gray-section > div span{
+    display: block;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+/* ---------------- edit -------------- */
+.rc-calendar-cell.active.edit .gray-section{
+    display: none;
+}
+.rc-calendar-cell.active.edit .gray-section2, .rc-calendar-cell.active.edit .link{
+    display: block;
+}
+.scroll-bar{
+  overflow-y: scroll;
+  max-height: 1010px;
+}
+.grey {
+  color: #ccc !important;
+}
+.grey:hover{
+  background-color: white !important;
+}
+.repeat-text{
+  text-align: right;
+  color: black;
+
+}
+.seat-options .item-border{
+  border:none;
+}
 /*# sourceMappingURL=style.css.map */

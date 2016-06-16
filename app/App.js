@@ -148,7 +148,7 @@ getInitialState: function () {
                   <Route path="bookings" component={BookingScreen}  notification={this} config={this.utils}></Route>
                   <Route path="profile" component={ProfileScreen}  notification={this} config={this.utils}></Route>
                   <Route path="listings" component={ListingScreen}  notification={this} config={this.utils}></Route>
-                  <Route path="edit-variant" component={EditVariantScreen}  notification={this} config={this.utils}></Route>
+                  <Route path="edit-variant/:listingid/:variantid" component={EditVariantScreen}  notification={this} config={this.utils}></Route>
                    <Route path="listingDetails/:listingid" component={ListingDetailsScreen}  notification={this} config={this.utils}></Route>
                   <Route path="bookingDetails/:bookingid" component={BookingDetailScreen}  notification={this} config={this.utils}></Route>
                 </Router>

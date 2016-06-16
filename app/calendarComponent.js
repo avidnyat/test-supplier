@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 
 import FullCalendar from 'rc-calendar/lib/FullCalendar';
 
-
+var moment = require("moment");
 
 import Select from 'rc-select';
 
@@ -25,14 +25,32 @@ const CalendarComponent = React.createClass({
 
 
   componentDidMount: function() {
-    $(".rc-calendar-table").find("th").each(function(i) {
-        $(this).html("<span class='rc-calendar-column-header'><input type='checkbox'>"+$(this).prop("title")+"</span>");
+    $(".rc-calendar-next-month-btn-day").hide();
+    $(".rc-calendar-full-header-switcher").hide();
+    $(".rc-calendar-table").first().find("th").each(function(i) {
+        var weekday = (i==0)?7:i;
+        $(this).html("<span class='rc-calendar-column-header'><input type='checkbox' value='"+weekday+"' class='weekday'>"+$(this).prop("title")+"</span>");
+    });
+    $(".rc-calendar-table:not(:first):not(:last)").find("th").each(function(i) {
+        var weekday = (i==0)?7:i;
+        $(this).html("<span class='rc-calendar-column-header'><input type='checkbox' value='"+weekday+"' class='weekday'>"+$(this).prop("title")+"</span>");
+    });
+    $(".rc-calendar-table").last().find("th").each(function(i) {
+        var weekday = (i==0)?7:i;
+        $(this).html("<span class='rc-calendar-column-header'><input type='checkbox' value='"+weekday+"' class='weekday'>"+$(this).prop("title")+"</span>");
     });
     
-$(".rc-calendar-table").find("td").each(function(i) {
-     $(this).html('<div class="rc-calendar-date"><a class="link" href="#">Edit</a><p>5</p><div class="gray-section"><div class="occupied"><span>70</span>Occupied</div><div class="total"><span>70</span>Total seats</div></div><div class="gray-section2"><div class="total">Total seats <input type="text" ></div></div></div>');
-    });
 
+
+
+$(document).off("click","td").on("click","td",function(e){
+    if(moment($(this).prop("title")).unix() >= moment($(".rc-calendar-today").prop("title")).unix()){
+        if(!$(e.target).closest("td").hasClass("active")){
+          console.log($(e.target));
+          $(e.target).closest("td").addClass("active");
+        }
+      }
+    });
   },
   render() {
     return (
@@ -41,6 +59,7 @@ $(".rc-calendar-table").find("td").each(function(i) {
         <FullCalendar
           style={{ margin: 10 }}
           Select={Select}
+          value={this.props.month}
           fullscreen
           onSelect={onSelect}
           type={this.state.type}

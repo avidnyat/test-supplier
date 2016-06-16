@@ -2,6 +2,7 @@ var ConfigMixin = {
 	utils : function(){
 		var clientId = "";
 		var auth_token = "";
+		
 		function url(){
 		 var BASE_URL = "https://dev.thrillophilia.com/api/v1/";
 
@@ -17,7 +18,8 @@ var ConfigMixin = {
 		        "PROFILE":  "./../data/profile.json"  ,
 		        "LISTING": "./../data/listing.json?",
 		        "LISTING_DETAILS": "./../data/listingDetails.json?" ,
-		        "NOTIFICATIONS": "./../data/notification.json?"   
+		        "NOTIFICATIONS": "./../data/notification.json?",
+		        "VARIANT": "./../data/variant.json?"   
 
 			}
 	     var prodConfig = {
@@ -89,12 +91,23 @@ var ConfigMixin = {
 				"auth_token": JSON.parse(localStorage.getItem("clientInfo")).client.authentication_token
 			}
 		}
-		
+		var listing = {};
+		function setListing(listingObj){
+				listing = listingObj;
+				console.log(listing);
+		}
+
+		function getListing(){
+			console.log(listing);
+			return listing;
+		}
 		return {
 			url: url,
 			httpInterceptor: httpInterceptor,
 			redirectWithoutSession: redirectWithoutSession,
-			getClientInfo: getClientInfo
+			getClientInfo: getClientInfo,
+			setListing: setListing,
+			getListing: getListing
 		}
 	}
 }

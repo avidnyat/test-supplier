@@ -285,18 +285,11 @@
   }
 }
 .rc-calendar {
+    margin: 0 !important;
   position: relative;
   outline: none;
-  font-family: Arial, "Hiragino Sans GB", "Microsoft Yahei", "Microsoft Sans Serif", "WenQuanYi Micro Hei", sans-serif;
-  width: 253px;
   list-style: none;
-  font-size: 12px;
-  text-align: left;
-  background-color: #fff;
-  border-radius: 3px;
-  box-shadow: 0 1px 5px #ccc;
   background-clip: padding-box;
-  border: 1px solid #ccc;
   line-height: 1.5;
 }
 .rc-calendar-date-panel {
@@ -417,7 +410,6 @@
 }
 .rc-calendar-date {
   display: block;
-  margin: 0 auto;
   color: #666;
   border-radius: 4px 4px;
   width: 26px;
@@ -428,7 +420,9 @@
   text-align: center;
 }
 .rc-calendar-date:hover {
-  background: #ebfaff;
+  background: #f9cdb4;
+  border: 1px dashed  #ed6f26;
+  color: white;
   cursor: pointer;
 }
 .rc-calendar-selected-day .rc-calendar-date {
@@ -439,7 +433,7 @@
   background: #3fc7fa;
 }
 .rc-calendar-today .rc-calendar-date {
-  border: 1px solid #3fc7fa;
+  border: 2px solid #ed6f26;
 }
 .rc-calendar-disabled-cell .rc-calendar-date {
   cursor: not-allowed;
@@ -1013,7 +1007,6 @@
 }
 .rc-calendar-full-header-month-select,
 .rc-calendar-full-header-year-select {
-  float: right;
   margin-right: 5px;
 }
 .rc-calendar-full-header-switcher {
@@ -1051,9 +1044,7 @@
 .rc-calendar-fullscreen {
   width: auto;
 }
-.rc-calendar-fullscreen .rc-calendar-full-header {
-  border-bottom: none;
-}
+
 .rc-calendar-fullscreen .rc-calendar-column-header {
   text-align: right;
   padding-right: 12px;
@@ -1067,11 +1058,7 @@
   height: 116px;
   width: auto;
   border-radius: 0;
-  margin: 0 4px;
-  border: none;
-  border-top: 2px solid #eee;
-  text-align: right;
-  padding-right: 8px;
+    
 }
 .rc-calendar-fullscreen .rc-calendar-selected-day .rc-calendar-date,
 .rc-calendar-fullscreen .rc-calendar-month-panel-selected-cell .rc-calendar-month-panel-month {
@@ -1080,7 +1067,6 @@
 }
 .rc-calendar-fullscreen .rc-calendar-today .rc-calendar-date,
 .rc-calendar-fullscreen .rc-calendar-month-panel-selected-cell .rc-calendar-month-panel-month {
-  border-top-color: #3FC7FA;
   color: #3FC7FA;
 }
 .tab-pane .rc-calendar-calendar-body table tr td:first-child {

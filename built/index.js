@@ -45,7 +45,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(1);
-	module.exports = __webpack_require__(476);
+	module.exports = __webpack_require__(480);
 
 
 /***/ },
@@ -20346,9 +20346,9 @@
 	var BookingDetailScreen = __webpack_require__(360);
 	var ProfileScreen = __webpack_require__(361);
 	var EditVariantScreen = __webpack_require__(368);
-	var ListingScreen = __webpack_require__(462);
-	var ListingDetailsScreen = __webpack_require__(463);
-	var NotificationSystem = __webpack_require__(469);
+	var ListingScreen = __webpack_require__(466);
+	var ListingDetailsScreen = __webpack_require__(467);
+	var NotificationSystem = __webpack_require__(473);
 	var App = React.createClass({
 	  displayName: 'App',
 
@@ -20657,7 +20657,7 @@
 	          React.createElement(_reactRouter.Route, { path: 'bookings', component: BookingScreen, notification: this, config: this.utils }),
 	          React.createElement(_reactRouter.Route, { path: 'profile', component: ProfileScreen, notification: this, config: this.utils }),
 	          React.createElement(_reactRouter.Route, { path: 'listings', component: ListingScreen, notification: this, config: this.utils }),
-	          React.createElement(_reactRouter.Route, { path: 'edit-variant', component: EditVariantScreen, notification: this, config: this.utils }),
+	          React.createElement(_reactRouter.Route, { path: 'edit-variant/:listingid/:variantid', component: EditVariantScreen, notification: this, config: this.utils }),
 	          React.createElement(_reactRouter.Route, { path: 'listingDetails/:listingid', component: ListingDetailsScreen, notification: this, config: this.utils }),
 	          React.createElement(_reactRouter.Route, { path: 'bookingDetails/:bookingid', component: BookingDetailScreen, notification: this, config: this.utils })
 	        ),
@@ -46606,138 +46606,167 @@
 
 	var TabVariantEditComponent = __webpack_require__(369);
 	var EditVariantScreen = React.createClass({
-	    displayName: 'EditVariantScreen',
+	  displayName: 'EditVariantScreen',
 
+	  getInitialState: function getInitialState() {
+	    console.log(this.props.route.config().getListing());
+	    return {
+	      listing: {},
+	      variantDates: {}
+	    };
+	  },
+	  componentDidMount: function componentDidMount() {
+	    var self = this;
+	    console.log("url-data-page:" + this.state.pageSelected);
+	    //console.log(JSON.parse(localStorage.getItem("clientInfo")).client.client_id);
 
-	    render: function render() {
-	        return React.createElement(
-	            'div',
-	            null,
+	    var urlparams = {};
+	    var data = {};
+	    var clientInfo = this.props.route.config().getClientInfo();
+	    var header = {};
+
+	    this.props.route.config().httpInterceptor(this.props.route.config().url().LISTING_DETAILS + this.props.params.listingid, 'GET', data, header, this.props.route.config().getClientInfo()).then(function (result) {
+	      self.setState({
+	        listing: result
+	      });
+	      self.props.route.config().setListing(self.state.listing);
+	    }, function (result) {
+	      var message = JSON.parse(result.responseText);
+	      self.props.route.notification._addNotification(window.event, "error", message.message);
+	    });
+	  },
+
+	  render: function render() {
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'div',
+	        { className: 'page-body grey2' },
+	        React.createElement(
+	          'div',
+	          { className: 'container' },
+	          React.createElement(
+	            'ol',
+	            { className: 'breadcrumb' },
 	            React.createElement(
-	                'div',
-	                { className: 'page-body grey2' },
-	                React.createElement(
-	                    'div',
-	                    { className: 'container' },
-	                    React.createElement(
-	                        'ol',
-	                        { className: 'breadcrumb' },
-	                        React.createElement(
-	                            'li',
-	                            null,
-	                            React.createElement('img', { src: 'images/icon-home.png' }),
-	                            React.createElement(
-	                                'a',
-	                                { href: '#' },
-	                                ' Dashboard'
-	                            )
-	                        ),
-	                        React.createElement(
-	                            'li',
-	                            null,
-	                            React.createElement(
-	                                'a',
-	                                { href: '#' },
-	                                'Listing '
-	                            )
-	                        ),
-	                        React.createElement(
-	                            'li',
-	                            { className: 'active' },
-	                            'Coorg Adventure Experience'
-	                        )
-	                    ),
-	                    React.createElement(
-	                        'div',
-	                        { className: 'row' },
-	                        React.createElement(
-	                            'div',
-	                            { className: 'col-sm-8' },
-	                            React.createElement(
-	                                'h3',
-	                                null,
-	                                'Coorg Adventure Experience, Karnata'
-	                            ),
-	                            React.createElement(
-	                                'ul',
-	                                { className: 'highlights' },
-	                                React.createElement(
-	                                    'li',
-	                                    null,
-	                                    React.createElement(
-	                                        'div',
-	                                        { className: 'rating' },
-	                                        React.createElement(
-	                                            'span',
-	                                            null,
-	                                            '4.0'
-	                                        ),
-	                                        ' 126 Reviews'
-	                                    )
-	                                ),
-	                                React.createElement(
-	                                    'li',
-	                                    null,
-	                                    React.createElement('img', { src: 'images/icon-day.png' }),
-	                                    ' 2 Days'
-	                                ),
-	                                React.createElement(
-	                                    'li',
-	                                    null,
-	                                    React.createElement('img', { src: 'images/icon-night.png' }),
-	                                    ' 1 Night'
-	                                ),
-	                                React.createElement(
-	                                    'li',
-	                                    null,
-	                                    React.createElement('img', { src: 'images/icon-location.png' }),
-	                                    ' Coorg, Karnataka'
-	                                )
-	                            )
-	                        ),
-	                        React.createElement(
-	                            'div',
-	                            { className: 'col-sm-4 text-right' },
-	                            'className',
-	                            React.createElement(
-	                                'div',
-	                                { className: 'right-block' },
-	                                React.createElement(
-	                                    'p',
-	                                    null,
-	                                    'Starting From'
-	                                ),
-	                                React.createElement(
-	                                    'div',
-	                                    { className: '' },
-	                                    React.createElement(
-	                                        'p',
-	                                        { className: 'price' },
-	                                        React.createElement('i', { 'class': 'fa fa-inr', 'aria-hidden': 'true' }),
-	                                        ' 2,800'
-	                                    ),
-	                                    React.createElement(
-	                                        'button',
-	                                        { 'class': 'btn btn-secondary' },
-	                                        'View Preview'
-	                                    )
-	                                )
-	                            )
-	                        )
-	                    )
-	                )
+	              'li',
+	              null,
+	              React.createElement('img', { src: 'images/icon-home.png' }),
+	              React.createElement(
+	                'a',
+	                { href: '#' },
+	                ' Dashboard'
+	              )
 	            ),
 	            React.createElement(
-	                'div',
-	                { className: 'page-body' },
-	                React.createElement(
-	                    'div',
-	                    { className: 'container' },
-	                    React.createElement(TabVariantEditComponent, null)
-	                )
+	              'li',
+	              null,
+	              React.createElement(
+	                'a',
+	                { href: '#' },
+	                'Listing '
+	              )
+	            ),
+	            React.createElement(
+	              'li',
+	              { className: 'active' },
+	              this.state.listing.name
 	            )
-	        );
-	    }
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'row' },
+	            React.createElement(
+	              'div',
+	              { className: 'col-sm-8' },
+	              React.createElement(
+	                'h3',
+	                null,
+	                this.state.listing.name,
+	                ', Karnata'
+	              ),
+	              React.createElement(
+	                'ul',
+	                { className: 'highlights' },
+	                React.createElement(
+	                  'li',
+	                  null,
+	                  React.createElement(
+	                    'div',
+	                    { className: 'rating' },
+	                    React.createElement(
+	                      'span',
+	                      null,
+	                      this.state.listing.average_rating
+	                    ),
+	                    ' ',
+	                    this.state.listing.reviews_count,
+	                    ' Reviews'
+	                  )
+	                ),
+	                React.createElement(
+	                  'li',
+	                  null,
+	                  React.createElement('img', { src: 'images/icon-day.png' }),
+	                  ' ',
+	                  this.state.listing.days,
+	                  ' Days'
+	                ),
+	                React.createElement(
+	                  'li',
+	                  null,
+	                  React.createElement('img', { src: 'images/icon-night.png' }),
+	                  ' ',
+	                  this.state.listing.nights,
+	                  ' Night'
+	                ),
+	                React.createElement(
+	                  'li',
+	                  null,
+	                  React.createElement('img', { src: 'images/icon-location.png' }),
+	                  ' Coorg, Karnataka'
+	                )
+	              )
+	            ),
+	            React.createElement(
+	              'div',
+	              { className: 'col-sm-4 text-right' },
+	              React.createElement(
+	                'div',
+	                { className: 'right-block' },
+	                React.createElement(
+	                  'p',
+	                  null,
+	                  'Starting From'
+	                ),
+	                React.createElement(
+	                  'div',
+	                  { className: '' },
+	                  React.createElement(
+	                    'p',
+	                    { className: 'price' },
+	                    React.createElement('i', { className: 'fa fa-inr', 'aria-hidden': 'true' }),
+	                    ' ',
+	                    this.state.listing.price
+	                  )
+	                )
+	              )
+	            )
+	          )
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'page-body' },
+	        React.createElement(
+	          'div',
+	          { className: 'container' },
+	          React.createElement(TabVariantEditComponent, { variantDates: this.state.variantDates, config: this.props.route.config })
+	        )
+	      )
+	    );
+	  }
 
 	});
 
@@ -46749,8 +46778,6 @@
 
 	'use strict';
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 	var _reactTabView = __webpack_require__(246);
 
 	var _react = __webpack_require__(2);
@@ -46759,158 +46786,300 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
 	var CalendarComponent = __webpack_require__(370);
+	var GregorianCalendar = __webpack_require__(462);
+	var date1 = new GregorianCalendar(); // defaults to en_US
+	var moment = __webpack_require__(257);
+	var now = new Date();
+	if (now.getMonth() == 11) {
+	    var current = new Date(now.getFullYear() + 2, 0, 1);
+	} else {
+	    var current = new Date(now.getFullYear(), now.getMonth() + 2, 1);
+	}
+	date1.setTime(current);
 
-	var TabVariantEditComponent = function (_Component) {
-	  _inherits(TabVariantEditComponent, _Component);
+	var date2 = new GregorianCalendar(); // defaults to en_US
+	var now = new Date();
+	if (now.getMonth() == 11) {
+	    var current = new Date(now.getFullYear() + 3, 0, 1);
+	} else {
+	    var current = new Date(now.getFullYear(), now.getMonth() + 3, 1);
+	}
+	date2.setTime(current);
+	var date = new GregorianCalendar(); // defaults to en_US
+	var now = new Date();
+	if (now.getMonth() == 11) {
+	    var current = new Date(now.getFullYear() + 1, 0, 1);
+	} else {
+	    var current = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+	}
+	date.setTime(current);
 
-	  function TabVariantEditComponent() {
-	    _classCallCheck(this, TabVariantEditComponent);
+	var TabVariantEditComponent = _react2.default.createClass({
+	    displayName: 'TabVariantEditComponent',
 
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(TabVariantEditComponent).apply(this, arguments));
-	  }
+	    getInitialState: function getInitialState() {
 
-	  _createClass(TabVariantEditComponent, [{
-	    key: 'render',
-	    value: function render() {
+	        return {
 
-	      return _react2.default.createElement(
-	        'div',
-	        null,
-	        _react2.default.createElement(
-	          _reactTabView.Tabs,
-	          { headers: ["Edit Private tour variant"] },
-	          _react2.default.createElement(
-	            _reactTabView.Tab,
+	            variantDates: {}
+	        };
+	    },
+	    componentDidMount: function componentDidMount() {
+	        var urlparams = {};
+	        var data = {};
+	        var clientInfo = this.props.config().getClientInfo();
+	        var header = {};
+	        var self = this;
+	        this.props.config().httpInterceptor(this.props.config().url().VARIANT, 'GET', data, header, this.props.config().getClientInfo()).then(function (result) {
+	            console.log(">>>>>>");
+	            console.log(result.variants["152"]);
+	            self.setState({
+	                variantDates: result.variants["152"]
+	            });
+	            for (var item in result.variants["152"]) {
+
+	                $("[title='" + moment(item).format('YYYY-M-D') + "']").addClass("active");
+	                $("[title='" + moment(item).format('YYYY-M-D') + "'] .total").html(result.variants["152"][item].sold_count + "/" + result.variants["152"][item].capacity);
+	            }
+	        }, function (result) {
+	            var message = JSON.parse(result.responseText);
+	        });
+	        console.log("======================");
+	        $(document).on("click", ".weekday", function (e) {
+	            console.log("sfasf");
+	            var self = e.target;
+	            console.log($(e.target).val());
+	            if ($(e.target).is(":checked")) {
+	                $(e.target).closest(".rc-calendar-table").find("td").each(function (i) {
+	                    if (parseInt($(self).val()) == parseInt(moment($(this).prop("title")).isoWeekday())) {
+	                        console.log($(this).find("div").html());
+	                        if ($(this).find("p").hasClass("grey")) {
+	                            $(this).removeClass("active");
+	                        } else {
+	                            $(this).addClass("active");
+	                        }
+	                    }
+	                });
+	            } else {
+	                $(e.target).closest(".rc-calendar-table").find("td").each(function (i) {
+	                    if (parseInt($(self).val()) == parseInt(moment($(this).prop("title")).isoWeekday())) {
+
+	                        $(this).removeClass("active");
+	                    }
+	                });
+	            }
+	        });
+	        $(".rc-calendar-table").first().find("td").each(function (i) {
+	            console.log("step" + i);
+	            if (parseInt($(this).find("div").html()) < parseInt($(".rc-calendar-today").find("div").html())) {
+	                $(this).html('<div class="rc-calendar-date"><a class="link" href="#">Edit</a><p class=" grey">' + $(this).find("div").html() + '</p></div>');
+	            } else {
+	                $(this).html('<div class="rc-calendar-date"><a class="link" href="#">Edit</a><p>' + $(this).find("div").html() + '</p><div class="gray-section"><div class="total">0/0</div></div><div class="gray-section2"><div class="total">Total seats <input type="text" ></div></div></div>');
+	            }
+	        });
+	        $(".rc-calendar-table:not(:first)").find("td").each(function (i) {
+
+	            $(this).html('<div class="rc-calendar-date"><a class="link" href="#">Edit</a><p>' + $(this).find("div").html() + '</p><div class="gray-section"><div class="total">0/0</div></div><div class="gray-section2"><div class="total">Total seats <input type="text" ></div></div></div>');
+	        });
+	        $(".patterns").on("click", function (e) {
+
+	            $(".patterns").removeClass("active");
+	            $(".patterns").find("input").prop("checked", false);
+	            $(this).find("input").prop("checked", "checked");
+	            $(this).addClass("active");
+	            $(".rc-calendar-table:first .rc-calendar-column-header input").each(function (i) {
+	                if ($(this).is(":checked")) {
+	                    $(this).trigger("click");
+	                }
+	            });
+
+	            $(".rc-calendar-table:first").find("td").removeClass("active");
+	            if ($(this).data("pattern") == "1") {
+	                $(".rc-calendar-table:first .rc-calendar-column-header input").each(function (i) {
+	                    if (!$(this).is(":checked")) {
+	                        $(this).trigger("click");
+	                    }
+	                });
+	            } else if ($(this).data("pattern") == "2") {
+	                if (!$(".rc-calendar-table:first .rc-calendar-column-header input[value='7']").is(":checked")) {
+	                    $(".rc-calendar-table:first .rc-calendar-column-header input[value='7']").trigger("click");
+	                }
+	                if (!$(".rc-calendar-table:first .rc-calendar-column-header input[value='6']").is(":checked")) {
+	                    $(".rc-calendar-table:first .rc-calendar-column-header input[value='6']").trigger("click");
+	                }
+	            } else {
+	                if (!$(".rc-calendar-table:first .rc-calendar-column-header input[value='1']").is(":checked")) {
+	                    $(".rc-calendar-table:first .rc-calendar-column-header input[value='1']").trigger("click");
+	                }
+	                if (!$(".rc-calendar-table:first .rc-calendar-column-header input[value='2']").is(":checked")) {
+	                    $(".rc-calendar-table:first .rc-calendar-column-header input[value='2']").trigger("click");
+	                }
+	                if (!$(".rc-calendar-table:first .rc-calendar-column-header input[value='3']").is(":checked")) {
+	                    $(".rc-calendar-table:first .rc-calendar-column-header input[value='3']").trigger("click");
+	                }
+	                if (!$(".rc-calendar-table:first .rc-calendar-column-header input[value='4']").is(":checked")) {
+	                    $(".rc-calendar-table:first .rc-calendar-column-header input[value='4']").trigger("click");
+	                }
+	                if (!$(".rc-calendar-table:first .rc-calendar-column-header input[value='5']").is(":checked")) {
+	                    $(".rc-calendar-table:first .rc-calendar-column-header input[value='5']").trigger("click");
+	                }
+	            }
+	        });
+	    },
+	    render: function render() {
+
+	        return _react2.default.createElement(
+	            'div',
 	            null,
 	            _react2.default.createElement(
-	              'div',
-	              { className: 'tab-content' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'tab-pane active' },
+	                _reactTabView.Tabs,
+	                { headers: ["Edit Private tour variant"] },
 	                _react2.default.createElement(
-	                  'p',
-	                  null,
-	                  'Get your jungle gear on because it\'s time to go on an African Safari. Explore the beautiful country of Zambia in Africa in this tour. Arrive at Livingstone Airport in Zambia and start your 11 days of adventure.'
-	                ),
-	                _react2.default.createElement(
-	                  'h3',
-	                  null,
-	                  'Customize Dates & Seats'
-	                ),
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'seat-options' },
-	                  _react2.default.createElement(
-	                    'div',
-	                    { className: 'item active' },
-	                    _react2.default.createElement('input', { type: 'radio', name: 'seat-option', id: 'cb1' }),
+	                    _reactTabView.Tab,
+	                    null,
 	                    _react2.default.createElement(
-	                      'label',
-	                      { 'for': 'cb1' },
-	                      'All Days'
-	                    ),
-	                    _react2.default.createElement('input', { type: 'text', placeholder: 'Seats' })
-	                  ),
-	                  _react2.default.createElement(
-	                    'div',
-	                    { className: 'item' },
-	                    _react2.default.createElement('input', { type: 'radio', name: 'seat-option', id: 'cb2' }),
-	                    _react2.default.createElement(
-	                      'label',
-	                      { 'for': 'cb2' },
-	                      'All Weekends'
-	                    ),
-	                    _react2.default.createElement('input', { type: 'text', placeholder: 'Seats' })
-	                  ),
-	                  _react2.default.createElement(
-	                    'div',
-	                    { className: 'item' },
-	                    _react2.default.createElement('input', { type: 'radio', name: 'seat-option', id: 'cb3' }),
-	                    _react2.default.createElement(
-	                      'label',
-	                      { 'for': 'cb3' },
-	                      'All Weekdays'
-	                    ),
-	                    _react2.default.createElement('input', { type: 'text', placeholder: 'Seats' })
-	                  )
-	                ),
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'calendar' },
-	                  _react2.default.createElement(CalendarComponent, null)
-	                ),
-	                _react2.default.createElement(
-	                  'h3',
-	                  null,
-	                  'With Breakfast'
-	                ),
-	                _react2.default.createElement(
-	                  'p',
-	                  null,
-	                  'Get your jungle gear on because it\'s time to go on an African Safari. '
-	                ),
-	                _react2.default.createElement(
-	                  'p',
-	                  { className: 'price-edit' },
-	                  ' ',
-	                  _react2.default.createElement('input', { type: 'text', placeholder: 'Amount' }),
-	                  ' per adult'
-	                ),
-	                _react2.default.createElement('hr', null),
-	                _react2.default.createElement(
-	                  'h3',
-	                  null,
-	                  'Without Breakfast'
-	                ),
-	                _react2.default.createElement(
-	                  'p',
-	                  null,
-	                  'Get your jungle gear on because it\'s time to go on an African Safari. '
-	                ),
-	                _react2.default.createElement(
-	                  'p',
-	                  { className: 'price-edit' },
-	                  ' ',
-	                  _react2.default.createElement('input', { type: 'text', placeholder: 'Amount' }),
-	                  ' per adult'
-	                ),
-	                _react2.default.createElement(
-	                  'p',
-	                  { className: 'price-edit' },
-	                  ' ',
-	                  _react2.default.createElement('input', { type: 'text', placeholder: 'Amount' }),
-	                  ' per infant'
-	                ),
-	                _react2.default.createElement('hr', null),
-	                _react2.default.createElement('p', null),
-	                _react2.default.createElement(
-	                  'button',
-	                  { className: 'btn btn-secondary' },
-	                  'Update Changes'
-	                ),
-	                _react2.default.createElement(
-	                  'button',
-	                  { className: 'btn btn-cancel' },
-	                  'Cancel'
+	                        'div',
+	                        { className: 'tab-content' },
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'tab-pane active' },
+	                            _react2.default.createElement(
+	                                'h3',
+	                                null,
+	                                'Customize Dates & Seats'
+	                            ),
+	                            _react2.default.createElement(
+	                                'div',
+	                                { className: 'seat-options' },
+	                                _react2.default.createElement(
+	                                    'div',
+	                                    { className: 'item patterns', 'data-pattern': '1' },
+	                                    _react2.default.createElement('input', { type: 'radio', name: 'seat-option', id: 'cb1' }),
+	                                    _react2.default.createElement(
+	                                        'label',
+	                                        { 'for': 'cb1' },
+	                                        'All Days'
+	                                    ),
+	                                    _react2.default.createElement('input', { type: 'text', placeholder: 'Seats' })
+	                                ),
+	                                _react2.default.createElement(
+	                                    'div',
+	                                    { className: 'item patterns', 'data-pattern': '2' },
+	                                    _react2.default.createElement('input', { type: 'radio', name: 'seat-option', id: 'cb2' }),
+	                                    _react2.default.createElement(
+	                                        'label',
+	                                        { 'for': 'cb2' },
+	                                        'All Weekends'
+	                                    ),
+	                                    _react2.default.createElement('input', { type: 'text', placeholder: 'Seats' })
+	                                ),
+	                                _react2.default.createElement(
+	                                    'div',
+	                                    { className: 'item patterns', 'data-pattern': '3' },
+	                                    _react2.default.createElement('input', { type: 'radio', name: 'seat-option', id: 'cb3' }),
+	                                    _react2.default.createElement(
+	                                        'label',
+	                                        { 'for': 'cb3' },
+	                                        'All Weekdays'
+	                                    ),
+	                                    _react2.default.createElement('input', { type: 'text', placeholder: 'Seats' })
+	                                )
+	                            ),
+	                            _react2.default.createElement(
+	                                'div',
+	                                { className: 'seat-options repeat-text' },
+	                                _react2.default.createElement(
+	                                    'div',
+	                                    { className: 'item item-border' },
+	                                    _react2.default.createElement('input', { type: 'checkbox', id: 'repeat_action' }),
+	                                    _react2.default.createElement(
+	                                        'label',
+	                                        null,
+	                                        'Repeat for upcoming months'
+	                                    )
+	                                )
+	                            ),
+	                            _react2.default.createElement(
+	                                'div',
+	                                { className: 'scroll-bar' },
+	                                _react2.default.createElement(
+	                                    'div',
+	                                    { className: 'calendar' },
+	                                    _react2.default.createElement(CalendarComponent, { month: date })
+	                                ),
+	                                _react2.default.createElement(
+	                                    'div',
+	                                    { className: 'calendar' },
+	                                    _react2.default.createElement(CalendarComponent, { month: date1 })
+	                                ),
+	                                _react2.default.createElement(
+	                                    'div',
+	                                    { className: 'calendar' },
+	                                    _react2.default.createElement(CalendarComponent, { month: date2 })
+	                                )
+	                            ),
+	                            _react2.default.createElement(
+	                                'h3',
+	                                null,
+	                                'With Breakfast'
+	                            ),
+	                            _react2.default.createElement(
+	                                'p',
+	                                null,
+	                                'Get your jungle gear on because it\'s time to go on an African Safari. '
+	                            ),
+	                            _react2.default.createElement(
+	                                'p',
+	                                { className: 'price-edit' },
+	                                ' ',
+	                                _react2.default.createElement('input', { type: 'text', placeholder: 'Amount' }),
+	                                ' per adult'
+	                            ),
+	                            _react2.default.createElement('hr', null),
+	                            _react2.default.createElement(
+	                                'h3',
+	                                null,
+	                                'Without Breakfast'
+	                            ),
+	                            _react2.default.createElement(
+	                                'p',
+	                                null,
+	                                'Get your jungle gear on because it\'s time to go on an African Safari. '
+	                            ),
+	                            _react2.default.createElement(
+	                                'p',
+	                                { className: 'price-edit' },
+	                                ' ',
+	                                _react2.default.createElement('input', { type: 'text', placeholder: 'Amount' }),
+	                                ' per adult'
+	                            ),
+	                            _react2.default.createElement(
+	                                'p',
+	                                { className: 'price-edit' },
+	                                ' ',
+	                                _react2.default.createElement('input', { type: 'text', placeholder: 'Amount' }),
+	                                ' per infant'
+	                            ),
+	                            _react2.default.createElement('hr', null),
+	                            _react2.default.createElement('p', null),
+	                            _react2.default.createElement(
+	                                'button',
+	                                { className: 'btn btn-secondary' },
+	                                'Update Changes'
+	                            ),
+	                            _react2.default.createElement(
+	                                'button',
+	                                { className: 'btn btn-cancel' },
+	                                'Cancel'
+	                            )
+	                        )
+	                    )
 	                )
-	              )
 	            )
-	          )
-	        )
-	      );
+	        );
 	    }
-	  }]);
-
-	  return TabVariantEditComponent;
-	}(_react.Component);
+	});
 
 	module.exports = TabVariantEditComponent;
 
@@ -46938,6 +47107,8 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	var moment = __webpack_require__(257);
+
 	function onSelect(value) {
 	  //console.log('select', dateFormatter.format(value));
 	}
@@ -46957,8 +47128,28 @@
 
 
 	  componentDidMount: function componentDidMount() {
-	    $(".rc-calendar-table").find("th").each(function (i) {
-	      $(this).html("<span class='rc-calendar-column-header'><input type='checkbox'>" + $(this).prop("title") + "</span>");
+	    $(".rc-calendar-next-month-btn-day").hide();
+	    $(".rc-calendar-full-header-switcher").hide();
+	    $(".rc-calendar-table").first().find("th").each(function (i) {
+	      var weekday = i == 0 ? 7 : i;
+	      $(this).html("<span class='rc-calendar-column-header'><input type='checkbox' value='" + weekday + "' class='weekday'>" + $(this).prop("title") + "</span>");
+	    });
+	    $(".rc-calendar-table:not(:first):not(:last)").find("th").each(function (i) {
+	      var weekday = i == 0 ? 7 : i;
+	      $(this).html("<span class='rc-calendar-column-header'><input type='checkbox' value='" + weekday + "' class='weekday'>" + $(this).prop("title") + "</span>");
+	    });
+	    $(".rc-calendar-table").last().find("th").each(function (i) {
+	      var weekday = i == 0 ? 7 : i;
+	      $(this).html("<span class='rc-calendar-column-header'><input type='checkbox' value='" + weekday + "' class='weekday'>" + $(this).prop("title") + "</span>");
+	    });
+
+	    $(document).off("click", "td").on("click", "td", function (e) {
+	      if (moment($(this).prop("title")).unix() >= moment($(".rc-calendar-today").prop("title")).unix()) {
+	        if (!$(e.target).closest("td").hasClass("active")) {
+	          console.log($(e.target));
+	          $(e.target).closest("td").addClass("active");
+	        }
+	      }
 	    });
 	  },
 	  render: function render() {
@@ -46968,6 +47159,7 @@
 	      _react2.default.createElement(_FullCalendar2.default, {
 	        style: { margin: 10 },
 	        Select: _rcSelect2.default,
+	        value: this.props.month,
 	        fullscreen: true,
 	        onSelect: onSelect,
 	        type: this.state.type,
@@ -60260,6 +60452,1643 @@
 /* 462 */
 /***/ function(module, exports, __webpack_require__) {
 
+	/*
+	 * GregorianCalendar class
+	 * @ignore
+	 * @author yiminghe@gmail.com
+	 */
+	'use strict';
+
+	var toInt = parseInt;
+	var Utils = __webpack_require__(463);
+	var defaultLocale = __webpack_require__(465);
+	var Const = __webpack_require__(464);
+
+	/*
+	 * GregorianCalendar class.
+	 *
+	 * - no arguments:
+	 *   Constructs a default GregorianCalendar using the current time
+	 *   in the default time zone with the default locale.
+	 * - one argument locale:
+	 *   Constructs a GregorianCalendar
+	 *   based on the current time in the default time zone with the given locale.
+	 *
+	 * @class Date.Gregorian
+	 */
+	function GregorianCalendar(loc) {
+	  var locale = loc || defaultLocale;
+
+	  this.locale = locale;
+
+	  this.fields = [];
+
+	  /*
+	   * The currently set time for this date.
+	   * @protected
+	   * @type Number|undefined
+	   */
+	  this.time = undefined;
+	  /*
+	   * The timezoneOffset in minutes used by this date.
+	   * @type Number
+	   * @protected
+	   */
+
+	  this.timezoneOffset = locale.timezoneOffset;
+
+	  /*
+	   * The first day of the week
+	   * @type Number
+	   * @protected
+	   */
+	  this.firstDayOfWeek = locale.firstDayOfWeek;
+
+	  /*
+	   * The number of days required for the first week in a month or year,
+	   * with possible values from 1 to 7.
+	   * @@protected
+	   * @type Number
+	   */
+	  this.minimalDaysInFirstWeek = locale.minimalDaysInFirstWeek;
+
+	  this.fieldsComputed = false;
+	}
+
+	Utils.mix(GregorianCalendar, Const);
+
+	Utils.mix(GregorianCalendar, {
+	  Utils: Utils,
+
+	  defaultLocale: defaultLocale,
+
+	  /*
+	   * Determines if the given year is a leap year.
+	   * Returns true if the given year is a leap year. To specify BC year numbers,
+	   * 1 - year number must be given. For example, year BC 4 is specified as -3.
+	   * @param {Number} year the given year.
+	   * @returns {Boolean} true if the given year is a leap year; false otherwise.
+	   * @static
+	   * @method
+	   */
+	  isLeapYear: Utils.isLeapYear,
+
+	  /*
+	   * Enum indicating year field of date
+	   * @type Number
+	   */
+	  YEAR: 1,
+	  /*
+	   * Enum indicating month field of date
+	   * @type Number
+	   */
+	  MONTH: 2,
+	  /*
+	   * Enum indicating the day of the month
+	   * @type Number
+	   */
+	  DAY_OF_MONTH: 3,
+	  /*
+	   * Enum indicating the hour (24).
+	   * @type Number
+	   */
+	  HOUR_OF_DAY: 4,
+	  /*
+	   * Enum indicating the minute of the day
+	   * @type Number
+	   */
+	  MINUTES: 5,
+	  /*
+	   * Enum indicating the second of the day
+	   * @type Number
+	   */
+	  SECONDS: 6,
+	  /*
+	   * Enum indicating the millisecond of the day
+	   * @type Number
+	   */
+	  MILLISECONDS: 7,
+	  /*
+	   * Enum indicating the week number within the current year
+	   * @type Number
+	   */
+	  WEEK_OF_YEAR: 8,
+	  /*
+	   * Enum indicating the week number within the current month
+	   * @type Number
+	   */
+	  WEEK_OF_MONTH: 9,
+
+	  /*
+	   * Enum indicating the day of the day number within the current year
+	   * @type Number
+	   */
+	  DAY_OF_YEAR: 10,
+	  /*
+	   * Enum indicating the day of the week
+	   * @type Number
+	   */
+	  DAY_OF_WEEK: 11,
+	  /*
+	   * Enum indicating the day of the ordinal number of the day of the week
+	   * @type Number
+	   */
+	  DAY_OF_WEEK_IN_MONTH: 12,
+
+	  /*
+	   * Enum indicating am
+	   * @type Number
+	   */
+	  AM: 0,
+	  /*
+	   * Enum indicating pm
+	   * @type Number
+	   */
+	  PM: 1
+	});
+
+	var FIELDS = ['', 'Year', 'Month', 'DayOfMonth', 'HourOfDay', 'Minutes', 'Seconds', 'Milliseconds', 'WeekOfYear', 'WeekOfMonth', 'DayOfYear', 'DayOfWeek', 'DayOfWeekInMonth'];
+
+	var YEAR = GregorianCalendar.YEAR;
+	var MONTH = GregorianCalendar.MONTH;
+	var DAY_OF_MONTH = GregorianCalendar.DAY_OF_MONTH;
+	var HOUR_OF_DAY = GregorianCalendar.HOUR_OF_DAY;
+	var MINUTE = GregorianCalendar.MINUTES;
+	var SECONDS = GregorianCalendar.SECONDS;
+
+	var MILLISECONDS = GregorianCalendar.MILLISECONDS;
+	var DAY_OF_WEEK_IN_MONTH = GregorianCalendar.DAY_OF_WEEK_IN_MONTH;
+	var DAY_OF_YEAR = GregorianCalendar.DAY_OF_YEAR;
+	var DAY_OF_WEEK = GregorianCalendar.DAY_OF_WEEK;
+
+	var WEEK_OF_MONTH = GregorianCalendar.WEEK_OF_MONTH;
+	var WEEK_OF_YEAR = GregorianCalendar.WEEK_OF_YEAR;
+
+	var MONTH_LENGTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]; // 0-based
+	var LEAP_MONTH_LENGTH = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]; // 0-based
+
+	var ONE_SECOND = 1000;
+	var ONE_MINUTE = 60 * ONE_SECOND;
+	var ONE_HOUR = 60 * ONE_MINUTE;
+	var ONE_DAY = 24 * ONE_HOUR;
+	var ONE_WEEK = ONE_DAY * 7;
+
+	var EPOCH_OFFSET = 719163; // Fixed date of January 1, 1970 (Gregorian)
+
+	var mod = Utils.mod;
+	var _isLeapYear = Utils.isLeapYear;
+	var floorDivide = Math.floor;
+
+	var MIN_VALUES = [undefined, 1, // YEAR
+	GregorianCalendar.JANUARY, // MONTH
+	1, // DAY_OF_MONTH
+	0, // HOUR_OF_DAY
+	0, // MINUTE
+	0, // SECONDS
+	0, // MILLISECONDS
+
+	1, // WEEK_OF_YEAR
+	undefined, // WEEK_OF_MONTH
+
+	1, // DAY_OF_YEAR
+	GregorianCalendar.SUNDAY, // DAY_OF_WEEK
+	1];
+
+	// DAY_OF_WEEK_IN_MONTH
+	var MAX_VALUES = [undefined, 292278994, // YEAR
+	GregorianCalendar.DECEMBER, // MONTH
+	undefined, // DAY_OF_MONTH
+	23, // HOUR_OF_DAY
+	59, // MINUTE
+	59, // SECONDS
+	999, // MILLISECONDS
+	undefined, // WEEK_OF_YEAR
+	undefined, // WEEK_OF_MONTH
+	undefined, // DAY_OF_YEAR
+	GregorianCalendar.SATURDAY, // DAY_OF_WEEK
+	undefined];
+
+	// ------------------- private start
+
+	// DAY_OF_WEEK_IN_MONTH
+	function getMonthLength(year, month) {
+	  return _isLeapYear(year) ? LEAP_MONTH_LENGTH[month] : MONTH_LENGTH[month];
+	}
+
+	function getYearLength(year) {
+	  return _isLeapYear(year) ? 366 : 365;
+	}
+
+	function adjustDayOfMonth(self) {
+	  var fields = self.fields;
+	  var year = fields[YEAR];
+	  var month = fields[MONTH];
+	  var monthLen = getMonthLength(year, month);
+	  var dayOfMonth = fields[DAY_OF_MONTH];
+	  if (dayOfMonth > monthLen) {
+	    self.set(DAY_OF_MONTH, monthLen);
+	  }
+	}
+
+	function getDayOfWeekDateOnOrBefore(fixedDate, dayOfWeek) {
+	  // 1.1.1 is monday
+	  // one week has 7 days
+	  return fixedDate - mod(fixedDate - dayOfWeek, 7);
+	}
+
+	function getWeekNumber(self, fixedDay1, fixedDate) {
+	  var fixedDay1st = getDayOfWeekDateOnOrBefore(fixedDay1 + 6, self.firstDayOfWeek);
+	  var nDays = fixedDay1st - fixedDay1;
+	  if (nDays >= self.minimalDaysInFirstWeek) {
+	    fixedDay1st -= 7;
+	  }
+	  var normalizedDayOfPeriod = fixedDate - fixedDay1st;
+	  return floorDivide(normalizedDayOfPeriod / 7) + 1;
+	}
+
+	// ------------------- private end
+
+	GregorianCalendar.prototype = {
+	  constructor: GregorianCalendar,
+
+	  isGregorianCalendar: 1,
+
+	  /*
+	   * Determines if current year is a leap year.
+	   * Returns true if the given year is a leap year. To specify BC year numbers,
+	   * 1 - year number must be given. For example, year BC 4 is specified as -3.
+	   * @returns {Boolean} true if the given year is a leap year; false otherwise.
+	   * @method
+	   * @member Date.Gregorian
+	   */
+	  isLeapYear: function isLeapYear() {
+	    return _isLeapYear(this.getYear());
+	  },
+
+	  /*
+	   * Return local info for current date instance
+	   * @returns {Object}
+	   */
+	  getLocale: function getLocale() {
+	    return this.locale;
+	  },
+
+	  /*
+	   * Returns the minimum value for
+	   * the given calendar field of this GregorianCalendar instance.
+	   * The minimum value is defined as the smallest value
+	   * returned by the get method for any possible time value,
+	   * taking into consideration the current values of the getFirstDayOfWeek,
+	   * getMinimalDaysInFirstWeek.
+	   * @param field the calendar field.
+	   * @returns {Number} the minimum value for the given calendar field.
+	   */
+	  getActualMinimum: function getActualMinimum(field) {
+	    if (MIN_VALUES[field] !== undefined) {
+	      return MIN_VALUES[field];
+	    }
+	    if (field === WEEK_OF_MONTH) {
+	      var cal = this.clone();
+	      cal.clear();
+	      cal.set(this.fields[YEAR], this.fields[MONTH], 1);
+	      return cal.get(WEEK_OF_MONTH);
+	    }
+
+	    throw new Error('minimum value not defined!');
+	  },
+
+	  /*
+	   * Returns the maximum value for the given calendar field
+	   * of this GregorianCalendar instance.
+	   * The maximum value is defined as the largest value returned
+	   * by the get method for any possible time value, taking into consideration
+	   * the current values of the getFirstDayOfWeek, getMinimalDaysInFirstWeek methods.
+	   * @param field the calendar field.
+	   * @returns {Number} the maximum value for the given calendar field.
+	   */
+	  getActualMaximum: function getActualMaximum(field) {
+	    if (MAX_VALUES[field] !== undefined) {
+	      return MAX_VALUES[field];
+	    }
+	    var value = undefined;
+	    var fields = this.fields;
+	    switch (field) {
+	      case DAY_OF_MONTH:
+	        value = getMonthLength(fields[YEAR], fields[MONTH]);
+	        break;
+
+	      case WEEK_OF_YEAR:
+	        var endOfYear = this.clone();
+	        endOfYear.clear();
+	        endOfYear.set(fields[YEAR], GregorianCalendar.DECEMBER, 31);
+	        value = endOfYear.get(WEEK_OF_YEAR);
+	        if (value === 1) {
+	          value = 52;
+	        }
+	        break;
+
+	      case WEEK_OF_MONTH:
+	        var endOfMonth = this.clone();
+	        endOfMonth.clear();
+	        endOfMonth.set(fields[YEAR], fields[MONTH], getMonthLength(fields[YEAR], fields[MONTH]));
+	        value = endOfMonth.get(WEEK_OF_MONTH);
+	        break;
+
+	      case DAY_OF_YEAR:
+	        value = getYearLength(fields[YEAR]);
+	        break;
+
+	      case DAY_OF_WEEK_IN_MONTH:
+	        value = toInt((getMonthLength(fields[YEAR], fields[MONTH]) - 1) / 7) + 1;
+	        break;
+	      default:
+	        break;
+	    }
+	    if (value === undefined) {
+	      throw new Error('maximum value not defined!');
+	    }
+	    return value;
+	  },
+
+	  /*
+	   * Determines if the given calendar field has a value set,
+	   * including cases that the value has been set by internal fields calculations
+	   * triggered by a get method call.
+	   * @param field the calendar field to be cleared.
+	   * @returns {boolean} true if the given calendar field has a value set; false otherwise.
+	   */
+	  isSet: function isSet(field) {
+	    return this.fields[field] !== undefined;
+	  },
+
+	  /*
+	   * Converts the time value (millisecond offset from the Epoch)
+	   * to calendar field values.
+	   * @protected
+	   */
+	  computeFields: function computeFields() {
+	    var time = this.time;
+	    var timezoneOffset = this.timezoneOffset * ONE_MINUTE;
+	    var fixedDate = toInt(timezoneOffset / ONE_DAY);
+	    var timeOfDay = timezoneOffset % ONE_DAY;
+	    fixedDate += toInt(time / ONE_DAY);
+	    timeOfDay += time % ONE_DAY;
+	    if (timeOfDay >= ONE_DAY) {
+	      timeOfDay -= ONE_DAY;
+	      fixedDate++;
+	    } else {
+	      while (timeOfDay < 0) {
+	        timeOfDay += ONE_DAY;
+	        fixedDate--;
+	      }
+	    }
+
+	    fixedDate += EPOCH_OFFSET;
+
+	    var date = Utils.getGregorianDateFromFixedDate(fixedDate);
+
+	    var year = date.year;
+
+	    var fields = this.fields;
+	    fields[YEAR] = year;
+	    fields[MONTH] = date.month;
+	    fields[DAY_OF_MONTH] = date.dayOfMonth;
+	    fields[DAY_OF_WEEK] = date.dayOfWeek;
+
+	    if (timeOfDay !== 0) {
+	      fields[HOUR_OF_DAY] = toInt(timeOfDay / ONE_HOUR);
+	      var r = timeOfDay % ONE_HOUR;
+	      fields[MINUTE] = toInt(r / ONE_MINUTE);
+	      r %= ONE_MINUTE;
+	      fields[SECONDS] = toInt(r / ONE_SECOND);
+	      fields[MILLISECONDS] = r % ONE_SECOND;
+	    } else {
+	      fields[HOUR_OF_DAY] = fields[MINUTE] = fields[SECONDS] = fields[MILLISECONDS] = 0;
+	    }
+
+	    var fixedDateJan1 = Utils.getFixedDate(year, GregorianCalendar.JANUARY, 1);
+	    var dayOfYear = fixedDate - fixedDateJan1 + 1;
+	    var fixDateMonth1 = fixedDate - date.dayOfMonth + 1;
+
+	    fields[DAY_OF_YEAR] = dayOfYear;
+	    fields[DAY_OF_WEEK_IN_MONTH] = toInt((date.dayOfMonth - 1) / 7) + 1;
+
+	    var weekOfYear = getWeekNumber(this, fixedDateJan1, fixedDate);
+
+	    // 本周没有足够的时间在当前年
+	    if (weekOfYear === 0) {
+	      // If the date belongs to the last week of the
+	      // previous year, use the week number of "12/31" of
+	      // the "previous" year.
+	      var fixedDec31 = fixedDateJan1 - 1;
+	      var prevJan1 = fixedDateJan1 - getYearLength(year - 1);
+	      weekOfYear = getWeekNumber(this, prevJan1, fixedDec31);
+	    } else
+	      // 本周是年末最后一周，可能有足够的时间在新的一年
+	      if (weekOfYear >= 52) {
+	        var nextJan1 = fixedDateJan1 + getYearLength(year);
+	        var nextJan1st = getDayOfWeekDateOnOrBefore(nextJan1 + 6, this.firstDayOfWeek);
+	        var nDays = nextJan1st - nextJan1;
+	        // 本周有足够天数在新的一年
+	        if (nDays >= this.minimalDaysInFirstWeek &&
+	        // 当天确实在本周，weekOfYear === 53 时是不需要这个判断
+	        fixedDate >= nextJan1st - 7) {
+	          weekOfYear = 1;
+	        }
+	      }
+
+	    fields[WEEK_OF_YEAR] = weekOfYear;
+	    fields[WEEK_OF_MONTH] = getWeekNumber(this, fixDateMonth1, fixedDate);
+
+	    this.fieldsComputed = true;
+	  },
+
+	  /*
+	   * Converts calendar field values to the time value
+	   * (millisecond offset from the Epoch).
+	   * @protected
+	   */
+	  computeTime: function computeTime() {
+	    var year = undefined;
+	    var fields = this.fields;
+	    if (this.isSet(YEAR)) {
+	      year = fields[YEAR];
+	    } else {
+	      year = new Date().getFullYear();
+	    }
+	    var timeOfDay = 0;
+	    if (this.isSet(HOUR_OF_DAY)) {
+	      timeOfDay += fields[HOUR_OF_DAY];
+	    }
+	    timeOfDay *= 60;
+	    timeOfDay += fields[MINUTE] || 0;
+	    timeOfDay *= 60;
+	    timeOfDay += fields[SECONDS] || 0;
+	    timeOfDay *= 1000;
+	    timeOfDay += fields[MILLISECONDS] || 0;
+	    var fixedDate = 0;
+	    fields[YEAR] = year;
+	    fixedDate = fixedDate + this.getFixedDate();
+	    // millis represents local wall-clock time in milliseconds.
+	    var millis = (fixedDate - EPOCH_OFFSET) * ONE_DAY + timeOfDay;
+	    millis -= this.timezoneOffset * ONE_MINUTE;
+	    this.time = millis;
+	    this.computeFields();
+	  },
+
+	  /*
+	   * Fills in any unset fields in the calendar fields. First,
+	   * the computeTime() method is called if the time value (millisecond offset from the Epoch)
+	   * has not been calculated from calendar field values.
+	   * Then, the computeFields() method is called to calculate all calendar field values.
+	   * @protected
+	   */
+	  complete: function complete() {
+	    if (this.time === undefined) {
+	      this.computeTime();
+	    }
+	    if (!this.fieldsComputed) {
+	      this.computeFields();
+	    }
+	  },
+
+	  getFixedDate: function getFixedDate() {
+	    var self = this;
+
+	    var fields = self.fields;
+
+	    var firstDayOfWeekCfg = self.firstDayOfWeek;
+
+	    var year = fields[YEAR];
+
+	    var month = GregorianCalendar.JANUARY;
+
+	    if (self.isSet(MONTH)) {
+	      month = fields[MONTH];
+	      if (month > GregorianCalendar.DECEMBER) {
+	        year += toInt(month / 12);
+	        month %= 12;
+	      } else if (month < GregorianCalendar.JANUARY) {
+	        year += floorDivide(month / 12);
+	        month = mod(month, 12);
+	      }
+	    }
+
+	    // Get the fixed date since Jan 1, 1 (Gregorian). We are on
+	    // the first day of either `month' or January in 'year'.
+	    var fixedDate = Utils.getFixedDate(year, month, 1);
+	    var firstDayOfWeek = undefined;
+	    var dayOfWeek = self.firstDayOfWeek;
+
+	    if (self.isSet(DAY_OF_WEEK)) {
+	      dayOfWeek = fields[DAY_OF_WEEK];
+	    }
+
+	    if (self.isSet(MONTH)) {
+	      if (self.isSet(DAY_OF_MONTH)) {
+	        fixedDate += fields[DAY_OF_MONTH] - 1;
+	      } else {
+	        if (self.isSet(WEEK_OF_MONTH)) {
+	          firstDayOfWeek = getDayOfWeekDateOnOrBefore(fixedDate + 6, firstDayOfWeekCfg);
+
+	          // If we have enough days in the first week, then
+	          // move to the previous week.
+	          if (firstDayOfWeek - fixedDate >= self.minimalDaysInFirstWeek) {
+	            firstDayOfWeek -= 7;
+	          }
+
+	          if (dayOfWeek !== firstDayOfWeekCfg) {
+	            firstDayOfWeek = getDayOfWeekDateOnOrBefore(firstDayOfWeek + 6, dayOfWeek);
+	          }
+
+	          fixedDate = firstDayOfWeek + 7 * (fields[WEEK_OF_MONTH] - 1);
+	        } else {
+	          var dowim = undefined;
+	          if (self.isSet(DAY_OF_WEEK_IN_MONTH)) {
+	            dowim = fields[DAY_OF_WEEK_IN_MONTH];
+	          } else {
+	            dowim = 1;
+	          }
+	          var lastDate = 7 * dowim;
+	          if (dowim < 0) {
+	            lastDate = getMonthLength(year, month) + 7 * (dowim + 1);
+	          }
+	          fixedDate = getDayOfWeekDateOnOrBefore(fixedDate + lastDate - 1, dayOfWeek);
+	        }
+	      }
+	    } else {
+	      // We are on the first day of the year.
+	      if (self.isSet(DAY_OF_YEAR)) {
+	        fixedDate += fields[DAY_OF_YEAR] - 1;
+	      } else if (self.isSet(WEEK_OF_YEAR)) {
+	        firstDayOfWeek = getDayOfWeekDateOnOrBefore(fixedDate + 6, firstDayOfWeekCfg);
+	        // If we have enough days in the first week, then move
+	        // to the previous week.
+	        if (firstDayOfWeek - fixedDate >= self.minimalDaysInFirstWeek) {
+	          firstDayOfWeek -= 7;
+	        }
+	        if (dayOfWeek !== firstDayOfWeekCfg) {
+	          firstDayOfWeek = getDayOfWeekDateOnOrBefore(firstDayOfWeek + 6, dayOfWeek);
+	        }
+	        fixedDate = firstDayOfWeek + 7 * (fields[WEEK_OF_YEAR] - 1);
+	      }
+	    }
+
+	    return fixedDate;
+	  },
+
+	  /*
+	   * Returns this Calendar's time value in milliseconds
+	   * @member Date.Gregorian
+	   * @returns {Number} the current time as UTC milliseconds from the epoch.
+	   */
+	  getTime: function getTime() {
+	    if (this.time === undefined) {
+	      this.computeTime();
+	    }
+	    return this.time;
+	  },
+
+	  /*
+	   * Sets this Calendar's current time from the given long value.
+	   * @param time the new time in UTC milliseconds from the epoch.
+	   */
+	  setTime: function setTime(time) {
+	    this.time = time;
+	    this.fieldsComputed = false;
+	    this.complete();
+	  },
+
+	  /*
+	   * Returns the value of the given calendar field.
+	   * @param field the given calendar field.
+	   * @returns {Number} the value for the given calendar field.
+	   */
+	  get: function get(field) {
+	    this.complete();
+	    return this.fields[field];
+	  },
+
+	  /*
+	   * Returns the year of the given calendar field.
+	   * @method getYear
+	   * @returns {Number} the year for the given calendar field.
+	   */
+
+	  /*
+	   * Returns the month of the given calendar field.
+	   * @method getMonth
+	   * @returns {Number} the month for the given calendar field.
+	   */
+
+	  /*
+	   * Returns the day of month of the given calendar field.
+	   * @method getDayOfMonth
+	   * @returns {Number} the day of month for the given calendar field.
+	   */
+
+	  /*
+	   * Returns the hour of day of the given calendar field.
+	   * @method getHourOfDay
+	   * @returns {Number} the hour of day for the given calendar field.
+	   */
+
+	  /*
+	   * Returns the minute of the given calendar field.
+	   * @method getMinute
+	   * @returns {Number} the minute for the given calendar field.
+	   */
+
+	  /*
+	   * Returns the second of the given calendar field.
+	   * @method getSecond
+	   * @returns {Number} the second for the given calendar field.
+	   */
+
+	  /*
+	   * Returns the millisecond of the given calendar field.
+	   * @method getMilliSecond
+	   * @returns {Number} the millisecond for the given calendar field.
+	   */
+
+	  /*
+	   * Returns the week of year of the given calendar field.
+	   * @method getWeekOfYear
+	   * @returns {Number} the week of year for the given calendar field.
+	   */
+
+	  /*
+	   * Returns the week of month of the given calendar field.
+	   * @method getWeekOfMonth
+	   * @returns {Number} the week of month for the given calendar field.
+	   */
+
+	  /*
+	   * Returns the day of year of the given calendar field.
+	   * @method getDayOfYear
+	   * @returns {Number} the day of year for the given calendar field.
+	   */
+
+	  /*
+	   * Returns the day of week of the given calendar field.
+	   * @method getDayOfWeek
+	   * @returns {Number} the day of week for the given calendar field.
+	   */
+
+	  /*
+	   * Returns the day of week in month of the given calendar field.
+	   * @method getDayOfWeekInMonth
+	   * @returns {Number} the day of week in month for the given calendar field.
+	   */
+
+	  /*
+	   * Sets the given calendar field to the given value.
+	   * @param field the given calendar field.
+	   * @param v the value to be set for the given calendar field.
+	   */
+	  set: function set(field, v) {
+	    var len = arguments.length;
+	    if (len === 2) {
+	      this.fields[field] = v;
+	    } else if (len < MILLISECONDS + 1) {
+	      for (var i = 0; i < len; i++) {
+	        this.fields[YEAR + i] = arguments[i];
+	      }
+	    } else {
+	      throw new Error('illegal arguments for GregorianCalendar set');
+	    }
+	    this.time = undefined;
+	  },
+
+	  /*
+	   * Set the year of the given calendar field.
+	   * @method setYear
+	   */
+
+	  /*
+	   * Set the month of the given calendar field.
+	   * @method setMonth
+	   */
+
+	  /*
+	   * Set the day of month of the given calendar field.
+	   * @method setDayOfMonth
+	   */
+
+	  /*
+	   * Set the hour of day of the given calendar field.
+	   * @method setHourOfDay
+	   */
+
+	  /*
+	   * Set the minute of the given calendar field.
+	   * @method setMinute
+	   */
+
+	  /*
+	   * Set the second of the given calendar field.
+	   * @method setSecond
+	   */
+
+	  /*
+	   * Set the millisecond of the given calendar field.
+	   * @method setMilliSecond
+	   */
+
+	  /*
+	   * Set the week of year of the given calendar field.
+	   * @method setWeekOfYear
+	   */
+
+	  /*
+	   * Set the week of month of the given calendar field.
+	   * @method setWeekOfMonth
+	   */
+
+	  /*
+	   * Set the day of year of the given calendar field.
+	   * @method setDayOfYear
+	   */
+
+	  /*
+	   * Set the day of week of the given calendar field.
+	   * @method setDayOfWeek
+	   */
+
+	  /*
+	   * Set the day of week in month of the given calendar field.
+	   * @method setDayOfWeekInMonth
+	   */
+
+	  /*
+	   * add for specified field based on two rules:
+	   *
+	   *  - Add rule 1. The value of field after the call minus the value of field before the
+	   *  call is amount, modulo any overflow that has occurred in field
+	   *  Overflow occurs when a field value exceeds its range and,
+	   *  as a result, the next larger field is incremented or
+	   *  decremented and the field value is adjusted back into its range.
+	   *
+	   *  - Add rule 2. If a smaller field is expected to be invariant,
+	   *  but it is impossible for it to be equal to its
+	   *  prior value because of changes in its minimum or maximum after
+	   *  field is changed, then its value is adjusted to be as close
+	   *  as possible to its expected value. A smaller field represents a
+	   *  smaller unit of time. HOUR_OF_DAY is a smaller field than
+	   *  DAY_OF_MONTH. No adjustment is made to smaller fields
+	   *  that are not expected to be invariant. The calendar system
+	   *  determines what fields are expected to be invariant.
+	   *
+	   *
+	   *      @example
+	   *      use('date/gregorian',function(S, GregorianCalendar){
+	   *          const d = new GregorianCalendar();
+	   *          d.set(2012, GregorianCalendar.JANUARY, 31);
+	   *          d.add(Gregorian.MONTH,1);
+	   *          // 2012-2-29
+	   *          document.writeln('<p>'+d.getYear()+'-'+d.getMonth()+'-'+d.getDayOfWeek())
+	   *          d.add(Gregorian.MONTH,12);
+	   *          // 2013-2-28
+	   *          document.writeln('<p>'+d.getYear()+'-'+d.getMonth()+'-'+d.getDayOfWeek())
+	   *      });
+	   *
+	   * @param field the calendar field.
+	   * @param {Number} amount he amount of date or time to be added to the field.
+	   */
+	  add: function add(field, a) {
+	    if (!a) {
+	      return;
+	    }
+	    var amount = a;
+	    var self = this;
+	    var fields = self.fields;
+	    // computer and retrieve original value
+	    var value = self.get(field);
+	    if (field === YEAR) {
+	      value += amount;
+	      self.set(YEAR, value);
+	      adjustDayOfMonth(self);
+	    } else if (field === MONTH) {
+	      value += amount;
+	      var yearAmount = floorDivide(value / 12);
+	      value = mod(value, 12);
+	      if (yearAmount) {
+	        self.set(YEAR, fields[YEAR] + yearAmount);
+	      }
+	      self.set(MONTH, value);
+	      adjustDayOfMonth(self);
+	    } else {
+	      switch (field) {
+	        case HOUR_OF_DAY:
+	          amount *= ONE_HOUR;
+	          break;
+	        case MINUTE:
+	          amount *= ONE_MINUTE;
+	          break;
+	        case SECONDS:
+	          amount *= ONE_SECOND;
+	          break;
+	        case MILLISECONDS:
+	          break;
+	        case WEEK_OF_MONTH:
+	        case WEEK_OF_YEAR:
+	        case DAY_OF_WEEK_IN_MONTH:
+	          amount *= ONE_WEEK;
+	          break;
+	        case DAY_OF_WEEK:
+	        case DAY_OF_YEAR:
+	        case DAY_OF_MONTH:
+	          amount *= ONE_DAY;
+	          break;
+	        default:
+	          throw new Error('illegal field for add');
+	      }
+	      self.setTime(self.time + amount);
+	    }
+	  },
+
+	  /*
+	   * add the year of the given calendar field.
+	   * @method addYear
+	   * @param {Number} amount the signed amount to add to field.
+	   */
+
+	  /*
+	   * add the month of the given calendar field.
+	   * @method addMonth
+	   * @param {Number} amount the signed amount to add to field.
+	   */
+
+	  /*
+	   * add the day of month of the given calendar field.
+	   * @method addDayOfMonth
+	   * @param {Number} amount the signed amount to add to field.
+	   */
+
+	  /*
+	   * add the hour of day of the given calendar field.
+	   * @method addHourOfDay
+	   * @param {Number} amount the signed amount to add to field.
+	   */
+
+	  /*
+	   * add the minute of the given calendar field.
+	   * @method addMinute
+	   * @param {Number} amount the signed amount to add to field.
+	   */
+
+	  /*
+	   * add the second of the given calendar field.
+	   * @method addSecond
+	   * @param {Number} amount the signed amount to add to field.
+	   */
+
+	  /*
+	   * add the millisecond of the given calendar field.
+	   * @method addMilliSecond
+	   * @param {Number} amount the signed amount to add to field.
+	   */
+
+	  /*
+	   * add the week of year of the given calendar field.
+	   * @method addWeekOfYear
+	   * @param {Number} amount the signed amount to add to field.
+	   */
+
+	  /*
+	   * add the week of month of the given calendar field.
+	   * @method addWeekOfMonth
+	   * @param {Number} amount the signed amount to add to field.
+	   */
+
+	  /*
+	   * add the day of year of the given calendar field.
+	   * @method addDayOfYear
+	   * @param {Number} amount the signed amount to add to field.
+	   */
+
+	  /*
+	   * add the day of week of the given calendar field.
+	   * @method addDayOfWeek
+	   * @param {Number} amount the signed amount to add to field.
+	   */
+
+	  /*
+	   * add the day of week in month of the given calendar field.
+	   * @method addDayOfWeekInMonth
+	   * @param {Number} amount the signed amount to add to field.
+	   */
+
+	  /*
+	   * Get rolled value for the field
+	   * @protected
+	   */
+	  getRolledValue: function getRolledValue(value, a, min, max) {
+	    var amount = a;
+	    var diff = value - min;
+	    var range = max - min + 1;
+	    amount %= range;
+	    return min + (diff + amount + range) % range;
+	  },
+
+	  /*
+	   * Adds a signed amount to the specified calendar field without changing larger fields.
+	   * A negative roll amount means to subtract from field without changing
+	   * larger fields. If the specified amount is 0, this method performs nothing.
+	   *
+	   *
+	   *
+	   *      @example
+	   *      const d = new GregorianCalendar();
+	   *      d.set(1999, GregorianCalendar.AUGUST, 31);
+	   *      // 1999-4-30
+	   *      // Tuesday June 1, 1999
+	   *      d.set(1999, GregorianCalendar.JUNE, 1);
+	   *      d.add(Gregorian.WEEK_OF_MONTH,-1); // === d.add(Gregorian.WEEK_OF_MONTH,
+	   *      d.get(Gregorian.WEEK_OF_MONTH));
+	   *      // 1999-06-29
+	   *
+	   *
+	   * @param field the calendar field.
+	   * @param {Number} amount the signed amount to add to field.
+	   */
+	  roll: function roll(field, amount) {
+	    if (!amount) {
+	      return;
+	    }
+	    var self = this;
+	    // computer and retrieve original value
+	    var value = self.get(field);
+	    var min = self.getActualMinimum(field);
+	    var max = self.getActualMaximum(field);
+	    value = self.getRolledValue(value, amount, min, max);
+
+	    self.set(field, value);
+
+	    // consider compute time priority
+	    switch (field) {
+	      case MONTH:
+	        adjustDayOfMonth(self);
+	        break;
+	      default:
+	        // other fields are set already when get
+	        self.updateFieldsBySet(field);
+	        break;
+	    }
+	  },
+
+	  /*
+	   * keep field stable.
+	   *
+	   * 2015-09-29 setMonth 2 vs rollSetMonth 2
+	   *
+	   */
+	  rollSet: function rollSet(field, v) {
+	    this.set(field, v);
+	    switch (field) {
+	      case MONTH:
+	        adjustDayOfMonth(this);
+	        break;
+	      default:
+	        // other fields are set already when get
+	        this.updateFieldsBySet(field);
+	        break;
+	    }
+	  },
+
+	  /*
+	   * roll the year of the given calendar field.
+	   * @method rollYear
+	   * @param {Number} amount the signed amount to add to field.
+	   */
+
+	  /*
+	   * roll the month of the given calendar field.
+	   * @param {Number} amount the signed amount to add to field.
+	   * @method rollMonth
+	   */
+
+	  /*
+	   * roll the day of month of the given calendar field.
+	   * @method rollDayOfMonth
+	   * @param {Number} amount the signed amount to add to field.
+	   */
+
+	  /*
+	   * roll the hour of day of the given calendar field.
+	   * @method rollHourOfDay
+	   * @param {Number} amount the signed amount to add to field.
+	   */
+
+	  /*
+	   * roll the minute of the given calendar field.
+	   * @method rollMinute
+	   * @param {Number} amount the signed amount to add to field.
+	   */
+
+	  /*
+	   * roll the second of the given calendar field.
+	   * @method rollSecond
+	   * @param {Number} amount the signed amount to add to field.
+	   */
+
+	  /*
+	   * roll the millisecond of the given calendar field.
+	   * @method rollMilliSecond
+	   * @param {Number} amount the signed amount to add to field.
+	   */
+
+	  /*
+	   * roll the week of year of the given calendar field.
+	   * @method rollWeekOfYear
+	   * @param {Number} amount the signed amount to add to field.
+	   */
+
+	  /*
+	   * roll the week of month of the given calendar field.
+	   * @method rollWeekOfMonth
+	   * @param {Number} amount the signed amount to add to field.
+	   */
+
+	  /*
+	   * roll the day of year of the given calendar field.
+	   * @method rollDayOfYear
+	   * @param {Number} amount the signed amount to add to field.
+	   */
+
+	  /*
+	   * roll the day of week of the given calendar field.
+	   * @method rollDayOfWeek
+	   * @param {Number} amount the signed amount to add to field.
+	   */
+
+	  /*
+	   * remove other priority fields when call getFixedDate
+	   * precondition: other fields are all set or computed
+	   * @protected
+	   */
+	  updateFieldsBySet: function updateFieldsBySet(field) {
+	    var fields = this.fields;
+	    switch (field) {
+	      case WEEK_OF_MONTH:
+	        fields[DAY_OF_MONTH] = undefined;
+	        break;
+	      case DAY_OF_YEAR:
+	        fields[MONTH] = undefined;
+	        break;
+	      case DAY_OF_WEEK:
+	        fields[DAY_OF_MONTH] = undefined;
+	        break;
+	      case WEEK_OF_YEAR:
+	        fields[DAY_OF_YEAR] = undefined;
+	        fields[MONTH] = undefined;
+	        break;
+	      default:
+	        break;
+	    }
+	  },
+
+	  /*
+	   * get current date instance's timezone offset
+	   * @returns {Number}
+	   */
+	  getTimezoneOffset: function getTimezoneOffset() {
+	    return this.timezoneOffset;
+	  },
+
+	  /*
+	   * set current date instance's timezone offset
+	   */
+	  setTimezoneOffset: function setTimezoneOffset(timezoneOffset) {
+	    if (this.timezoneOffset !== timezoneOffset) {
+	      this.fieldsComputed = undefined;
+	      this.timezoneOffset = timezoneOffset;
+	    }
+	  },
+
+	  /*
+	   * set first day of week for current date instance
+	   */
+	  setFirstDayOfWeek: function setFirstDayOfWeek(firstDayOfWeek) {
+	    if (this.firstDayOfWeek !== firstDayOfWeek) {
+	      this.firstDayOfWeek = firstDayOfWeek;
+	      this.fieldsComputed = false;
+	    }
+	  },
+
+	  /*
+	   * Gets what the first day of the week is; e.g., SUNDAY in the U.S., MONDAY in France.
+	   * @returns {Number} the first day of the week.
+	   */
+	  getFirstDayOfWeek: function getFirstDayOfWeek() {
+	    return this.firstDayOfWeek;
+	  },
+
+	  /*
+	   * Sets what the minimal days required in the first week of the year are; For example,
+	   * if the first week is defined as one that contains the first day of the first month of a year,
+	   * call this method with value 1.
+	   * If it must be a full week, use value 7.
+	   * @param minimalDaysInFirstWeek the given minimal days required in the first week of the year.
+	   */
+	  setMinimalDaysInFirstWeek: function setMinimalDaysInFirstWeek(minimalDaysInFirstWeek) {
+	    if (this.minimalDaysInFirstWeek !== minimalDaysInFirstWeek) {
+	      this.minimalDaysInFirstWeek = minimalDaysInFirstWeek;
+	      this.fieldsComputed = false;
+	    }
+	  },
+
+	  /*
+	   * Gets what the minimal days required in the first week of the year are; e.g.,
+	   * if the first week is defined as one that contains the first day of the first month of a year,
+	   * this method returns 1.
+	   * If the minimal days required must be a full week, this method returns 7.
+	   * @returns {Number} the minimal days required in the first week of the year.
+	   */
+	  getMinimalDaysInFirstWeek: function getMinimalDaysInFirstWeek() {
+	    return this.minimalDaysInFirstWeek;
+	  },
+
+	  /*
+	   * Returns the number of weeks in the week year
+	   * represented by this GregorianCalendar.
+	   *
+	   * For example, if this GregorianCalendar's date is
+	   * December 31, 2008 with the ISO
+	   * 8601 compatible setting, this method will return 53 for the
+	   * period: December 29, 2008 to January 3, 2010
+	   * while getActualMaximum(WEEK_OF_YEAR) will return
+	   * 52 for the period: December 31, 2007 to December 28, 2008.
+	   *
+	   * @return {Number} the number of weeks in the week year.
+	   */
+	  getWeeksInWeekYear: function getWeeksInWeekYear() {
+	    var weekYear = this.getWeekYear();
+	    if (weekYear === this.get(YEAR)) {
+	      return this.getActualMaximum(WEEK_OF_YEAR);
+	    }
+	    // Use the 2nd week for calculating the max of WEEK_OF_YEAR
+	    var gc = this.clone();
+	    gc.clear();
+	    gc.setWeekDate(weekYear, 2, this.get(DAY_OF_WEEK));
+	    return gc.getActualMaximum(WEEK_OF_YEAR);
+	  },
+
+	  /*
+	   * Returns the week year represented by this GregorianCalendar.
+	   * The dates in the weeks between 1 and the
+	   * maximum week number of the week year have the same week year value
+	   * that may be one year before or after the calendar year value.
+	   *
+	   * @return {Number} the week year represented by this GregorianCalendar.
+	   */
+	  getWeekYear: function getWeekYear() {
+	    var year = this.get(YEAR); // implicitly  complete
+	    var weekOfYear = this.get(WEEK_OF_YEAR);
+	    var month = this.get(MONTH);
+	    if (month === GregorianCalendar.JANUARY) {
+	      if (weekOfYear >= 52) {
+	        --year;
+	      }
+	    } else if (month === GregorianCalendar.DECEMBER) {
+	      if (weekOfYear === 1) {
+	        ++year;
+	      }
+	    }
+	    return year;
+	  },
+	  /*
+	   * Sets this GregorianCalendar to the date given by the date specifiers - weekYear,
+	   * weekOfYear, and dayOfWeek. weekOfYear follows the WEEK_OF_YEAR numbering.
+	   * The dayOfWeek value must be one of the DAY_OF_WEEK values: SUNDAY to SATURDAY.
+	   *
+	   * @param weekYear    the week year
+	   * @param weekOfYear  the week number based on weekYear
+	   * @param dayOfWeek   the day of week value
+	   */
+	  setWeekDate: function setWeekDate(weekYear, weekOfYear, dayOfWeek) {
+	    if (dayOfWeek < GregorianCalendar.SUNDAY || dayOfWeek > GregorianCalendar.SATURDAY) {
+	      throw new Error('invalid dayOfWeek: ' + dayOfWeek);
+	    }
+	    var fields = this.fields;
+	    // To avoid changing the time of day fields by date
+	    // calculations, use a clone with the GMT time zone.
+	    var gc = this.clone();
+	    gc.clear();
+	    gc.setTimezoneOffset(0);
+	    gc.set(YEAR, weekYear);
+	    gc.set(WEEK_OF_YEAR, 1);
+	    gc.set(DAY_OF_WEEK, this.getFirstDayOfWeek());
+	    var days = dayOfWeek - this.getFirstDayOfWeek();
+	    if (days < 0) {
+	      days += 7;
+	    }
+	    days += 7 * (weekOfYear - 1);
+	    if (days !== 0) {
+	      gc.add(DAY_OF_YEAR, days);
+	    } else {
+	      gc.complete();
+	    }
+	    fields[YEAR] = gc.get(YEAR);
+	    fields[MONTH] = gc.get(MONTH);
+	    fields[DAY_OF_MONTH] = gc.get(DAY_OF_MONTH);
+	    this.complete();
+	  },
+	  /*
+	   * Creates and returns a copy of this object.
+	   * @returns {Date.Gregorian}
+	   */
+	  clone: function clone() {
+	    if (this.time === undefined) {
+	      this.computeTime();
+	    }
+	    var cal = new GregorianCalendar(this.locale);
+	    cal.setTimezoneOffset(cal.getTimezoneOffset());
+	    cal.setFirstDayOfWeek(cal.getFirstDayOfWeek());
+	    cal.setMinimalDaysInFirstWeek(cal.getMinimalDaysInFirstWeek());
+	    cal.setTime(this.time);
+	    return cal;
+	  },
+
+	  /*
+	   * Compares this GregorianCalendar to the specified Object.
+	   * The result is true if and only if the argument is a GregorianCalendar object
+	   * that represents the same time value (millisecond offset from the Epoch)
+	   * under the same Calendar parameters and Gregorian change date as this object.
+	   * @param {Date.Gregorian} obj the object to compare with.
+	   * @returns {boolean} true if this object is equal to obj; false otherwise.
+	   */
+	  equals: function equals(obj) {
+	    return this.getTime() === obj.getTime() && this.firstDayOfWeek === obj.firstDayOfWeek && this.timezoneOffset === obj.timezoneOffset && this.minimalDaysInFirstWeek === obj.minimalDaysInFirstWeek;
+	  },
+
+	  compareToDay: function compareToDay(d2) {
+	    var d1Year = this.getYear();
+	    var d2Year = d2.getYear();
+	    var d1Month = this.getMonth();
+	    var d2Month = d2.getMonth();
+	    var d1Day = this.getDayOfMonth();
+	    var d2Day = d2.getDayOfMonth();
+	    if (d1Year !== d2Year) {
+	      return d1Year - d2Year;
+	    }
+	    if (d1Month !== d2Month) {
+	      return d1Month - d2Month;
+	    }
+	    return d1Day - d2Day;
+	  },
+
+	  /*
+	   * Sets all the calendar field values or specified field and the time value
+	   * (millisecond offset from the Epoch) of this Calendar undefined.
+	   * This means that isSet() will return false for all the calendar fields,
+	   * and the date and time calculations will treat the fields as if they had never been set.
+	   * @param [field] the calendar field to be cleared.
+	   */
+	  clear: function clear(field) {
+	    if (field === undefined) {
+	      this.field = [];
+	    } else {
+	      this.fields[field] = undefined;
+	    }
+	    this.time = undefined;
+	    this.fieldsComputed = false;
+	  },
+
+	  toString: function toString() {
+	    // for debug
+	    var v = this;
+	    return '[GregorianCalendar]: ' + v.getYear() + '/' + v.getMonth() + '/' + v.getDayOfMonth() + ' ' + v.getHourOfDay() + ':' + v.getMinutes() + ':' + v.getSeconds();
+	  }
+	};
+
+	var GregorianCalendarProto = GregorianCalendar.prototype;
+
+	Utils.each(FIELDS, function (f, index) {
+	  if (f) {
+	    GregorianCalendarProto['get' + f] = function get() {
+	      return this.get(index);
+	    };
+
+	    GregorianCalendarProto['isSet' + f] = function isSet() {
+	      return this.isSet(index);
+	    };
+
+	    GregorianCalendarProto['set' + f] = function set(v) {
+	      return this.set(index, v);
+	    };
+
+	    GregorianCalendarProto['add' + f] = function add(v) {
+	      return this.add(index, v);
+	    };
+
+	    GregorianCalendarProto['roll' + f] = function roll(v) {
+	      return this.roll(index, v);
+	    };
+
+	    GregorianCalendarProto['rollSet' + f] = function rollSet(v) {
+	      return this.rollSet(index, v);
+	    };
+	  }
+	});
+
+	module.exports = GregorianCalendar;
+	/*
+	 http://docs.oracle.com/javase/7/docs/api/java/util/GregorianCalendar.html
+
+	 TODO
+	 - day saving time
+	 - i18n
+	 - julian calendar
+	 */
+
+/***/ },
+/* 463 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/*
+	 * utils for gregorian date
+	 * @ignore
+	 * @author yiminghe@gmail.com
+	 */
+
+	'use strict';
+
+	var Const = __webpack_require__(464);
+	var floor = Math.floor;
+	var ACCUMULATED_DAYS_IN_MONTH
+	//   1/1 2/1 3/1 4/1 5/1 6/1 7/1 8/1 9/1 10/1 11/1 12/1
+	= [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
+
+	var ACCUMULATED_DAYS_IN_MONTH_LEAP
+	//   1/1 2/1   3/1   4/1   5/1   6/1   7/1   8/1   9/1
+	// 10/1   11/1   12/1
+	= [0, 31, 59 + 1, 90 + 1, 120 + 1, 151 + 1, 181 + 1, 212 + 1, 243 + 1, 273 + 1, 304 + 1, 334 + 1];
+
+	var DAYS_OF_YEAR = 365;
+	var DAYS_OF_4YEAR = 365 * 4 + 1;
+	var DAYS_OF_100YEAR = DAYS_OF_4YEAR * 25 - 1;
+	var DAYS_OF_400YEAR = DAYS_OF_100YEAR * 4 + 1;
+	var _exports = {};
+
+	function getDayOfYear(year, month, dayOfMonth) {
+	  return dayOfMonth + (_exports.isLeapYear(year) ? ACCUMULATED_DAYS_IN_MONTH_LEAP[month] : ACCUMULATED_DAYS_IN_MONTH[month]);
+	}
+
+	function getDayOfWeekFromFixedDate(fixedDate) {
+	  // The fixed day 1 (January 1, 1 Gregorian) is Monday.
+	  if (fixedDate >= 0) {
+	    return fixedDate % 7;
+	  }
+	  return _exports.mod(fixedDate, 7);
+	}
+
+	function getGregorianYearFromFixedDate(fixedDate) {
+	  var d0 = undefined;
+	  var d1 = undefined;
+	  var d2 = undefined;
+	  var d3 = undefined;
+	  var n400 = undefined;
+	  var n100 = undefined;
+	  var n4 = undefined;
+	  var n1 = undefined;
+	  var year = undefined;
+	  d0 = fixedDate - 1;
+
+	  n400 = floor(d0 / DAYS_OF_400YEAR);
+	  d1 = _exports.mod(d0, DAYS_OF_400YEAR);
+	  n100 = floor(d1 / DAYS_OF_100YEAR);
+	  d2 = _exports.mod(d1, DAYS_OF_100YEAR);
+	  n4 = floor(d2 / DAYS_OF_4YEAR);
+	  d3 = _exports.mod(d2, DAYS_OF_4YEAR);
+	  n1 = floor(d3 / DAYS_OF_YEAR);
+
+	  year = 400 * n400 + 100 * n100 + 4 * n4 + n1;
+
+	  // ?
+	  if (!(n100 === 4 || n1 === 4)) {
+	    ++year;
+	  }
+
+	  return year;
+	}
+
+	_exports = module.exports = {
+	  each: function each(arr, fn) {
+	    for (var i = 0, len = arr.length; i < len; i++) {
+	      if (fn(arr[i], i, arr) === false) {
+	        break;
+	      }
+	    }
+	  },
+
+	  mix: function mix(t, s) {
+	    for (var p in s) {
+	      if (s.hasOwnProperty(p)) {
+	        t[p] = s[p];
+	      }
+	    }
+	  },
+
+	  isLeapYear: function isLeapYear(year) {
+	    if ((year & 3) !== 0) {
+	      return false;
+	    }
+	    return year % 100 !== 0 || year % 400 === 0;
+	  },
+
+	  mod: function mod(x, y) {
+	    // 负数时不是镜像关系
+	    return x - y * floor(x / y);
+	  },
+
+	  // month: 0 based
+	  getFixedDate: function getFixedDate(year, month, dayOfMonth) {
+	    var prevYear = year - 1;
+	    // 考虑公元前
+	    return DAYS_OF_YEAR * prevYear + floor(prevYear / 4) - floor(prevYear / 100) + floor(prevYear / 400) + getDayOfYear(year, month, dayOfMonth);
+	  },
+
+	  getGregorianDateFromFixedDate: function getGregorianDateFromFixedDate(fixedDate) {
+	    var year = getGregorianYearFromFixedDate(fixedDate);
+	    var jan1 = _exports.getFixedDate(year, Const.JANUARY, 1);
+	    var isLeap = _exports.isLeapYear(year);
+	    var ACCUMULATED_DAYS = isLeap ? ACCUMULATED_DAYS_IN_MONTH_LEAP : ACCUMULATED_DAYS_IN_MONTH;
+	    var daysDiff = fixedDate - jan1;
+	    var month = undefined;
+
+	    for (var i = 0; i < ACCUMULATED_DAYS.length; i++) {
+	      if (ACCUMULATED_DAYS[i] <= daysDiff) {
+	        month = i;
+	      } else {
+	        break;
+	      }
+	    }
+
+	    var dayOfMonth = fixedDate - jan1 - ACCUMULATED_DAYS[month] + 1;
+	    var dayOfWeek = getDayOfWeekFromFixedDate(fixedDate);
+
+	    return {
+	      year: year,
+	      month: month,
+	      dayOfMonth: dayOfMonth,
+	      dayOfWeek: dayOfWeek,
+	      isLeap: isLeap
+	    };
+	  }
+	};
+
+/***/ },
+/* 464 */
+/***/ function(module, exports) {
+
+	/*
+	 * @ignore
+	 * const for gregorian date
+	 * @author yiminghe@gmail.com
+	 */
+
+	"use strict";
+
+	module.exports = {
+	  /*
+	   * Enum indicating sunday
+	   * @type Number
+	   * @member Date.Gregorian
+	   */
+	  SUNDAY: 0,
+	  /*
+	   * Enum indicating monday
+	   * @type Number
+	   * @member Date.Gregorian
+	   */
+	  MONDAY: 1,
+	  /*
+	   * Enum indicating tuesday
+	   * @type Number
+	   * @member Date.Gregorian
+	   */
+	  TUESDAY: 2,
+	  /*
+	   * Enum indicating wednesday
+	   * @type Number
+	   * @member Date.Gregorian
+	   */
+	  WEDNESDAY: 3,
+	  /*
+	   * Enum indicating thursday
+	   * @type Number
+	   * @member Date.Gregorian
+	   */
+	  THURSDAY: 4,
+	  /*
+	   * Enum indicating friday
+	   * @type Number
+	   * @member Date.Gregorian
+	   */
+	  FRIDAY: 5,
+	  /*
+	   * Enum indicating saturday
+	   * @type Number
+	   * @member Date.Gregorian
+	   */
+	  SATURDAY: 6,
+	  /*
+	   * Enum indicating january
+	   * @type Number
+	   * @member Date.Gregorian
+	   */
+	  JANUARY: 0,
+	  /*
+	   * Enum indicating february
+	   * @type Number
+	   * @member Date.Gregorian
+	   */
+	  FEBRUARY: 1,
+	  /*
+	   * Enum indicating march
+	   * @type Number
+	   * @member Date.Gregorian
+	   */
+	  MARCH: 2,
+	  /*
+	   * Enum indicating april
+	   * @type Number
+	   * @member Date.Gregorian
+	   */
+	  APRIL: 3,
+	  /*
+	   * Enum indicating may
+	   * @type Number
+	   * @member Date.Gregorian
+	   */
+	  MAY: 4,
+	  /*
+	   * Enum indicating june
+	   * @type Number
+	   * @member Date.Gregorian
+	   */
+	  JUNE: 5,
+	  /*
+	   * Enum indicating july
+	   * @type Number
+	   * @member Date.Gregorian
+	   */
+	  JULY: 6,
+	  /*
+	   * Enum indicating august
+	   * @type Number
+	   * @member Date.Gregorian
+	   */
+	  AUGUST: 7,
+	  /*
+	   * Enum indicating september
+	   * @type Number
+	   * @member Date.Gregorian
+	   */
+	  SEPTEMBER: 8,
+	  /*
+	   * Enum indicating october
+	   * @type Number
+	   * @member Date.Gregorian
+	   */
+	  OCTOBER: 9,
+	  /*
+	   * Enum indicating november
+	   * @type Number
+	   * @member Date.Gregorian
+	   */
+	  NOVEMBER: 10,
+	  /*
+	   * Enum indicating december
+	   * @type Number
+	   * @member Date.Gregorian
+	   */
+	  DECEMBER: 11
+	};
+
+/***/ },
+/* 465 */
+/***/ function(module, exports) {
+
+	/*
+	 * en-us locale
+	 * @ignore
+	 * @author yiminghe@gmail.com
+	 */
+	"use strict";
+
+	module.exports = {
+	  // in minutes
+	  timezoneOffset: -8 * 60,
+	  firstDayOfWeek: 0,
+	  minimalDaysInFirstWeek: 1
+	};
+
+/***/ },
+/* 466 */
+/***/ function(module, exports, __webpack_require__) {
+
 	'use strict';
 
 	var _reactRouter = __webpack_require__(170);
@@ -60442,7 +62271,7 @@
 	module.exports = ListingScreen;
 
 /***/ },
-/* 463 */
+/* 467 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -60461,7 +62290,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var TabListingComponent = __webpack_require__(464);
+	var TabListingComponent = __webpack_require__(468);
 
 	var STATES = __webpack_require__(239);
 
@@ -60499,7 +62328,7 @@
 	      self.setState({
 	        listing: result
 	      });
-	      console.log(result);
+	      self.props.route.config().setListing(self.state.listing);
 	    }, function (result) {
 	      var message = JSON.parse(result.responseText);
 	      self.props.route.notification._addNotification(window.event, "error", message.message);
@@ -60647,7 +62476,7 @@
 	module.exports = ListingDetailsScreen;
 
 /***/ },
-/* 464 */
+/* 468 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -60668,10 +62497,10 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var OverviewListing = __webpack_require__(465);
-	var DetailsListing = __webpack_require__(466);
-	var ReviewsListing = __webpack_require__(467);
-	var VariantListing = __webpack_require__(468);
+	var OverviewListing = __webpack_require__(469);
+	var DetailsListing = __webpack_require__(470);
+	var ReviewsListing = __webpack_require__(471);
+	var VariantListing = __webpack_require__(472);
 
 	var TabListingComponent = function (_Component) {
 	  _inherits(TabListingComponent, _Component);
@@ -60723,7 +62552,7 @@
 	module.exports = TabListingComponent;
 
 /***/ },
-/* 465 */
+/* 469 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -60827,7 +62656,7 @@
 	module.exports = OverviewListing;
 
 /***/ },
-/* 466 */
+/* 470 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -60961,7 +62790,7 @@
 	module.exports = DetailsListing;
 
 /***/ },
-/* 467 */
+/* 471 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -61307,7 +63136,7 @@
 	module.exports = ReviewsListing;
 
 /***/ },
-/* 468 */
+/* 472 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -61320,8 +63149,8 @@
 	var VariantListing = React.createClass({
 	  displayName: 'VariantListing',
 
-	  showEditPage: function showEditPage() {
-	    window.location.href = "/#/edit-variant/";
+	  showEditPage: function showEditPage(listingid, variantid) {
+	    window.location.href = "/#/edit-variant/" + listingid + "/" + variantid;
 	  },
 
 	  render: function render() {
@@ -61426,7 +63255,9 @@
 	          item.name,
 	          React.createElement(
 	            'button',
-	            { className: 'btn btn-line btn-secondary', onClick: self.showEditPage },
+	            { className: 'btn btn-line btn-secondary', onClick: function onClick() {
+	                return self.showEditPage(self.props.listing.id, item.id);
+	              } },
 	            'Edit'
 	          )
 	        ),
@@ -61479,14 +63310,14 @@
 	module.exports = VariantListing;
 
 /***/ },
-/* 469 */
+/* 473 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(2);
-	var merge = __webpack_require__(470);
-	var NotificationContainer = __webpack_require__(471);
-	var Constants = __webpack_require__(473);
-	var Styles = __webpack_require__(475);
+	var merge = __webpack_require__(474);
+	var NotificationContainer = __webpack_require__(475);
+	var Constants = __webpack_require__(477);
+	var Styles = __webpack_require__(479);
 
 	var NotificationSystem = React.createClass({displayName: "NotificationSystem",
 
@@ -61692,7 +63523,7 @@
 
 
 /***/ },
-/* 470 */
+/* 474 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -61781,12 +63612,12 @@
 
 
 /***/ },
-/* 471 */
+/* 475 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(2);
-	var NotificationItem = __webpack_require__(472);
-	var Constants = __webpack_require__(473);
+	var NotificationItem = __webpack_require__(476);
+	var Constants = __webpack_require__(477);
 
 	var NotificationContainer = React.createClass({displayName: "NotificationContainer",
 
@@ -61842,14 +63673,14 @@
 
 
 /***/ },
-/* 472 */
+/* 476 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(2);
 	var ReactDOM = __webpack_require__(39);
-	var Constants = __webpack_require__(473);
-	var Helpers = __webpack_require__(474);
-	var merge = __webpack_require__(470);
+	var Constants = __webpack_require__(477);
+	var Helpers = __webpack_require__(478);
+	var merge = __webpack_require__(474);
 
 	/* From Modernizr */
 	var whichTransitionEvent = function() {
@@ -62167,7 +63998,7 @@
 
 
 /***/ },
-/* 473 */
+/* 477 */
 /***/ function(module, exports) {
 
 	var CONSTANTS = {
@@ -62207,7 +64038,7 @@
 
 
 /***/ },
-/* 474 */
+/* 478 */
 /***/ function(module, exports) {
 
 	var Helpers = {
@@ -62239,7 +64070,7 @@
 
 
 /***/ },
-/* 475 */
+/* 479 */
 /***/ function(module, exports) {
 
 	// Used for calculations
@@ -62502,7 +64333,7 @@
 
 
 /***/ },
-/* 476 */
+/* 480 */
 /***/ function(module, exports) {
 
 	(function(self) {
