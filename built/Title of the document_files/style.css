@@ -282,6 +282,7 @@ hr {
 }
 .react-tabs .bookings-list{
     margin: 0 0 15px;
+    background: #f8f6f4;
     border: none;
     font-size: 14px;
     font-weight: 400;
@@ -417,10 +418,7 @@ hr {
 .seat-details .seat {
   display: inline-block;
   background: #ececec;
-  vertical-align: middle; 
-margin-right: 5px;
-    margin-bottom: 5px;
-}
+  vertical-align: middle; }
   .seat-details .seat h2 {
     background: #f5f5f5;
     color: #f36f22;
@@ -624,10 +622,9 @@ input[type='radio']:checked + label:before {
     opacity: 0.5;
     padding: 0 5px;
     font-size: 11px; }
-  .seat-options .item input[type='text'], .rc-calendar-column-header .item input[type='text'] {
+  .seat-options .item input[type='text'] {
     width: 50px;
       font-size: 14px;
-      margin-left: 5px;
     border: 1px solid #ced0d3;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
@@ -1296,30 +1293,6 @@ input[type='radio']:checked + label:before {
   font-size: 19px;
   padding: 10px;
   margin-top: 20px; }
-  .register .hand-padding{
-    padding-top: 60px;
-  }
-  .register .thanks-message{
-
-    color: #6DB347;
-    font-size: 22px;
-    font-weight: bold;
-    padding-top:35px;
-  }
-  .register .thanks-sub-heading{
-    padding-top: 20px;
-    color: #363636;
-    font-size: 18px;
-    font-weight: 600;
-  }
-  .register .message{
-    padding-top: 20px;
-
-  }
-  .register .message-sub{
-    padding-top: 18px;
-    
-  }
 .login .reg-link{ padding-top: 15px;}
 .login .reg-link a{ color:#f36f22; font-style: normal; font-weight: bold; font-size: 14px;}
 
@@ -1619,7 +1592,7 @@ a:focus,.btn:focus{
   font-size: 14px;
   font-weight:  normal;
 }
-.details-profile table tr td, .contact-details,.contact-details-edit, .bank-details,.bank-details-edit{
+.details-profile table tr td, .contact-details,.contact-details-edit{
   font-size: 14px;
     font-weight: normal;
 }

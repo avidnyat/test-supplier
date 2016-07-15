@@ -1,182 +1,197 @@
-var React = require('react');
-var _ = require('underscore');
-var InputError = require('./InputError.js');
+var React = require( 'react' );
+var _ = require( 'underscore' );
+var InputError = require( './InputError.js' );
 
 var classes = function classNames() {
   var args = arguments;
   var classes = [];
 
   for (var i = 0; i < args.length; i++) {
-      var arg = args[i];
-      if (arg == null) {
-          continue;
-      }
+    var arg = args[ i ];
+    if ( arg == null ) {
+      continue;
+    }
 
-      if ('string' === typeof arg) {
-          classes.push(arg);
-      } else if ('object' === typeof arg) {
-          for (var key in arg) {
-              if (!arg.hasOwnProperty(key) || !arg[key]) {
-                  continue;
-              }
-              classes.push(key);
-          }
+    if ( 'string' === typeof arg ) {
+      classes.push( arg );
+    } else if ( 'object' === typeof arg ) {
+      for (var key in arg) {
+        if ( !arg.hasOwnProperty( key ) || !arg[ key ] ) {
+          continue;
+        }
+        classes.push( key );
       }
+    }
   }
-  return classes.join(' ');
+  return classes.join( ' ' );
 }
 
 var requestId = 0;
 
-var sizerStyle = { position: 'absolute', visibility: 'hidden', height: 0, width: 200, overflow: 'scroll', whiteSpace: 'nowrap' };
+var sizerStyle = {
+  position: 'absolute',
+  visibility: 'hidden',
+  height: 0,
+  width: 200,
+  overflow: 'scroll',
+  whiteSpace: 'nowrap'
+};
 
-var Input = React.createClass({
+var Input = React.createClass( {
 
   displayName: 'AutosizeInput',
 
   propTypes: {
-    value: React.PropTypes.any,                 // field value
-    defaultValue: React.PropTypes.any,          // default field value
-    onChange: React.PropTypes.func,             // onChange handler: function(newValue) {}
-    style: React.PropTypes.object,              // css styles for the outer element
-    className: React.PropTypes.string,          // className for the outer element
-    inputStyle: React.PropTypes.object,         // css styles for the input element
-    inputClassName: React.PropTypes.string      // className for the input element
+    value: React.PropTypes.any, // field value
+    defaultValue: React.PropTypes.any, // default field value
+    onChange: React.PropTypes.func, // onChange handler: function(newValue) {}
+    style: React.PropTypes.object, // css styles for the outer element
+    className: React.PropTypes.string, // className for the outer element
+    inputStyle: React.PropTypes.object, // css styles for the input element
+    inputClassName: React.PropTypes.string // className for the input element
   },
-  
-  getDefaultProps: function() {
+
+  getDefaultProps: function () {
     return {
       minWidth: 1
     };
   },
-  
-  getInitialState: function() {
+
+  getInitialState: function () {
     return {
       inputWidth: this.props.minWidth
     };
   },
-  
-  componentDidMount: function() {
+
+  componentDidMount: function () {
     this.copyInputStyles();
     this.updateInputWidth();
   },
-  
-  componentDidUpdate: function() {
+
+  componentDidUpdate: function () {
     this.updateInputWidth();
   },
-  
-  copyInputStyles: function() {
-    if (!this.isMounted() || !window.getComputedStyle) {
+
+  copyInputStyles: function () {
+    if ( !this.isMounted() || !window.getComputedStyle ) {
       return;
     }
-    var inputStyle = window.getComputedStyle(this.refs.input.getDOMNode());
+    var inputStyle = window.getComputedStyle( this.refs.input.getDOMNode() );
     var widthNode = this.refs.sizer.getDOMNode();
     widthNode.style.fontSize = inputStyle.fontSize;
     widthNode.style.fontFamily = inputStyle.fontFamily;
   },
-  
-  updateInputWidth: function() {
-    if (!this.isMounted()) {
+
+  updateInputWidth: function () {
+    if ( !this.isMounted() ) {
       return;
     }
     var newInputWidth = this.refs.sizer.getDOMNode().scrollWidth + 2;
-    if (newInputWidth < this.props.minWidth) {
+    if ( newInputWidth < this.props.minWidth ) {
       newInputWidth = this.props.minWidth;
     }
-    if (newInputWidth !== this.state.inputWidth) {
-      this.setState({
+    if ( newInputWidth !== this.state.inputWidth ) {
+      this.setState( {
         inputWidth: newInputWidth
-      });
+      } );
     }
   },
-  
-  getInput: function() {
+
+  getInput: function () {
     return this.refs.input;
   },
-  
-  focus: function() {
+
+  focus: function () {
     this.refs.input.getDOMNode().focus();
   },
-  
-  select: function() {
+
+  select: function () {
     this.refs.input.getDOMNode().select();
   },
-  
-  render: function() {
-    
-    var nbspValue = (this.props.value || '').replace(/ /g, '&nbsp;');
-    
+
+  render: function () {
+
+    var nbspValue = (this.props.value || '').replace( / /g, '&nbsp;' );
+
     var wrapperStyle = this.props.style || {};
     wrapperStyle.display = 'inline-block';
-    
+
     var inputStyle = this.props.inputStyle || {};
     inputStyle.width = this.state.inputWidth;
-    
-    return (
-      <div className={this.props.className} style={wrapperStyle}>
-        <input {...this.props} ref="input" className={this.props.inputClassName} style={inputStyle} />
-        <div ref="sizer" style={sizerStyle} dangerouslySetInnerHTML={{ __html: nbspValue }} />
-      </div>
-    );
-    
-  }
-  
-});
 
-var Value = React.createClass({
+    return (
+    <div className={ this.props.className } style={ wrapperStyle }>
+      <input {...this.props}
+             ref="input"
+             className={ this.props.inputClassName }
+             style={ inputStyle } />
+      <div ref="sizer"
+           style={ sizerStyle }
+           dangerouslySetInnerHTML={ { __html: nbspValue } } />
+    </div>
+    );
+
+  }
+
+} );
+
+var Value = React.createClass( {
 
   displayName: 'Value',
-  
+
   propTypes: {
     label: React.PropTypes.string.isRequired
   },
-  
-  blockEvent: function(event) {
+
+  blockEvent: function ( event ) {
     event.stopPropagation();
   },
-  
-  render: function() {
+
+  render: function () {
     return (
-      <div className="Select-item">
-        <span className="Select-item-icon" onMouseDown={this.blockEvent} onClick={this.props.onRemove} onTouchEnd={this.props.onRemove}>&times;</span>
-        <span className="Select-item-label">{this.props.label}</span>
-      </div>
+    <div className="Select-item">
+      <span className="Select-item-icon"
+            onMouseDown={ this.blockEvent }
+            onClick={ this.props.onRemove }
+            onTouchEnd={ this.props.onRemove }>&times;</span>
+      <span className="Select-item-label">{ this.props.label }</span>
+    </div>
     );
   }
-  
-});
 
-var Select = React.createClass({
+} );
+
+var Select = React.createClass( {
 
   displayName: 'Select',
 
   propTypes: {
-    value: React.PropTypes.any,                // initial field value
-    multi: React.PropTypes.bool,               // multi-value input
-    options: React.PropTypes.array,            // array of options
-    delimiter: React.PropTypes.string,         // delimiter to use to join multiple values
-    asyncOptions: React.PropTypes.func,        // function to call to get options
-    autoload: React.PropTypes.bool,            // whether to auto-load the default async options set
-    placeholder: React.PropTypes.string,       // field placeholder, displayed when there's no value
-    placeholderTitle: React.PropTypes.string,       // field placeholder, displayed when there's no value
-    noResultsText: React.PropTypes.string,     // placeholder displayed when there are no matching search results
-    clearable: React.PropTypes.bool,           // should it be possible to reset value
-    clearValueText: React.PropTypes.string,    // title for the "clear" control
-    clearAllText: React.PropTypes.string,      // title for the "clear" control when multi: true
-    searchable: React.PropTypes.bool,          // whether to enable searching feature or not
-    searchPromptText: React.PropTypes.string,  // label to prompt for search input
-    name: React.PropTypes.string,              // field name, for hidden <input /> tag
-    onChange: React.PropTypes.func,            // onChange handler: function(newValue) {}
-    className: React.PropTypes.string,         // className for the outer element
-    filterOption: React.PropTypes.func,        // method to filter a single option: function(option, filterString)
-    filterOptions: React.PropTypes.func,       // method to filter the options array: function([options], filterString, [values])
-    matchPos: React.PropTypes.string,          // (any|start) match the start or entire string when filtering
-    matchProp: React.PropTypes.string,         // (any|label|value) which option property to filter on
+    value: React.PropTypes.any, // initial field value
+    multi: React.PropTypes.bool, // multi-value input
+    options: React.PropTypes.array, // array of options
+    delimiter: React.PropTypes.string, // delimiter to use to join multiple values
+    asyncOptions: React.PropTypes.func, // function to call to get options
+    autoload: React.PropTypes.bool, // whether to auto-load the default async options set
+    placeholder: React.PropTypes.string, // field placeholder, displayed when there's no value
+    placeholderTitle: React.PropTypes.string, // field placeholder, displayed when there's no value
+    noResultsText: React.PropTypes.string, // placeholder displayed when there are no matching search results
+    clearable: React.PropTypes.bool, // should it be possible to reset value
+    clearValueText: React.PropTypes.string, // title for the "clear" control
+    clearAllText: React.PropTypes.string, // title for the "clear" control when multi: true
+    searchable: React.PropTypes.bool, // whether to enable searching feature or not
+    searchPromptText: React.PropTypes.string, // label to prompt for search input
+    name: React.PropTypes.string, // field name, for hidden <input /> tag
+    onChange: React.PropTypes.func, // onChange handler: function(newValue) {}
+    className: React.PropTypes.string, // className for the outer element
+    filterOption: React.PropTypes.func, // method to filter a single option: function(option, filterString)
+    filterOptions: React.PropTypes.func, // method to filter the options array: function([options], filterString, [values])
+    matchPos: React.PropTypes.string, // (any|start) match the start or entire string when filtering
+    matchProp: React.PropTypes.string, // (any|label|value) which option property to filter on
     errorMessage: React.PropTypes.string,
     errorVisible: React.PropTypes.bool
   },
 
-  getDefaultProps: function() {
+  getDefaultProps: function () {
     return {
       value: undefined,
       options: [],
@@ -199,7 +214,7 @@ var Select = React.createClass({
     };
   },
 
-  getInitialState: function() {
+  getInitialState: function () {
     return {
       /*
        * set by getStateFromValue on componentWillMount:
@@ -219,55 +234,55 @@ var Select = React.createClass({
     };
   },
 
-  componentWillMount: function() {
+  componentWillMount: function () {
     this._optionsCache = {};
     this._optionsFilterString = '';
-    this.setState(this.getStateFromValue(this.props.value));
+    this.setState( this.getStateFromValue( this.props.value ) );
 
-    if (this.props.asyncOptions && this.props.autoload) {
+    if ( this.props.asyncOptions && this.props.autoload ) {
       this.autoloadAsyncOptions();
     }
   },
 
-  componentWillUnmount: function() {
-    clearTimeout(this._blurTimeout);
-    clearTimeout(this._focusTimeout);
+  componentWillUnmount: function () {
+    clearTimeout( this._blurTimeout );
+    clearTimeout( this._focusTimeout );
   },
 
-  componentWillReceiveProps: function(newProps) {
-    if (newProps.value !== this.state.value) {
-      this.setState(this.getStateFromValue(newProps.value, newProps.options));
+  componentWillReceiveProps: function ( newProps ) {
+    if ( newProps.value !== this.state.value ) {
+      this.setState( this.getStateFromValue( newProps.value, newProps.options ) );
     }
-    if (JSON.stringify(newProps.options) !== JSON.stringify(this.props.options)) {
-      this.setState({
+    if ( JSON.stringify( newProps.options ) !== JSON.stringify( this.props.options ) ) {
+      this.setState( {
         options: newProps.options,
-        filteredOptions: this.filterOptions(newProps.options)
-      });
+        filteredOptions: this.filterOptions( newProps.options )
+      } );
     }
 
-    this.setState({
+    this.setState( {
       errorVisible: false
-    })
+    } )
   },
 
-  componentDidUpdate: function() {
-    if (this._focusAfterUpdate) {
-      clearTimeout(this._blurTimeout);
-      this._focusTimeout = setTimeout(function() {
+  componentDidUpdate: function () {
+    if ( this._focusAfterUpdate ) {
+      clearTimeout( this._blurTimeout );
+      this._focusTimeout = setTimeout( function () {
         this.getInputNode().focus();
         this._focusAfterUpdate = false;
-      }.bind(this), 50);
+      }.bind( this ), 50 );
     }
 
-    if (this._focusedOptionReveal) {
-      if (this.refs.focused && this.refs.menu) {
+    if ( this._focusedOptionReveal ) {
+      if ( this.refs.focused && this.refs.menu ) {
         var focusedDOM = this.refs.focused.getDOMNode();
         var menuDOM = this.refs.menu.getDOMNode();
         var focusedRect = focusedDOM.getBoundingClientRect();
         var menuRect = menuDOM.getBoundingClientRect();
 
-        if (focusedRect.bottom > menuRect.bottom ||
-          focusedRect.top < menuRect.top) {
+        if ( focusedRect.bottom > menuRect.bottom ||
+          focusedRect.top < menuRect.top ) {
           menuDOM.scrollTop = (focusedDOM.offsetTop + focusedDOM.clientHeight - menuDOM.offsetHeight);
         }
       }
@@ -276,90 +291,97 @@ var Select = React.createClass({
     }
   },
 
-  getStateFromValue: function(value, options) {
+  getStateFromValue: function ( value, options ) {
 
-    if (!options) {
+    if ( !options ) {
       options = this.state.options;
     }
 
     // reset internal filter string
     this._optionsFilterString = '';
 
-    var values = this.initValuesArray(value, options),
-      filteredOptions = this.filterOptions(options, values);
+    var values = this.initValuesArray( value, options ),
+      filteredOptions = this.filterOptions( options, values );
 
     return {
-      value: values.map(function(v) { return v.value; }).join(this.props.delimiter),
+      value: values.map( function ( v ) {
+        return v.value;
+      } ).join( this.props.delimiter ),
       values: values,
       inputValue: '',
       filteredOptions: filteredOptions,
-      placeholder: !this.props.multi && values.length ? values[0].label : this.props.placeholder,
-      focusedOption: !this.props.multi && values.length ? values[0] : filteredOptions[0],
+      placeholder: !this.props.multi && values.length ? values[ 0 ].label : this.props.placeholder,
+      focusedOption: !this.props.multi && values.length ? values[ 0 ] : filteredOptions[ 0 ],
       placeholderTitle: this.props.placeholderTitle,
     };
 
   },
 
-  initValuesArray: function(values, options) {
+  initValuesArray: function ( values, options ) {
 
-    if (!Array.isArray(values)) {
-      if ('string' === typeof values) {
-        values = values.split(this.props.delimiter);
+    if ( !Array.isArray( values ) ) {
+      if ( 'string' === typeof values ) {
+        values = values.split( this.props.delimiter );
       } else {
-        values = values ? [values] : [];
+        values = values ? [ values ] : [];
       }
     }
 
-    return values.map(function(val) {
-      return ('string' === typeof val) ? val = _.findWhere(options, { value: val }) || { value: val, label: val } : val;
-    }.bind(this));
+    return values.map( function ( val ) {
+      return ('string' === typeof val) ? val = _.findWhere( options, {
+        value: val
+      } ) || {
+        value: val,
+        label: val
+      } : val;
+    }.bind( this ) );
 
   },
 
-  setValue: function(value) {
+  setValue: function ( value ) {
     this._focusAfterUpdate = true;
-    var newState = this.getStateFromValue(value);
+    var newState = this.getStateFromValue( value );
     newState.isOpen = false;
-    this.fireChangeEvent(newState);
-    this.setState(newState);
+    this.fireChangeEvent( newState );
+    this.setState( newState );
 
     // hide error message
-    this.setState({
+    this.setState( {
       errorVisible: false
-    });
+    } );
   },
 
-  selectValue: function(value) {
-    if (!this.props.multi) {
-      this.setValue(value);
-    } else if (value) {
-      this.addValue(value);
+  selectValue: function ( value ) {
+    if ( !this.props.multi ) {
+      this.setValue( value );
+    } else if ( value ) {
+      this.addValue( value );
     }
   },
 
-  addValue: function(value) {
-    this.setValue(this.state.values.concat(value));
+  addValue: function ( value ) {
+    this.setValue( this.state.values.concat( value ) );
   },
 
-  popValue: function() {
-    this.setValue(_.initial(this.state.values));
+  popValue: function () {
+    this.setValue( _.initial( this.state.values ) );
   },
 
-  removeValue: function(value) {
-    this.setValue(_.without(this.state.values, value));
+  removeValue: function ( value ) {
+    this.setValue( _.without( this.state.values, value ) );
   },
 
-  clearValue: function(event) {
+  clearValue: function ( event ) {
     // if the event was triggered by a mousedown and not the primary
     // button, ignore it.
-    if (event && event.type == 'mousedown' && event.button !== 0) {
+    if ( event && event.type == 'mousedown' && event.button !== 0 ) {
       return;
     }
-    this.setValue(null);
+    this.setValue( null );
   },
 
-  resetValue: function() {
-    this.setValue(this.state.value);
+  resetValue: function () {
+    this.setValue( this.state.value );
   },
 
   getInputNode: function () {
@@ -367,338 +389,361 @@ var Select = React.createClass({
     return this.props.searchable ? input : input.getDOMNode();
   },
 
-  fireChangeEvent: function(newState) {
-    if (newState.value !== this.state.value && this.props.onChange) {
-      this.props.onChange(newState.value, newState.values);
+  fireChangeEvent: function ( newState ) {
+    if ( newState.value !== this.state.value && this.props.onChange ) {
+      this.props.onChange( newState.value, newState.values );
     }
   },
 
-  handleMouseDown: function(event) {
+  handleMouseDown: function ( event ) {
     // if the event was triggered by a mousedown and not the primary
     // button, ignore it.
-    if (event.type == 'mousedown' && event.button !== 0) {
+    if ( event.type == 'mousedown' && event.button !== 0 ) {
       return;
     }
     event.stopPropagation();
     event.preventDefault();
-    if (this.state.isFocused) {
-      this.setState({
+    if ( this.state.isFocused ) {
+      this.setState( {
         isOpen: true
-      });
+      } );
     } else {
       this._openAfterFocus = true;
       this.getInputNode().focus();
     }
   },
 
-  handleInputFocus: function() {
-    this.setState({
+  handleInputFocus: function () {
+    this.setState( {
       isFocused: true,
       isOpen: this.state.isOpen || this._openAfterFocus
-    });
+    } );
     this._openAfterFocus = false;
   },
 
-  handleInputBlur: function(event) {
-    this._blurTimeout = setTimeout(function() {
-      if (this._focusAfterUpdate) return;
-      this.setState({
+  handleInputBlur: function ( event ) {
+    this._blurTimeout = setTimeout( function () {
+      if ( this._focusAfterUpdate ) return;
+      this.setState( {
         isOpen: false,
         isFocused: false
-      });
+      } );
 
-      if(_.isEmpty(this.state.value)) {
-        this.setState({
+      if ( _.isEmpty( this.state.value ) ) {
+        this.setState( {
           errorMessage: this.props.errorMessage,
           errorVisible: true
-        });
+        } );
       } else {
-        this.setState({
+        this.setState( {
           errorVisible: false
-        });
+        } );
       }
-    }.bind(this), 50);
+    }.bind( this ), 50 );
   },
 
-  handleKeyDown: function(event) {
+  handleKeyDown: function ( event ) {
 
     switch (event.keyCode) {
 
       case 8: // backspace
-        if (!this.state.inputValue) {
+        if ( !this.state.inputValue ) {
           this.popValue();
         }
         return;
-      break;
+        break;
 
       case 9: // tab
-        if (event.shiftKey || !this.state.isOpen || !this.state.focusedOption) {
+        if ( event.shiftKey || !this.state.isOpen || !this.state.focusedOption ) {
           return;
         }
         this.selectFocusedOption();
-      break;
+        break;
 
       case 13: // enter
         this.selectFocusedOption();
-      break;
+        break;
 
       case 27: // escape
-        if (this.state.isOpen) {
+        if ( this.state.isOpen ) {
           this.resetValue();
         } else {
           this.clearValue();
         }
-      break;
+        break;
 
       case 38: // up
         this.focusPreviousOption();
-      break;
+        break;
 
       case 40: // down
         this.focusNextOption();
-      break;
+        break;
 
-      default: return;
+      default:
+        return;
     }
 
     event.preventDefault();
 
   },
 
-  handleInputChange: function(event) {
+  handleInputChange: function ( event ) {
 
     // assign an internal variable because we need to use
     // the latest value before setState() has completed.
     this._optionsFilterString = event.target.value;
 
-    if (this.props.asyncOptions) {
-      this.setState({
+    if ( this.props.asyncOptions ) {
+      this.setState( {
         isLoading: true,
         inputValue: event.target.value
-      });
-      this.loadAsyncOptions(event.target.value, {
+      } );
+      this.loadAsyncOptions( event.target.value, {
         isLoading: false,
         isOpen: true
-      });
+      } );
     } else {
-      var filteredOptions = this.filterOptions(this.state.options);
-      this.setState({
+      var filteredOptions = this.filterOptions( this.state.options );
+      this.setState( {
         isOpen: true,
         inputValue: event.target.value,
         filteredOptions: filteredOptions,
-        focusedOption: _.contains(filteredOptions, this.state.focusedOption) ? this.state.focusedOption : filteredOptions[0]
-      });
+        focusedOption: _.contains( filteredOptions, this.state.focusedOption ) ? this.state.focusedOption : filteredOptions[ 0 ]
+      } );
     }
 
   },
 
-  autoloadAsyncOptions: function() {
-    this.loadAsyncOptions('', {}, function() {});
+  autoloadAsyncOptions: function () {
+    this.loadAsyncOptions( '', {}, function () {} );
   },
 
-  loadAsyncOptions: function(input, state) {
+  loadAsyncOptions: function ( input, state ) {
 
     for (var i = 0; i <= input.length; i++) {
-      var cacheKey = input.slice(0, i);
-      if (this._optionsCache[cacheKey] && (input === cacheKey || this._optionsCache[cacheKey].complete)) {
-        var options = this._optionsCache[cacheKey].options;
-        this.setState(_.extend({
+      var cacheKey = input.slice( 0, i );
+      if ( this._optionsCache[ cacheKey ] && (input === cacheKey || this._optionsCache[ cacheKey ].complete) ) {
+        var options = this._optionsCache[ cacheKey ].options;
+        this.setState( _.extend( {
           options: options,
-          filteredOptions: this.filterOptions(options)
-        }, state));
+          filteredOptions: this.filterOptions( options )
+        }, state ) );
         return;
       }
     }
 
     var thisRequestId = this._currentRequestId = requestId++;
 
-    this.props.asyncOptions(input, function(err, data) {
+    this.props.asyncOptions( input, function ( err, data ) {
 
-      this._optionsCache[input] = data;
+      this._optionsCache[ input ] = data;
 
-      if (thisRequestId !== this._currentRequestId) {
+      if ( thisRequestId !== this._currentRequestId ) {
         return;
       }
 
-      this.setState(_.extend({
+      this.setState( _.extend( {
         options: data.options,
-        filteredOptions: this.filterOptions(data.options)
-      }, state));
+        filteredOptions: this.filterOptions( data.options )
+      }, state ) );
 
-    }.bind(this));
+    }.bind( this ) );
 
   },
 
-  filterOptions: function(options, values) {
-    if (!this.props.searchable) {
+  filterOptions: function ( options, values ) {
+    if ( !this.props.searchable ) {
       return options;
     }
 
     var filterValue = this._optionsFilterString;
-    var exclude = (values || this.state.values).map(function(i) {
+    var exclude = (values || this.state.values).map( function ( i ) {
       return i.value;
-    });
-    if (this.props.filterOptions) {
-      return this.props.filterOptions.call(this, options, filterValue, exclude);
+    } );
+    if ( this.props.filterOptions ) {
+      return this.props.filterOptions.call( this, options, filterValue, exclude );
     } else {
-      var filterOption = function(op) {
-        if (this.props.multi && _.contains(exclude, op.value)) return false;
-        if (this.props.filterOption) return this.props.filterOption.call(this, op, filterValue);
+      var filterOption = function ( op ) {
+        if ( this.props.multi && _.contains( exclude, op.value ) ) return false;
+        if ( this.props.filterOption ) return this.props.filterOption.call( this, op, filterValue );
         return !filterValue || (this.props.matchPos === 'start') ? (
-          (this.props.matchProp !== 'label' && op.value.toLowerCase().substr(0, filterValue.length) === filterValue) ||
-          (this.props.matchProp !== 'value' && op.label.toLowerCase().substr(0, filterValue.length) === filterValue)
-        ) : (
-          (this.props.matchProp !== 'label' && op.value.toLowerCase().indexOf(filterValue.toLowerCase()) >= 0) ||
-          (this.props.matchProp !== 'value' && op.label.toLowerCase().indexOf(filterValue.toLowerCase()) >= 0)
-        );
+          (this.props.matchProp !== 'label' && op.value.toLowerCase().substr( 0, filterValue.length ) === filterValue) ||
+          (this.props.matchProp !== 'value' && op.label.toLowerCase().substr( 0, filterValue.length ) === filterValue)
+          ) : (
+          (this.props.matchProp !== 'label' && op.value.toLowerCase().indexOf( filterValue.toLowerCase() ) >= 0) ||
+          (this.props.matchProp !== 'value' && op.label.toLowerCase().indexOf( filterValue.toLowerCase() ) >= 0)
+          );
       };
-      return _.filter(options, filterOption, this);
+      return _.filter( options, filterOption, this );
     }
   },
 
-  selectFocusedOption: function() {
-    return this.selectValue(this.state.focusedOption);
+  selectFocusedOption: function () {
+    return this.selectValue( this.state.focusedOption );
   },
 
-  focusOption: function(op) {
-    this.setState({
+  focusOption: function ( op ) {
+    this.setState( {
       focusedOption: op
-    });
+    } );
   },
 
-  focusNextOption: function() {
-    this.focusAdjacentOption('next');
+  focusNextOption: function () {
+    this.focusAdjacentOption( 'next' );
   },
 
-  focusPreviousOption: function() {
-    this.focusAdjacentOption('previous');
+  focusPreviousOption: function () {
+    this.focusAdjacentOption( 'previous' );
   },
 
-  focusAdjacentOption: function(dir) {
+  focusAdjacentOption: function ( dir ) {
     this._focusedOptionReveal = true;
 
     var ops = this.state.filteredOptions;
 
-    if (!this.state.isOpen) {
-      this.setState({
+    if ( !this.state.isOpen ) {
+      this.setState( {
         isOpen: true,
         inputValue: '',
-        focusedOption: this.state.focusedOption || ops[dir === 'next' ? 0 : ops.length - 1]
-      });
+        focusedOption: this.state.focusedOption || ops[ dir === 'next' ? 0 : ops.length - 1 ]
+      } );
       return;
     }
 
-    if (!ops.length) {
+    if ( !ops.length ) {
       return;
     }
 
     var focusedIndex = -1;
 
     for (var i = 0; i < ops.length; i++) {
-      if (this.state.focusedOption === ops[i]) {
+      if ( this.state.focusedOption === ops[ i ] ) {
         focusedIndex = i;
         break;
       }
     }
 
-    var focusedOption = ops[0];
+    var focusedOption = ops[ 0 ];
 
-    if (dir === 'next' && focusedIndex > -1 && focusedIndex < ops.length - 1) {
-      focusedOption = ops[focusedIndex + 1];
-    } else if (dir === 'previous') {
-      if (focusedIndex > 0) {
-        focusedOption = ops[focusedIndex - 1];
+    if ( dir === 'next' && focusedIndex > -1 && focusedIndex < ops.length - 1 ) {
+      focusedOption = ops[ focusedIndex + 1 ];
+    } else if ( dir === 'previous' ) {
+      if ( focusedIndex > 0 ) {
+        focusedOption = ops[ focusedIndex - 1 ];
       } else {
-        focusedOption = ops[ops.length - 1];
+        focusedOption = ops[ ops.length - 1 ];
       }
     }
 
-    this.setState({
+    this.setState( {
       focusedOption: focusedOption
-    });
+    } );
 
   },
 
-  unfocusOption: function(op) {
-    if (this.state.focusedOption === op) {
-      this.setState({
+  unfocusOption: function ( op ) {
+    if ( this.state.focusedOption === op ) {
+      this.setState( {
         focusedOption: null
-      });
+      } );
     }
   },
 
-  buildMenu: function() {
+  buildMenu: function () {
 
     var focusedValue = this.state.focusedOption ? this.state.focusedOption.value : null;
 
-    var ops = _.map(this.state.filteredOptions, function(op) {
+    var ops = _.map( this.state.filteredOptions, function ( op ) {
       var isFocused = focusedValue === op.value;
 
-      var optionClass = classes({
+      var optionClass = classes( {
         'Select-option': true,
         'is-focused': isFocused
-      });
+      } );
 
       var ref = isFocused ? 'focused' : null;
 
-      var mouseEnter = this.focusOption.bind(this, op),
-        mouseLeave = this.unfocusOption.bind(this, op),
-        mouseDown = this.selectValue.bind(this, op);
+      var mouseEnter = this.focusOption.bind( this, op ),
+        mouseLeave = this.unfocusOption.bind( this, op ),
+        mouseDown = this.selectValue.bind( this, op );
 
-      return <div ref={ref} key={'option-' + op.value} className={optionClass} onMouseEnter={mouseEnter} onMouseLeave={mouseLeave} onClick={mouseDown}>{op.label}</div>;
+      return <div ref={ ref }
+                  key={ 'option-' + op.value }
+                  className={ optionClass }
+                  onMouseEnter={ mouseEnter }
+                  onMouseLeave={ mouseLeave }
+                  onClick={ mouseDown }>
+               { op.label }
+             </div>;
 
-    }, this);
+    }, this );
 
     return ops.length ? ops : (
       <div className="Select-noresults">
-        {this.props.asyncOptions && !this.state.inputValue ? this.props.searchPromptText : this.props.noResultsText}
+        { this.props.asyncOptions && !this.state.inputValue ? this.props.searchPromptText : this.props.noResultsText }
       </div>
-    );
+      );
 
   },
 
   isValid: function () {
-    if(_.isEmpty(this.state.value)) {
-      this.setState({
+    if ( _.isEmpty( this.state.value ) ) {
+      this.setState( {
         valid: false,
         errorVisible: true
-      });
+      } );
     }
   },
 
-  render: function() {
+  render: function () {
 
-    var selectClass = classes('Select', this.props.className, {
+    var selectClass = classes( 'Select', this.props.className, {
       'is-multi': this.props.multi,
       'is-searchable': this.props.searchable,
       'is-open': this.state.isOpen,
       'is-focused': this.state.isFocused,
       'is-loading': this.state.isLoading,
       'has-value': this.state.value
-    });
+    } );
 
     var value = [];
 
-    if (this.props.multi) {
-      this.state.values.forEach(function(val) {
-        var props = _.extend({
+    if ( this.props.multi ) {
+      this.state.values.forEach( function ( val ) {
+        var props = _.extend( {
           key: val.value,
-          onRemove: this.removeValue.bind(this, val)
-        }, val);
-        value.push(<Value {...props} />);
-      }, this);
+          onRemove: this.removeValue.bind( this, val )
+        }, val );
+        value.push( <Value {...props} /> );
+      }, this );
     }
 
-    if (!this.state.inputValue && (!this.props.multi || !value.length)) {
-      value.push(<div className="Select-actual-placeholder" key="placeholderTitle">{this.state.placeholderTitle}</div>);
-      value.push(<div className="Select-placeholder" key="placeholder">{this.state.placeholder}</div>);
-    } else if (this.state.inputValue) {
-      value.push(<div className="Select-actual-placeholder" key="placeholderTitle">{this.state.placeholderTitle}</div>);
+    if ( !this.state.inputValue && (!this.props.multi || !value.length) ) {
+      value.push( <div className="Select-actual-placeholder" key="placeholderTitle">
+                    { this.state.placeholderTitle }
+                  </div> );
+      value.push( <div className="Select-placeholder" key="placeholder">
+                    { this.state.placeholder }
+                  </div> );
+    } else if ( this.state.inputValue ) {
+      value.push( <div className="Select-actual-placeholder" key="placeholderTitle">
+                    { this.state.placeholderTitle }
+                  </div> );
     }
 
     var loading = this.state.isLoading ? <span className="Select-loading" aria-hidden="true" /> : null;
-    var clear = this.props.clearable && this.state.value ? <span className="Select-clear" title={this.props.multi ? this.props.clearAllText : this.props.clearValueText} aria-label={this.props.multi ? this.props.clearAllText : this.props.clearValueText} onMouseDown={this.clearValue} onClick={this.clearValue} dangerouslySetInnerHTML={{ __html: '&times;' }} /> : null;
-    var menu = this.state.isOpen ? <div ref="menu" onMouseDown={this.handleMouseDown} className="Select-menu">{this.buildMenu()} </div> : null;
+    var clear = this.props.clearable && this.state.value ? <span className="Select-clear"
+                                                                 title={ this.props.multi ? this.props.clearAllText : this.props.clearValueText }
+                                                                 aria-label={ this.props.multi ? this.props.clearAllText : this.props.clearValueText }
+                                                                 onMouseDown={ this.clearValue }
+                                                                 onClick={ this.clearValue }
+                                                                 dangerouslySetInnerHTML={ { __html: '&times;' } } /> : null;
+    var menu = this.state.isOpen ? <div ref="menu"
+                                        onMouseDown={ this.handleMouseDown }
+                                        className="Select-menu">
+                                     { this.buildMenu() }
+                                   </div> : null;
 
     var commonProps = {
       ref: 'input',
@@ -709,32 +754,41 @@ var Select = React.createClass({
     };
     var input;
 
-    if (this.props.searchable) {
-      input = <Input value={this.state.inputValue} defaultValue="" onChange={this.handleInputChange} minWidth="5" {...commonProps} />;
+    if ( this.props.searchable ) {
+      input = <Input value={ this.state.inputValue }
+                     defaultValue=""
+                     onChange={ this.handleInputChange }
+                     minWidth="5"
+                     {...commonProps} />;
     } else {
-      input = <div {...commonProps}>&nbsp;</div>;
+      input = <div {...commonProps}>
+                &nbsp;
+              </div>;
     }
 
     return (
-      <div ref="wrapper" className={selectClass}>
-        <input type="hidden" ref="value" name={this.props.name} value={this.state.value} />
-        <div className="Select-control" ref="control" onKeyDown={this.handleKeyDown} onMouseDown={this.handleMouseDown} onTouchEnd={this.handleMouseDown}>
-          {value}
-          {input}
-          <span className="Select-arrow" />
-          {loading}
-        </div>
-        {menu}
-
-        <InputError 
-          visible={this.state.errorVisible} 
-          errorMessage={this.state.errorMessage} 
-        />
+    <div ref="wrapper" className={ selectClass }>
+      <input type="hidden"
+             ref="value"
+             name={ this.props.name }
+             value={ this.state.value } />
+      <div className="Select-control"
+           ref="control"
+           onKeyDown={ this.handleKeyDown }
+           onMouseDown={ this.handleMouseDown }
+           onTouchEnd={ this.handleMouseDown }>
+        { value }
+        { input }
+        <span className="Select-arrow" />
+        { loading }
       </div>
+      { menu }
+      <InputError visible={ this.state.errorVisible } errorMessage={ this.state.errorMessage } />
+    </div>
     );
 
   }
 
-});
+} );
 
 module.exports = Select;

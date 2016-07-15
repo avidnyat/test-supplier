@@ -45,7 +45,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(1);
-	module.exports = __webpack_require__(574);
+	module.exports = __webpack_require__(573);
 
 
 /***/ },
@@ -20344,11 +20344,11 @@
 	var DashboardScreen = __webpack_require__(243);
 	var BookingScreen = __webpack_require__(347);
 	var BookingDetailScreen = __webpack_require__(454);
-	var ProfileScreen = __webpack_require__(456);
-	var EditVariantScreen = __webpack_require__(462);
-	var ListingScreen = __webpack_require__(560);
-	var ListingDetailsScreen = __webpack_require__(561);
-	var NotificationSystem = __webpack_require__(567);
+	var ProfileScreen = __webpack_require__(455);
+	var EditVariantScreen = __webpack_require__(461);
+	var ListingScreen = __webpack_require__(559);
+	var ListingDetailsScreen = __webpack_require__(560);
+	var NotificationSystem = __webpack_require__(566);
 	var App = React.createClass({
 	  displayName: 'App',
 
@@ -20410,7 +20410,6 @@
 	  },
 
 	  componentDidMount: function componentDidMount() {
-
 	    this._notificationSystem = this.refs.notificationSystem;
 	    $("#register").addClass("animated rotateInUpRight");
 	    $("#login").addClass("animated rotateInUpRight");
@@ -26202,23 +26201,23 @@
 	      yourName: null,
 	      phonenumber: null,
 
-	      passwordType: 'password',
+	      passwordType: "password",
 	      email: null,
 	      companyName: null,
 	      password: null,
 	      statesValue: null,
-	      forbiddenWords: ['password', 'user', 'username'],
-	      registerFlag: 'hide',
-	      loginFlag: 'show'
+	      forbiddenWords: ["password", "user", "username"],
+	      registerFlag: "hide",
+	      loginFlag: "show"
 	    };
 	  },
 	  componentDidMount: function componentDidMount() {
-	    $('body').addClass('before-login');
+	    $("body").addClass("before-login");
 	    $('.form-animate').addClass('animated bounceInLeft');
 	    $('.login-text').addClass('animated bounceInRight');
 	    this.setState({
-	      actionText: '',
-	      action: 'Login Now'
+	      actionText: "",
+	      action: "Login Now"
 	    });
 	  },
 	  handlePasswordInput: function handlePasswordInput(event) {
@@ -26238,21 +26237,21 @@
 	      };
 	      var self = this;
 	      var data = {
-	        'vendor': {
-	          'name': this.state.yourName,
-	          'email': this.state.email,
-	          'password': this.state.password,
-	          'phone1': this.state.phonenumber,
-	          'company_name': this.state.companyName,
-	          'company_website': this.state.companyWebsite
+	        "vendor": {
+	          "name": this.state.yourName,
+	          "email": this.state.email,
+	          "password": this.state.password,
+	          "phone1": this.state.phonenumber,
+	          "company_name": this.state.companyName,
+	          "company_website": this.state.companyWebsite
 	        }
 	      };
 	      this.props.route.config().httpInterceptor(this.props.route.config().url().CREATE_ACCOUNT, 'POST', data).then(function (result) {
-	        self.props.route.notification._addNotification(e, 'success', 'Successfully registered !!!');
-	        window.location.href = '/#/thank-you';
+	        self.props.route.notification._addNotification(e, "success", "Successfully registered !!!");
+	        window.location.href = "/#/thank-you";
 	      }, function (result) {
 	        var message = JSON.parse(result.responseText);
-	        self.props.route.notification._addNotification(e, 'error', message.message);
+	        self.props.route.notification._addNotification(e, "error", message.message);
 	      });
 	    } else {
 	      this.refs.yourName.isValid();
@@ -26284,13 +26283,13 @@
 	    });
 	  },
 	  showHidePassword: function showHidePassword(event) {
-	    if (this.state.passwordType == 'password') {
+	    if (this.state.passwordType == "password") {
 	      this.setState({
-	        passwordType: 'text'
+	        passwordType: "text"
 	      });
 	    } else {
 	      this.setState({
-	        passwordType: 'password'
+	        passwordType: "password"
 	      });
 	    }
 	  },
@@ -26367,12 +26366,14 @@
 	                        { className: 'icon' },
 	                        React.createElement('img', { src: 'images/icon-profile.png' })
 	                      ),
-	                      React.createElement(Input, { text: 'Your Name',
+	                      React.createElement(Input, {
+	                        text: 'Your Name',
 	                        ref: 'yourName',
 	                        validate: this.isEmpty,
 	                        value: this.state.yourName,
 	                        onChange: this.handleNameInput,
-	                        emptyMessage: 'Your name can\'t be empty' })
+	                        emptyMessage: 'Your name can\'t be empty'
+	                      })
 	                    ),
 	                    React.createElement(
 	                      'div',
@@ -26382,12 +26383,14 @@
 	                        { className: 'icon' },
 	                        React.createElement('img', { src: 'images/icon-phone2.png' })
 	                      ),
-	                      React.createElement(Input, { text: 'Phone Number',
+	                      React.createElement(Input, {
+	                        text: 'Phone Number',
 	                        ref: 'phonenumber',
 	                        validate: this.isEmpty,
 	                        value: this.state.phonenumber,
 	                        onChange: this.handlephoneInput,
-	                        emptyMessage: 'Phone number can\'t be empty' })
+	                        emptyMessage: 'Phone number can\'t be empty'
+	                      })
 	                    ),
 	                    React.createElement(
 	                      'div',
@@ -26397,7 +26400,8 @@
 	                        { className: 'icon' },
 	                        React.createElement('img', { src: 'images/icon-email.png' })
 	                      ),
-	                      React.createElement(Input, { text: 'Email Address',
+	                      React.createElement(Input, {
+	                        text: 'Email Address',
 	                        ref: 'email',
 	                        type: 'text',
 	                        defaultValue: this.state.email,
@@ -26406,7 +26410,8 @@
 	                        onChange: this.handleEmailInput,
 	                        errorMessage: 'Email is invalid',
 	                        emptyMessage: 'Email can\'t be empty',
-	                        errorVisible: this.state.showEmailError })
+	                        errorVisible: this.state.showEmailError
+	                      })
 	                    ),
 	                    React.createElement(
 	                      'div',
@@ -26421,7 +26426,8 @@
 	                        { className: 'icon view-pw', onClick: this.showHidePassword },
 	                        React.createElement('img', { src: 'images/icon-view-pw.png' })
 	                      ),
-	                      React.createElement(Input, { text: 'Create Password',
+	                      React.createElement(Input, {
+	                        text: 'Create Password',
 	                        type: this.state.passwordType,
 	                        ref: 'password',
 	                        validator: 'true',
@@ -26430,7 +26436,8 @@
 	                        forbiddenWords: this.state.forbiddenWords,
 	                        value: this.state.password,
 	                        emptyMessage: 'Password is invalid',
-	                        onChange: this.handlePasswordInput })
+	                        onChange: this.handlePasswordInput
+	                      })
 	                    ),
 	                    React.createElement(
 	                      'div',
@@ -26440,12 +26447,14 @@
 	                        { className: 'icon' },
 	                        React.createElement('img', { src: 'images/icon-company.png' })
 	                      ),
-	                      React.createElement(Input, { text: 'Company Name',
+	                      React.createElement(Input, {
+	                        text: 'Company Name',
 	                        ref: 'companyName',
 	                        validate: this.isEmpty,
 	                        value: this.state.companyName,
 	                        onChange: this.handleCompanyInput,
-	                        emptyMessage: 'Company name can\'t be empty' })
+	                        emptyMessage: 'Company name can\'t be empty'
+	                      })
 	                    ),
 	                    React.createElement(
 	                      'div',
@@ -26455,10 +26464,12 @@
 	                        { className: 'icon' },
 	                        React.createElement('img', { src: 'images/icon-web.png' })
 	                      ),
-	                      React.createElement(Input, { text: 'Company Website',
+	                      React.createElement(Input, {
+	                        text: 'Company Website',
 	                        ref: 'companyWebiste',
 	                        value: this.state.companyWebsite,
-	                        onChange: this.handleCompanyWebsiteInput })
+	                        onChange: this.handleCompanyWebsiteInput
+	                      })
 	                    ),
 	                    React.createElement(
 	                      'button',
@@ -26645,7 +26656,7 @@
 
 	  countCapitals: function countCapitals(value) {
 	    var str = value;
-	    return str.replace(/[^A-Z]/g, '').length;
+	    return str.replace(/[^A-Z]/g, "").length;
 	  },
 
 	  countNumbers: function countNumbers(value) {
@@ -26655,7 +26666,7 @@
 
 	  checkWords: function checkWords(value) {
 	    return _.some(this.state.forbiddenWords, function (word) {
-	      var matched = word === value ? true : '';
+	      var matched = word === value ? true : "";
 	      return matched;
 	    });
 	  },
@@ -26675,7 +26686,8 @@
 	    var validator;
 
 	    if (this.state.validator) {
-	      validator = React.createElement(PasswordValidator, { ref: 'passwordValidator',
+	      validator = React.createElement(PasswordValidator, {
+	        ref: 'passwordValidator',
 	        visible: this.state.validatorVisible,
 	        name: this.props.text,
 	        value: this.state.value,
@@ -26683,7 +26695,8 @@
 	        valid: this.state.allValidatorValid,
 	        forbiddenWords: this.state.forbiddenWords,
 	        minCharacters: this.props.minCharacters,
-	        requireNumbers: this.props.requireNumbers });
+	        requireNumbers: this.props.requireNumbers
+	      });
 	    }
 
 	    return React.createElement(
@@ -26707,20 +26720,28 @@
 	        onChange: this.handleChange,
 	        onFocus: this.handleFocus,
 	        onBlur: this.handleBlur,
-	        autoComplete: 'off' })),
-	      React.createElement(InputError, { visible: this.state.errorVisible, errorMessage: this.state.errorMessage }),
+	        autoComplete: 'off'
+	      })),
+	      React.createElement(InputError, {
+	        visible: this.state.errorVisible,
+	        errorMessage: this.state.errorMessage
+	      }),
 	      React.createElement(
 	        'div',
 	        { className: 'validationIcons' },
 	        React.createElement(
 	          'i',
 	          { className: 'input_error_icon', onMouseEnter: this.mouseEnterError },
-	          React.createElement(Icon, { type: 'circle_error' })
+	          ' ',
+	          React.createElement(Icon, { type: 'circle_error' }),
+	          ' '
 	        ),
 	        React.createElement(
 	          'i',
 	          { className: 'input_valid_icon' },
-	          React.createElement(Icon, { type: 'circle_tick' })
+	          ' ',
+	          React.createElement(Icon, { type: 'circle_tick' }),
+	          ' '
 	        )
 	      ),
 	      validator
@@ -28325,10 +28346,7 @@
 	        return React.createElement(
 	          'svg',
 	          { viewBox: '0 0 34 34' },
-	          React.createElement('path', { 'fill-rule': 'evenodd',
-	            'clip-rule': 'evenodd',
-	            fill: '#191717',
-	            d: 'M32.6,16.3c0,7.2-4.7,13.3-11.1,15.5c-0.8,0.2-1.1-0.3-1.1-0.8 c0-0.5,0-2.3,0-4.5c0-1.5-0.5-2.5-1.1-3c3.6-0.4,7.4-1.8,7.4-8c0-1.8-0.6-3.2-1.7-4.4c0.2-0.4,0.7-2.1-0.2-4.3c0,0-1.4-0.4-4.5,1.7 c-1.3-0.4-2.7-0.5-4.1-0.5c-1.4,0-2.8,0.2-4.1,0.5C9.1,6.3,7.7,6.8,7.7,6.8C6.8,9,7.4,10.7,7.6,11.1c-1,1.1-1.7,2.6-1.7,4.4 c0,6.2,3.8,7.6,7.4,8.1c-0.5,0.4-0.9,1.1-1,2.2c-0.9,0.4-3.3,1.1-4.7-1.4c0,0-0.9-1.6-2.5-1.7c0,0-1.6,0-0.1,1c0,0,1.1,0.5,1.8,2.4 c0,0,1,3.2,5.5,2.2c0,1.4,0,2.4,0,2.8c0,0.4-0.3,0.9-1.1,0.8C4.7,29.6,0,23.5,0,16.3C0,7.3,7.3,0,16.3,0C25.3,0,32.6,7.3,32.6,16.3z ' })
+	          React.createElement('path', { 'fill-rule': 'evenodd', 'clip-rule': 'evenodd', fill: '#191717', d: 'M32.6,16.3c0,7.2-4.7,13.3-11.1,15.5c-0.8,0.2-1.1-0.3-1.1-0.8 c0-0.5,0-2.3,0-4.5c0-1.5-0.5-2.5-1.1-3c3.6-0.4,7.4-1.8,7.4-8c0-1.8-0.6-3.2-1.7-4.4c0.2-0.4,0.7-2.1-0.2-4.3c0,0-1.4-0.4-4.5,1.7 c-1.3-0.4-2.7-0.5-4.1-0.5c-1.4,0-2.8,0.2-4.1,0.5C9.1,6.3,7.7,6.8,7.7,6.8C6.8,9,7.4,10.7,7.6,11.1c-1,1.1-1.7,2.6-1.7,4.4 c0,6.2,3.8,7.6,7.4,8.1c-0.5,0.4-0.9,1.1-1,2.2c-0.9,0.4-3.3,1.1-4.7-1.4c0,0-0.9-1.6-2.5-1.7c0,0-1.6,0-0.1,1c0,0,1.1,0.5,1.8,2.4 c0,0,1,3.2,5.5,2.2c0,1.4,0,2.4,0,2.8c0,0.4-0.3,0.9-1.1,0.8C4.7,29.6,0,23.5,0,16.3C0,7.3,7.3,0,16.3,0C25.3,0,32.6,7.3,32.6,16.3z ' })
 	        );
 	    }
 	  }
@@ -28499,18 +28517,20 @@
 	          { className: 'rules_list' },
 	          React.createElement(
 	            'li',
-	            { className: cx({
-	                'valid': this.props.validData.minChars
-	              }) },
+	            { className: cx({ 'valid': this.props.validData.minChars }) },
 	            React.createElement(
 	              'i',
 	              { className: 'icon_valid' },
-	              React.createElement(Icon, { type: 'circle_tick_filled' })
+	              ' ',
+	              React.createElement(Icon, { type: 'circle_tick_filled' }),
+	              ' '
 	            ),
 	            React.createElement(
 	              'i',
 	              { className: 'icon_invalid' },
-	              React.createElement(Icon, { type: 'circle_error' })
+	              ' ',
+	              React.createElement(Icon, { type: 'circle_error' }),
+	              ' '
 	            ),
 	            React.createElement(
 	              'span',
@@ -28521,18 +28541,20 @@
 	          ),
 	          React.createElement(
 	            'li',
-	            { className: cx({
-	                'valid': this.props.validData.numbers
-	              }) },
+	            { className: cx({ 'valid': this.props.validData.numbers }) },
 	            React.createElement(
 	              'i',
 	              { className: 'icon_valid' },
-	              React.createElement(Icon, { type: 'circle_tick_filled' })
+	              ' ',
+	              React.createElement(Icon, { type: 'circle_tick_filled' }),
+	              ' '
 	            ),
 	            React.createElement(
 	              'i',
 	              { className: 'icon_invalid' },
-	              React.createElement(Icon, { type: 'circle_error' })
+	              ' ',
+	              React.createElement(Icon, { type: 'circle_error' }),
+	              ' '
 	            ),
 	            React.createElement(
 	              'span',
@@ -28544,18 +28566,20 @@
 	          ),
 	          React.createElement(
 	            'li',
-	            { className: cx({
-	                'valid': this.props.validData.words
-	              }) },
+	            { className: cx({ 'valid': this.props.validData.words }) },
 	            React.createElement(
 	              'i',
 	              { className: 'icon_valid' },
-	              React.createElement(Icon, { type: 'circle_tick_filled' })
+	              ' ',
+	              React.createElement(Icon, { type: 'circle_tick_filled' }),
+	              ' '
 	            ),
 	            React.createElement(
 	              'i',
 	              { className: 'icon_invalid' },
-	              React.createElement(Icon, { type: 'circle_error' })
+	              ' ',
+	              React.createElement(Icon, { type: 'circle_error' }),
+	              ' '
 	            ),
 	            React.createElement(
 	              'span',
@@ -28612,14 +28636,7 @@
 
 	var requestId = 0;
 
-	var sizerStyle = {
-	  position: 'absolute',
-	  visibility: 'hidden',
-	  height: 0,
-	  width: 200,
-	  overflow: 'scroll',
-	  whiteSpace: 'nowrap'
-	};
+	var sizerStyle = { position: 'absolute', visibility: 'hidden', height: 0, width: 200, overflow: 'scroll', whiteSpace: 'nowrap' };
 
 	var Input = React.createClass({
 
@@ -28706,13 +28723,8 @@
 	    return React.createElement(
 	      'div',
 	      { className: this.props.className, style: wrapperStyle },
-	      React.createElement('input', _extends({}, this.props, {
-	        ref: 'input',
-	        className: this.props.inputClassName,
-	        style: inputStyle })),
-	      React.createElement('div', { ref: 'sizer',
-	        style: sizerStyle,
-	        dangerouslySetInnerHTML: { __html: nbspValue } })
+	      React.createElement('input', _extends({}, this.props, { ref: 'input', className: this.props.inputClassName, style: inputStyle })),
+	      React.createElement('div', { ref: 'sizer', style: sizerStyle, dangerouslySetInnerHTML: { __html: nbspValue } })
 	    );
 	  }
 
@@ -28736,10 +28748,7 @@
 	      { className: 'Select-item' },
 	      React.createElement(
 	        'span',
-	        { className: 'Select-item-icon',
-	          onMouseDown: this.blockEvent,
-	          onClick: this.props.onRemove,
-	          onTouchEnd: this.props.onRemove },
+	        { className: 'Select-item-icon', onMouseDown: this.blockEvent, onClick: this.props.onRemove, onTouchEnd: this.props.onRemove },
 	        '×'
 	      ),
 	      React.createElement(
@@ -28917,12 +28926,7 @@
 	    }
 
 	    return values.map(function (val) {
-	      return 'string' === typeof val ? val = _.findWhere(options, {
-	        value: val
-	      }) || {
-	        value: val,
-	        label: val
-	      } : val;
+	      return 'string' === typeof val ? val = _.findWhere(options, { value: val }) || { value: val, label: val } : val;
 	    }.bind(this));
 	  },
 
@@ -29253,12 +29257,7 @@
 
 	      return React.createElement(
 	        'div',
-	        { ref: ref,
-	          key: 'option-' + op.value,
-	          className: optionClass,
-	          onMouseEnter: mouseEnter,
-	          onMouseLeave: mouseLeave,
-	          onClick: mouseDown },
+	        { ref: ref, key: 'option-' + op.value, className: optionClass, onMouseEnter: mouseEnter, onMouseLeave: mouseLeave, onClick: mouseDown },
 	        op.label
 	      );
 	    }, this);
@@ -29322,18 +29321,12 @@
 	    }
 
 	    var loading = this.state.isLoading ? React.createElement('span', { className: 'Select-loading', 'aria-hidden': 'true' }) : null;
-	    var clear = this.props.clearable && this.state.value ? React.createElement('span', { className: 'Select-clear',
-	      title: this.props.multi ? this.props.clearAllText : this.props.clearValueText,
-	      'aria-label': this.props.multi ? this.props.clearAllText : this.props.clearValueText,
-	      onMouseDown: this.clearValue,
-	      onClick: this.clearValue,
-	      dangerouslySetInnerHTML: { __html: '&times;' } }) : null;
+	    var clear = this.props.clearable && this.state.value ? React.createElement('span', { className: 'Select-clear', title: this.props.multi ? this.props.clearAllText : this.props.clearValueText, 'aria-label': this.props.multi ? this.props.clearAllText : this.props.clearValueText, onMouseDown: this.clearValue, onClick: this.clearValue, dangerouslySetInnerHTML: { __html: '&times;' } }) : null;
 	    var menu = this.state.isOpen ? React.createElement(
 	      'div',
-	      { ref: 'menu',
-	        onMouseDown: this.handleMouseDown,
-	        className: 'Select-menu' },
-	      this.buildMenu()
+	      { ref: 'menu', onMouseDown: this.handleMouseDown, className: 'Select-menu' },
+	      this.buildMenu(),
+	      ' '
 	    ) : null;
 
 	    var commonProps = {
@@ -29346,11 +29339,7 @@
 	    var input;
 
 	    if (this.props.searchable) {
-	      input = React.createElement(Input, _extends({ value: this.state.inputValue,
-	        defaultValue: '',
-	        onChange: this.handleInputChange,
-	        minWidth: '5'
-	      }, commonProps));
+	      input = React.createElement(Input, _extends({ value: this.state.inputValue, defaultValue: '', onChange: this.handleInputChange, minWidth: '5' }, commonProps));
 	    } else {
 	      input = React.createElement(
 	        'div',
@@ -29362,24 +29351,20 @@
 	    return React.createElement(
 	      'div',
 	      { ref: 'wrapper', className: selectClass },
-	      React.createElement('input', { type: 'hidden',
-	        ref: 'value',
-	        name: this.props.name,
-	        value: this.state.value }),
+	      React.createElement('input', { type: 'hidden', ref: 'value', name: this.props.name, value: this.state.value }),
 	      React.createElement(
 	        'div',
-	        { className: 'Select-control',
-	          ref: 'control',
-	          onKeyDown: this.handleKeyDown,
-	          onMouseDown: this.handleMouseDown,
-	          onTouchEnd: this.handleMouseDown },
+	        { className: 'Select-control', ref: 'control', onKeyDown: this.handleKeyDown, onMouseDown: this.handleMouseDown, onTouchEnd: this.handleMouseDown },
 	        value,
 	        input,
 	        React.createElement('span', { className: 'Select-arrow' }),
 	        loading
 	      ),
 	      menu,
-	      React.createElement(InputError, { visible: this.state.errorVisible, errorMessage: this.state.errorMessage })
+	      React.createElement(InputError, {
+	        visible: this.state.errorVisible,
+	        errorMessage: this.state.errorMessage
+	      })
 	    );
 	  }
 
@@ -29466,103 +29451,20 @@
 	var ThankYouScreen = React.createClass({
 	  displayName: 'ThankYouScreen',
 
-	  componentDidMount: function componentDidMount() {
-	    $('body').addClass('before-login');
-	  },
 
 	  render: function render() {
 	    return React.createElement(
 	      'div',
-	      { className: 'application_wrapper' },
+	      { className: "thank-you " + this.props.position },
 	      React.createElement(
-	        'div',
-	        { className: 'page-body grey2' },
-	        React.createElement(
-	          'div',
-	          { className: 'container text-center login-text' },
-	          React.createElement(
-	            'h2',
-	            null,
-	            'Be our agent ',
-	            React.createElement(
-	              'span',
-	              { className: 'secondary' },
-	              'increase our revenue!'
-	            )
-	          ),
-	          React.createElement(
-	            'p',
-	            null,
-	            'Thrillophilia helps you market your products to millions of its customers!'
-	          )
-	        )
+	        'h1',
+	        null,
+	        'Thank You'
 	      ),
 	      React.createElement(
-	        'div',
-	        { className: 'page-body bg-img' },
-	        React.createElement(
-	          'div',
-	          { className: 'container' },
-	          React.createElement(
-	            'div',
-	            { className: 'register' },
-	            React.createElement(
-	              'div',
-	              { className: 'row' },
-	              React.createElement('div', { className: 'col-sm-1' }),
-	              React.createElement(
-	                'div',
-	                { className: 'col-sm-10 form-animate' },
-	                React.createElement(
-	                  'div',
-	                  { className: 'row text-center hand-padding' },
-	                  React.createElement(
-	                    'div',
-	                    { className: 'col-sm-12' },
-	                    React.createElement('img', { src: './images/hand.png', height: '85' })
-	                  ),
-	                  React.createElement(
-	                    'div',
-	                    { className: 'col-sm-12 thanks-message' },
-	                    React.createElement(
-	                      'span',
-	                      null,
-	                      'Thanks! We will be in touch soon.'
-	                    )
-	                  ),
-	                  React.createElement(
-	                    'div',
-	                    { className: 'col-sm-12 thanks-sub-heading' },
-	                    React.createElement(
-	                      'span',
-	                      null,
-	                      'You have successfully sent a request to be an Agent.'
-	                    )
-	                  ),
-	                  React.createElement(
-	                    'div',
-	                    { className: 'col-sm-12 message' },
-	                    React.createElement(
-	                      'span',
-	                      null,
-	                      'We are evaluating your details and will get back to you'
-	                    )
-	                  ),
-	                  React.createElement(
-	                    'div',
-	                    { className: 'col-sm-12 message-sub' },
-	                    React.createElement(
-	                      'span',
-	                      null,
-	                      'shortly to know more about your business!'
-	                    )
-	                  )
-	                )
-	              ),
-	              React.createElement('div', { className: 'col-sm-1' })
-	            )
-	          )
-	        )
+	        _reactRouter.Link,
+	        { to: 'login' },
+	        'Login Now '
 	      )
 	    );
 	  }
@@ -29592,20 +29494,17 @@
 
 	  getInitialState: function getInitialState() {
 	    return {
-	      passwordType: 'password',
+	      passwordType: "password",
 	      resetEmail: '',
 	      email: '',
 	      password: '',
 	      statesValue: '',
-	      forbiddenWords: ['password', 'user', 'username']
+	      forbiddenWords: ["password", "user", "username"]
 	    };
 	  },
 	  componentDidMount: function componentDidMount() {
-	    if (localStorage.getItem('clientInfo')) {
-	      window.location.href = '/#/dashboard';
-	    }
-	    $('#pageloader').fadeOut();
-	    $('body').addClass('before-login');
+	    $("#pageloader").fadeOut();
+	    $("body").addClass("before-login");
 	    $('.form').addClass('animated bounceInLeft');
 	    $('.login-text').addClass('animated bounceInRight');
 	  },
@@ -29625,19 +29524,19 @@
 	      };
 	      var self = this;
 	      var data = {
-	        'email': this.state.email,
-	        'password': this.state.password
+	        "email": this.state.email,
+	        "password": this.state.password
 
 	      };
 	      this.props.route.config().httpInterceptor(this.props.route.config().url().LOGIN, 'POST', data).then(function (result) {
-	        self.props.route.notification._addNotification(e, 'success', 'Successfully login !!!');
-	        localStorage.setItem('clientInfo', JSON.stringify(result));
+	        self.props.route.notification._addNotification(e, "success", "Successfully login !!!");
+	        localStorage.setItem("clientInfo", JSON.stringify(result));
 	        self.props.route.notification.login();
-	        console.log(JSON.parse(localStorage.getItem('clientInfo')));
-	        window.location.href = '/#/dashboard';
+	        console.log(JSON.parse(localStorage.getItem("clientInfo")));
+	        window.location.href = "/#/dashboard";
 	      }, function (result) {
 	        var message = JSON.parse(result.responseText);
-	        self.props.route.notification._addNotification(e, 'error', message.message);
+	        self.props.route.notification._addNotification(e, "error", message.message);
 	      });
 	    } else {
 
@@ -29653,19 +29552,19 @@
 
 	    if (canProceed) {
 	      var data = {
-	        'vendor': {
+	        "vendor": {
 	          email: this.state.resetEmail
 	        }
 	      };
 	      var self = this;
 
 	      this.props.route.config().httpInterceptor(this.props.route.config().url().SEND_RESET_PASSWORD_EMAIL, 'POST', data).then(function (result) {
-	        self.props.route.notification._addNotification(e, 'success', 'Successfully Email Sent !!!');
+	        self.props.route.notification._addNotification(e, "success", "Successfully Email Sent !!!");
 	        $('#forgotPwModal').modal('hide');
 	        //window.location.href="/#/thank-you";
 	      }, function (result) {
 	        var message = JSON.parse(result.responseText);
-	        self.props.route.notification._addNotification(e, 'error', message.message);
+	        self.props.route.notification._addNotification(e, "error", message.message);
 	      });
 	    } else {
 
@@ -29683,13 +29582,13 @@
 	    });
 	  },
 	  showHidePassword: function showHidePassword(event) {
-	    if (this.state.passwordType == 'password') {
+	    if (this.state.passwordType == "password") {
 	      this.setState({
-	        passwordType: 'text'
+	        passwordType: "text"
 	      });
 	    } else {
 	      this.setState({
-	        passwordType: 'password'
+	        passwordType: "password"
 	      });
 	    }
 	  },
@@ -29768,7 +29667,8 @@
 	                    { className: 'icon' },
 	                    React.createElement('img', { src: 'images/icon-email.png' })
 	                  ),
-	                  React.createElement(Input, { text: 'Email Address',
+	                  React.createElement(Input, {
+	                    text: 'Email Address',
 	                    ref: 'email',
 	                    type: 'text',
 	                    tabIndex: '1',
@@ -29778,7 +29678,8 @@
 	                    onChange: this.handleEmailInput,
 	                    errorMessage: 'Email is invalid',
 	                    emptyMessage: 'Email can\'t be empty',
-	                    errorVisible: this.state.showEmailError })
+	                    errorVisible: this.state.showEmailError
+	                  })
 	                ),
 	                React.createElement(
 	                  'div',
@@ -29797,7 +29698,8 @@
 	                      React.createElement('img', { src: 'images/icon-view-pw.png' })
 	                    )
 	                  ),
-	                  React.createElement(Input, { text: 'Password',
+	                  React.createElement(Input, {
+	                    text: 'Password',
 	                    type: this.state.passwordType,
 	                    ref: 'password',
 	                    tabIndex: '2',
@@ -29805,16 +29707,16 @@
 	                    forbiddenWords: this.state.forbiddenWords,
 	                    value: this.state.password,
 	                    emptyMessage: 'Password can\'t be empty',
-	                    onChange: this.handlePasswordInput })
+	                    onChange: this.handlePasswordInput
+
+	                  })
 	                ),
 	                React.createElement(
 	                  'p',
 	                  { className: 'text-right' },
 	                  React.createElement(
 	                    'a',
-	                    { href: '#',
-	                      'data-toggle': 'modal',
-	                      'data-target': '#forgotPwModal' },
+	                    { href: '#', 'data-toggle': 'modal', 'data-target': '#forgotPwModal' },
 	                    'Forget Password?'
 	                  )
 	                ),
@@ -29840,10 +29742,7 @@
 	      ),
 	      React.createElement(
 	        'div',
-	        { className: 'modal forgot-pw-modal fade',
-	          id: 'forgotPwModal',
-	          tabindex: '-1',
-	          role: 'dialog' },
+	        { className: 'modal forgot-pw-modal fade', id: 'forgotPwModal', tabindex: '-1', role: 'dialog' },
 	        React.createElement(
 	          'div',
 	          { className: 'modal-dialog', role: 'document' },
@@ -29855,10 +29754,7 @@
 	              { className: 'modal-body text-center' },
 	              React.createElement(
 	                'button',
-	                { type: 'button',
-	                  className: 'close',
-	                  'data-dismiss': 'modal',
-	                  'aria-label': 'Close' },
+	                { type: 'button', className: 'close', 'data-dismiss': 'modal', 'aria-label': 'Close' },
 	                React.createElement(
 	                  'span',
 	                  { 'aria-hidden': 'true' },
@@ -29878,7 +29774,7 @@
 	              React.createElement(
 	                'p',
 	                null,
-	                'Please provide the email address that you used when you signed up for your account. We will send you an email that allow you to reset your password.'
+	                'Please provide the email address that you used when you signed up for your account. We will send you an email that allow you to reset your password. '
 	              ),
 	              React.createElement(
 	                'form',
@@ -29894,7 +29790,8 @@
 	                      { className: 'icon' },
 	                      React.createElement('img', { src: 'images/icon-email.png' })
 	                    ),
-	                    React.createElement(Input, { text: 'Email Address',
+	                    React.createElement(Input, {
+	                      text: 'Email Address',
 	                      ref: 'resetEmail',
 	                      type: 'text',
 	                      defaultValue: this.state.resetEmail,
@@ -29903,7 +29800,8 @@
 	                      onChange: this.handleResetEmailInput,
 	                      errorMessage: 'Email is invalid',
 	                      emptyMessage: 'Email can\'t be empty',
-	                      errorVisible: this.state.showResetEmailError })
+	                      errorVisible: this.state.showResetEmailError
+	                    })
 	                  ),
 	                  React.createElement(
 	                    'button',
@@ -29943,12 +29841,12 @@
 
 	  getInitialState: function getInitialState() {
 	    return {
-	      passwordType: 'password',
+	      passwordType: "password",
 	      resetEmail: '',
 	      password: '',
 	      passwordConfirmation: '',
 	      statesValue: '',
-	      forbiddenWords: ['password', 'user', 'username']
+	      forbiddenWords: ["password", "user", "username"]
 	    };
 	  },
 	  handlePasswordInput: function handlePasswordInput(event) {
@@ -29972,16 +29870,16 @@
 	      };
 	      var self = this;
 	      var data = {
-	        'email': this.state.email,
-	        'password': this.state.password
+	        "email": this.state.email,
+	        "password": this.state.password
 
 	      };
 	      this.props.route.config().httpInterceptor(this.props.route.config().url().LOGIN, 'POST', data).then(function (result) {
-	        self.props.route.notification._addNotification(e, 'success', 'Successfully login !!!');
-	        window.location.href = '/#/thank-you';
+	        self.props.route.notification._addNotification(e, "success", "Successfully login !!!");
+	        window.location.href = "/#/thank-you";
 	      }, function (result) {
 	        var message = JSON.parse(result.responseText);
-	        self.props.route.notification._addNotification(e, 'error', message.message);
+	        self.props.route.notification._addNotification(e, "error", message.message);
 	      });
 	    } else {
 
@@ -29990,13 +29888,13 @@
 	    }
 	  },
 	  showHidePassword: function showHidePassword(event) {
-	    if (this.state.passwordType == 'password') {
+	    if (this.state.passwordType == "password") {
 	      this.setState({
-	        passwordType: 'text'
+	        passwordType: "text"
 	      });
 	    } else {
 	      this.setState({
-	        passwordType: 'password'
+	        passwordType: "password"
 	      });
 	    }
 	  },
@@ -30109,12 +30007,12 @@
 	    return {
 	      bookingCount: null,
 	      enquiryCount: null,
-	      pastRevenue: 'password',
+	      pastRevenue: "password",
 	      revenue: null,
 	      reviewsCount: null,
 	      viewsCount: null,
-	      photo: JSON.parse(localStorage.getItem('clientInfo')).vendor.photo,
-	      name: JSON.parse(localStorage.getItem('clientInfo')).vendor.name,
+	      photo: JSON.parse(localStorage.getItem("clientInfo")).vendor.photo,
+	      name: JSON.parse(localStorage.getItem("clientInfo")).vendor.name,
 	      notifications: null,
 	      notificationCount: 0
 	    };
@@ -30123,15 +30021,15 @@
 	    var data = {};
 	    var urlParams = this.props.route.config().getClientInfo();
 	    if (from != -1) {
-	      urlParams['from'] = from;
-	      urlParams['to'] = to;
+	      urlParams["from"] = from;
+	      urlParams["to"] = to;
 	    }
 	    var self = this;
 	    this.props.route.config().httpInterceptor(this.props.route.config().url().DASHBOARD, 'GET', data, {}, urlParams).then(function (result) {
 
 	      console.log(result);
 
-	      if (section == 'All') {
+	      if (section == "All") {
 	        self.setState({
 	          bookingCount: result.bookings_count,
 	          enquiryCount: result.enquiry_count,
@@ -30141,74 +30039,74 @@
 	          viewsCount: result.views_count
 	        });
 	      }
-	      if (section == 'views') {
+	      if (section == "views") {
 	        self.setState({
 
 	          viewsCount: result.views_count
 	        });
 	      }
-	      if (section == 'bookings') {
+	      if (section == "bookings") {
 	        self.setState({
 
 	          bookingCount: result.bookings_count
 	        });
 	      }
-	      if (section == 'enquries') {
+	      if (section == "enquries") {
 	        self.setState({
 
 	          enquiryCount: result.enquiry_count
 	        });
 	      }
-	      if (section == 'revenue') {
+	      if (section == "revenue") {
 	        self.setState({
 
 	          revenue: result.revenue
 	        });
 	      }
-	      if (section == 'reviews') {
+	      if (section == "reviews") {
 	        self.setState({
 
 	          reviewsCount: result.reviews_count
 	        });
 	      }
-	      $('#pageloader').fadeOut();
+	      $("#pageloader").fadeOut();
 	    }, function (result) {
 	      var message = JSON.parse(result.responseText);
-	      self.props.route.notification._addNotification(window.event, 'error', message.message);
+	      self.props.route.notification._addNotification(window.event, "error", message.message);
 	    });
 	  },
 	  getData: function getData(dataTime, section) {
 	    var from = -1;
 	    var to = -1;
-	    if (dataTime == 'Today') {
-	      from = moment().format('X');
-	      to = moment().format('X');
-	    } else if (dataTime == 'LastSeven') {
+	    if (dataTime == "Today") {
+	      from = moment().format("X");
+	      to = moment().format("X");
+	    } else if (dataTime == "LastSeven") {
 	      from = moment().subtract(7, 'd').format('X');
-	      to = moment().format('X');
-	    } else if (dataTime == 'ThisMonth') {
-	      from = moment(moment().year() + '-' + moment().month() + '-01').format('X');
-	      to = moment().format('X');
+	      to = moment().format("X");
+	    } else if (dataTime == "ThisMonth") {
+	      from = moment(moment().year() + "-" + moment().month() + "-01").format('X');
+	      to = moment().format("X");
 	    }
 	    this.getDashboardData(from, to, section);
 	  },
 	  componentDidMount: function componentDidMount() {
 	    this.props.route.config().redirectWithoutSession();
-	    $('.dropdown-menu li a').click(function () {
+	    $(".dropdown-menu li a").click(function () {
 
-	      $(this).parents('.dropdown').find('.selection').text($(this).text());
-	      $(this).parents('.dropdown').find('.selection').val($(this).text());
+	      $(this).parents(".dropdown").find('.selection').text($(this).text());
+	      $(this).parents(".dropdown").find('.selection').val($(this).text());
 	    });
-	    $('.menu-option').removeClass('active');
-	    $('body').removeClass('before-login');
-	    $('#dashboard_menu').addClass('active');
-	    $('#login').addClass('animated rotateInUpRight');
-	    $('.animate-profile').addClass('animated rotateInDownRight');
-	    $('.animate-views').addClass('animated bounceInDown');
-	    $('.animate-bookings').addClass('animated rotateInDownLeft');
-	    $('.animate-enquires').addClass('animated rotateInUpRight');
-	    $('.animate-reviews').addClass('animated bounceInUp');
-	    $('.animate-revenue').addClass('animated rotateInUpLeft');
+	    $(".menu-option").removeClass("active");
+	    $("body").removeClass("before-login");
+	    $("#dashboard_menu").addClass("active");
+	    $("#login").addClass("animated rotateInUpRight");
+	    $(".animate-profile").addClass("animated rotateInDownRight");
+	    $(".animate-views").addClass("animated bounceInDown");
+	    $(".animate-bookings").addClass("animated rotateInDownLeft");
+	    $(".animate-enquires").addClass("animated rotateInUpRight");
+	    $(".animate-reviews").addClass("animated bounceInUp");
+	    $(".animate-revenue").addClass("animated rotateInUpLeft");
 	    var self = this;
 	    //console.log(JSON.parse(localStorage.getItem("clientInfo")).client.client_id);
 	    var data = {};
@@ -30224,10 +30122,10 @@
 	        viewsCount: result.views_count
 	      });
 
-	      $('#pageloader').fadeOut();
+	      $("#pageloader").fadeOut();
 	    }, function (result) {
 	      var message = JSON.parse(result.responseText);
-	      self.props.route.notification._addNotification(window.event, 'error', message.message);
+	      self.props.route.notification._addNotification(window.event, "error", message.message);
 	    });
 	    var data = {};
 	    var url_params = {
@@ -30235,10 +30133,7 @@
 	      per_page: 5
 	    };
 	    var clientInfo = this.props.route.config().getClientInfo();
-	    var headers = {
-	      'X-Thrill-Client-Id': clientInfo.client_id,
-	      'X-Thrill-Auth-Token': clientInfo.auth_token
-	    };
+	    var headers = { "X-Thrill-Client-Id": clientInfo.client_id, "X-Thrill-Auth-Token": clientInfo.auth_token };
 	    this.props.route.config().httpInterceptor(this.props.route.config().url().NOTIFICATIONS, 'GET', data, headers, url_params).then(function (result) {
 
 	      console.log(result);
@@ -30246,10 +30141,10 @@
 	        notifications: result.user_notifications,
 	        notificationCount: result.unread_count
 	      });
-	      $('.badge').html(result.unread_count);
+	      $(".badge").html(result.unread_count);
 	    }, function (result) {
 	      var message = JSON.parse(result.responseText);
-	      self.props.route.notification._addNotification(window.event, 'error', message.message);
+	      self.props.route.notification._addNotification(window.event, "error", message.message);
 	    });
 	  },
 	  render: function render() {
@@ -30335,12 +30230,7 @@
 	                    { className: 'dropdown' },
 	                    React.createElement(
 	                      'button',
-	                      { className: 'btn dropdown-toggle',
-	                        type: 'button',
-	                        id: 'dropdownMenuViews',
-	                        'data-toggle': 'dropdown',
-	                        'aria-haspopup': 'true',
-	                        'aria-expanded': 'true' },
+	                      { className: 'btn dropdown-toggle', type: 'button', id: 'dropdownMenuViews', 'data-toggle': 'dropdown', 'aria-haspopup': 'true', 'aria-expanded': 'true' },
 	                      React.createElement(
 	                        'span',
 	                        { className: 'selection' },
@@ -30357,7 +30247,7 @@
 	                        React.createElement(
 	                          'a',
 	                          { href: 'javascript:(0);', onClick: function onClick() {
-	                              return _this.getData('Today', 'views');
+	                              return _this.getData("Today", "views");
 	                            } },
 	                          'Today'
 	                        )
@@ -30368,7 +30258,7 @@
 	                        React.createElement(
 	                          'a',
 	                          { href: 'javascript:(0);', onClick: function onClick() {
-	                              return _this.getData('LastSeven', 'views');
+	                              return _this.getData("LastSeven", "views");
 	                            } },
 	                          'Last Seven Days'
 	                        )
@@ -30379,7 +30269,7 @@
 	                        React.createElement(
 	                          'a',
 	                          { href: 'javascript:(0);', onClick: function onClick() {
-	                              return _this.getData('ThisMonth', 'views');
+	                              return _this.getData("ThisMonth", "views");
 	                            } },
 	                          'This Month'
 	                        )
@@ -30390,7 +30280,7 @@
 	                        React.createElement(
 	                          'a',
 	                          { href: 'javascript:(0);', onClick: function onClick() {
-	                              return _this.getData('Lifetime', 'views');
+	                              return _this.getData("Lifetime", "views");
 	                            } },
 	                          'Lifetime'
 	                        )
@@ -30424,12 +30314,7 @@
 	                    { className: 'dropdown' },
 	                    React.createElement(
 	                      'button',
-	                      { className: 'btn dropdown-toggle',
-	                        type: 'button',
-	                        id: 'dropdownMenuViews',
-	                        'data-toggle': 'dropdown',
-	                        'aria-haspopup': 'true',
-	                        'aria-expanded': 'true' },
+	                      { className: 'btn dropdown-toggle', type: 'button', id: 'dropdownMenuViews', 'data-toggle': 'dropdown', 'aria-haspopup': 'true', 'aria-expanded': 'true' },
 	                      React.createElement(
 	                        'span',
 	                        { className: 'selection' },
@@ -30446,7 +30331,7 @@
 	                        React.createElement(
 	                          'a',
 	                          { href: 'javascript:(0);', onClick: function onClick() {
-	                              return _this.getData('Today', 'bookings');
+	                              return _this.getData("Today", "bookings");
 	                            } },
 	                          'Today'
 	                        )
@@ -30457,7 +30342,7 @@
 	                        React.createElement(
 	                          'a',
 	                          { href: 'javascript:(0);', onClick: function onClick() {
-	                              return _this.getData('LastSeven', 'bookings');
+	                              return _this.getData("LastSeven", "bookings");
 	                            } },
 	                          'Last Seven Days'
 	                        )
@@ -30468,7 +30353,7 @@
 	                        React.createElement(
 	                          'a',
 	                          { href: 'javascript:(0);', onClick: function onClick() {
-	                              return _this.getData('ThisMonth', 'bookings');
+	                              return _this.getData("ThisMonth", "bookings");
 	                            } },
 	                          'This Month'
 	                        )
@@ -30479,7 +30364,7 @@
 	                        React.createElement(
 	                          'a',
 	                          { href: 'javascript:(0);', onClick: function onClick() {
-	                              return _this.getData('Lifetime', 'bookings');
+	                              return _this.getData("Lifetime", "bookings");
 	                            } },
 	                          'Lifetime'
 	                        )
@@ -30517,12 +30402,7 @@
 	                    { className: 'dropdown' },
 	                    React.createElement(
 	                      'button',
-	                      { className: 'btn dropdown-toggle',
-	                        type: 'button',
-	                        id: 'dropdownMenuViews',
-	                        'data-toggle': 'dropdown',
-	                        'aria-haspopup': 'true',
-	                        'aria-expanded': 'true' },
+	                      { className: 'btn dropdown-toggle', type: 'button', id: 'dropdownMenuViews', 'data-toggle': 'dropdown', 'aria-haspopup': 'true', 'aria-expanded': 'true' },
 	                      React.createElement(
 	                        'span',
 	                        { className: 'selection' },
@@ -30539,7 +30419,7 @@
 	                        React.createElement(
 	                          'a',
 	                          { href: 'javascript:(0);', onClick: function onClick() {
-	                              return _this.getData('Today', 'enquries');
+	                              return _this.getData("Today", "enquries");
 	                            } },
 	                          'Today'
 	                        )
@@ -30550,7 +30430,7 @@
 	                        React.createElement(
 	                          'a',
 	                          { href: 'javascript:(0);', onClick: function onClick() {
-	                              return _this.getData('LastSeven', 'enquries');
+	                              return _this.getData("LastSeven", "enquries");
 	                            } },
 	                          'Last Seven Days'
 	                        )
@@ -30561,7 +30441,7 @@
 	                        React.createElement(
 	                          'a',
 	                          { href: 'javascript:(0);', onClick: function onClick() {
-	                              return _this.getData('ThisMonth', 'enquries');
+	                              return _this.getData("ThisMonth", "enquries");
 	                            } },
 	                          'This Month'
 	                        )
@@ -30572,7 +30452,7 @@
 	                        React.createElement(
 	                          'a',
 	                          { href: 'javascript:(0);', onClick: function onClick() {
-	                              return _this.getData('Lifetime', 'enquries');
+	                              return _this.getData("Lifetime", "enquries");
 	                            } },
 	                          'Lifetime'
 	                        )
@@ -30606,12 +30486,7 @@
 	                    { className: 'dropdown' },
 	                    React.createElement(
 	                      'button',
-	                      { className: 'btn dropdown-toggle',
-	                        type: 'button',
-	                        id: 'dropdownMenuViews',
-	                        'data-toggle': 'dropdown',
-	                        'aria-haspopup': 'true',
-	                        'aria-expanded': 'true' },
+	                      { className: 'btn dropdown-toggle', type: 'button', id: 'dropdownMenuViews', 'data-toggle': 'dropdown', 'aria-haspopup': 'true', 'aria-expanded': 'true' },
 	                      React.createElement(
 	                        'span',
 	                        { className: 'selection' },
@@ -30628,7 +30503,7 @@
 	                        React.createElement(
 	                          'a',
 	                          { href: 'javascript:(0);', onClick: function onClick() {
-	                              return _this.getData('Today', 'reviews');
+	                              return _this.getData("Today", "reviews");
 	                            } },
 	                          'Today'
 	                        )
@@ -30639,7 +30514,7 @@
 	                        React.createElement(
 	                          'a',
 	                          { href: 'javascript:(0);', onClick: function onClick() {
-	                              return _this.getData('LastSeven', 'reviews');
+	                              return _this.getData("LastSeven", "reviews");
 	                            } },
 	                          'Last Seven Days'
 	                        )
@@ -30650,7 +30525,7 @@
 	                        React.createElement(
 	                          'a',
 	                          { href: 'javascript:(0);', onClick: function onClick() {
-	                              return _this.getData('ThisMonth', 'reviews');
+	                              return _this.getData("ThisMonth", "reviews");
 	                            } },
 	                          'This Month'
 	                        )
@@ -30661,7 +30536,7 @@
 	                        React.createElement(
 	                          'a',
 	                          { href: 'javascript:(0);', onClick: function onClick() {
-	                              return _this.getData('Lifetime', 'reviews');
+	                              return _this.getData("Lifetime", "reviews");
 	                            } },
 	                          'Lifetime'
 	                        )
@@ -30695,12 +30570,7 @@
 	                    { className: 'dropdown' },
 	                    React.createElement(
 	                      'button',
-	                      { className: 'btn dropdown-toggle',
-	                        type: 'button',
-	                        id: 'dropdownMenuViews',
-	                        'data-toggle': 'dropdown',
-	                        'aria-haspopup': 'true',
-	                        'aria-expanded': 'true' },
+	                      { className: 'btn dropdown-toggle', type: 'button', id: 'dropdownMenuViews', 'data-toggle': 'dropdown', 'aria-haspopup': 'true', 'aria-expanded': 'true' },
 	                      React.createElement(
 	                        'span',
 	                        { className: 'selection' },
@@ -30717,7 +30587,7 @@
 	                        React.createElement(
 	                          'a',
 	                          { href: 'javascript:(0);', onClick: function onClick() {
-	                              return _this.getData('Today', 'revenue');
+	                              return _this.getData("Today", "revenue");
 	                            } },
 	                          'Today'
 	                        )
@@ -30728,7 +30598,7 @@
 	                        React.createElement(
 	                          'a',
 	                          { href: 'javascript:(0);', onClick: function onClick() {
-	                              return _this.getData('LastSeven', 'revenue');
+	                              return _this.getData("LastSeven", "revenue");
 	                            } },
 	                          'Last Seven Days'
 	                        )
@@ -30739,7 +30609,7 @@
 	                        React.createElement(
 	                          'a',
 	                          { href: 'javascript:(0);', onClick: function onClick() {
-	                              return _this.getData('ThisMonth', 'revenue');
+	                              return _this.getData("ThisMonth", "revenue");
 	                            } },
 	                          'This Month'
 	                        )
@@ -30750,7 +30620,7 @@
 	                        React.createElement(
 	                          'a',
 	                          { href: 'javascript:(0);', onClick: function onClick() {
-	                              return _this.getData('Lifetime', 'revenue');
+	                              return _this.getData("Lifetime", "revenue");
 	                            } },
 	                          'Lifetime'
 	                        )
@@ -44600,7 +44470,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var TabBookingsComponent = __webpack_require__(358);
+	var TabComponent = __webpack_require__(358);
 
 	var STATES = __webpack_require__(239);
 
@@ -44616,72 +44486,48 @@
 	      pageNumHistory: 0,
 	      pageSelected: 1,
 	      pageSelectedHistory: 1,
-	      contactNumber: '',
-	      modalName: '',
+	      contactNumber: "",
+	      modalName: "",
 	      tour: []
 	    };
 	  },
 	  getData: function getData(from, to, tourId, tabSection) {
 
-	    if (tabSection == 'history') {
+	    if (tabSection == "history") {
 	      var urlparams = {
-	        'page': 1,
-	        'per_page': 10,
-	        'history': 1
-	      };
-	    } else {
-	      var urlparams = {
-	        'page': 1,
-	        'per_page': 10,
-	        'history': 1
+	        "page": 1,
+	        "per_page": 10,
+	        "history": 1
 	      };
 	    }
 	    if (from != -1) {
-	      urlparams['from'] = from;
+	      urlparams["from"] = from;
 	    }
 	    if (to != -1) {
-	      urlparams['to'] = to;
+	      urlparams["to"] = to;
 	    }
 	    if (tourId != -1) {
-	      urlparams['tour_id'] = tourId;
+	      urlparams["tour_id"] = tourId;
 	    }
 	    var data = {};
 	    var clientInfo = this.props.route.config().getClientInfo();
 	    var header = {
-	      'X-Thrill-Client-Id': clientInfo.client_id,
-	      'X-Thrill-Auth-Token': clientInfo.auth_token
+	      "X-Thrill-Client-Id": clientInfo.client_id,
+	      "X-Thrill-Auth-Token": clientInfo.auth_token
 	    };
 	    var self = this;
 
 	    this.props.route.config().httpInterceptor(this.props.route.config().url().BOOKINGS_LIST, 'GET', data, header, urlparams).then(function (result) {
-	      if (tabSection == 'history') {
-	        self.setState({
-	          history: result.total_count != 0 ? result.bookings : [],
-	          pageNumHistory: Math.ceil(result.total_count / 10)
-	        });
-	        if (result.total_count == 0) {
-	          $('.history-list').hide();
-	          $('.no-message-history').show();
-	        } else {
-	          $('.history-list').show();
-	          $('.no-message-history').hide();
-	        }
-	      } else {
-	        self.setState({
-	          bookings: result.total_count != 0 ? result.bookings : [],
-	          pageNum: Math.ceil(result.total_count / 10)
-	        });
-	        if (result.total_count == 0) {
-	          $('.bookings-list').hide();
-	          $('.no-message-bookings').show();
-	        } else {
-	          $('.bookings-list').show();
-	          $('.no-message-bookings').hide();
-	        }
+	      self.setState({
+	        history: result.total_count != 0 ? result.bookings : [],
+	        pageNumHistory: Math.ceil(result.total_count / 10)
+	      });
+	      if (result.total_count == 0) {
+	        $(".history-list").hide();
+	        $(".no-message-history").show();
 	      }
-
-	      $('.odd').addClass('animated bounceInLeft');
-	      $('.even').addClass('animated bounceInRight');
+	      $(".odd").addClass("animated bounceInLeft");
+	      $(".even").addClass("animated bounceInRight");
 	    }, function (result) {
 	      console.log(result);
 	      //let message = JSON.parse(result.responseText);
@@ -44689,31 +44535,31 @@
 	    });
 	  },
 	  componentDidMount: function componentDidMount() {
-	    $('.no-message-history').hide();
-	    $('.no-message-bookings').hide();
-	    $('.breadcrumb').addClass('animated bounceInLeft');
+	    $(".no-message-history").hide();
+	    $(".no-message-bookinga").hide();
+	    $(".breadcrumb").addClass("animated bounceInLeft");
 	    this.props.route.config().redirectWithoutSession();
 	    this.props.route.notification.clearMenu();
-	    $('.menu-option').removeClass('active');
-	    $('#bookings_menu').addClass('active');
-	    this.loadfromServer(1, 'bookings');
-	    this.loadfromServer(1, 'history');
-	    $(document).on('click', '.dropdown-menu li', function (e) {
+	    $(".menu-option").removeClass("active");
+	    $("#bookings_menu").addClass("active");
+	    this.loadfromServer(1, "bookings");
+	    this.loadfromServer(1, "history");
+	    $(document).on("click", ".dropdown-menu li", function (e) {
 
-	      $(e.target).parents('.dropdown').find('.selection').text($(this).text());
-	      $(e.target).parents('.dropdown').find('.selection').val($(this).text());
-	      $(e.target).parents('.dropdown').find('.selection').data('id', $(this).data('id'));
+	      $(e.target).parents(".dropdown").find('.selection').text($(this).text());
+	      $(e.target).parents(".dropdown").find('.selection').val($(this).text());
+	      $(e.target).parents(".dropdown").find('.selection').data("id", $(this).data("id"));
 	    });
 	    var urlparams = {
-	      'page': 1,
-	      'per_page': 10,
-	      'history': 1
+	      "page": 1,
+	      "per_page": 10,
+	      "history": 1
 	    };
 	    var data = {};
 	    var clientInfo = this.props.route.config().getClientInfo();
 	    var header = {
-	      'X-Thrill-Client-Id': clientInfo.client_id,
-	      'X-Thrill-Auth-Token': clientInfo.auth_token
+	      "X-Thrill-Client-Id": clientInfo.client_id,
+	      "X-Thrill-Auth-Token": clientInfo.auth_token
 	    };
 	    var self = this;
 	    this.props.route.config().httpInterceptor(this.props.route.config().url().LISTING, 'GET', data, header, urlparams).then(function (result) {
@@ -44729,20 +44575,19 @@
 	  loadfromServer: function loadfromServer(pageNo, tabSection) {
 
 	    var self = this;
-	    console.log('url-data-page:' + this.state.pageSelected);
-	    if (tabSection == 'bookings') {
+	    console.log("url-data-page:" + this.state.pageSelected);
+	    if (tabSection == "bookings") {
 	      //console.log(JSON.parse(localStorage.getItem("clientInfo")).client.client_id);
 	      var urlparams = {
-	        'page': pageNo,
-	        'per_page': 10,
-	        'history': 1
+	        "page": pageNo,
+	        "per_page": 10
 
 	      };
 	      var data = {};
 	      var clientInfo = this.props.route.config().getClientInfo();
 	      var header = {
-	        'X-Thrill-Client-Id': clientInfo.client_id,
-	        'X-Thrill-Auth-Token': clientInfo.auth_token
+	        "X-Thrill-Client-Id": clientInfo.client_id,
+	        "X-Thrill-Auth-Token": clientInfo.auth_token
 	      };
 
 	      this.props.route.config().httpInterceptor(this.props.route.config().url().BOOKINGS_LIST, 'GET', data, header, urlparams).then(function (result) {
@@ -44752,11 +44597,11 @@
 	          pageNum: Math.ceil(result.total_count / 10)
 	        });
 	        if (result.total_count == 0) {
-	          $('.bookings-list').hide();
-	          $('.no-message-bookings').show();
+	          $(".bookings-list").hide();
+	          $(".no-message-bookings").show();
 	        }
-	        $('.odd').addClass('animated bounceInLeft');
-	        $('.even').addClass('animated bounceInRight');
+	        $(".odd").addClass("animated bounceInLeft");
+	        $(".even").addClass("animated bounceInRight");
 	      }, function (result) {
 	        console.log(result);
 	        //let message = JSON.parse(result.responseText);
@@ -44764,15 +44609,15 @@
 	      });
 	    } else {
 	        var urlparams = {
-	          'page': pageNo,
-	          'per_page': 10,
-	          'history': 1
+	          "page": pageNo,
+	          "per_page": 10,
+	          "history": 1
 	        };
 	        var data = {};
 	        var clientInfo = this.props.route.config().getClientInfo();
 	        var header = {
-	          'X-Thrill-Client-Id': clientInfo.client_id,
-	          'X-Thrill-Auth-Token': clientInfo.auth_token
+	          "X-Thrill-Client-Id": clientInfo.client_id,
+	          "X-Thrill-Auth-Token": clientInfo.auth_token
 	        };
 
 	        this.props.route.config().httpInterceptor(this.props.route.config().url().BOOKINGS_LIST, 'GET', data, header, urlparams).then(function (result) {
@@ -44781,11 +44626,11 @@
 	            pageNumHistory: Math.ceil(result.total_count / 10)
 	          });
 	          if (result.total_count == 0) {
-	            $('.history-list').hide();
-	            $('.no-message-history').show();
+	            $(".history-list").hide();
+	            $(".no-message-history").show();
 	          }
-	          $('.odd').addClass('animated bounceInLeft');
-	          $('.even').addClass('animated bounceInRight');
+	          $(".odd").addClass("animated bounceInLeft");
+	          $(".even").addClass("animated bounceInRight");
 	        }, function (result) {
 	          console.log(result);
 	          //let message = JSON.parse(result.responseText);
@@ -44799,7 +44644,7 @@
 	    this.setState({
 	      pageSelected: currentPage
 	    });
-	    this.loadfromServer(currentPage, 'bookings');
+	    this.loadfromServer(currentPage, "bookings");
 	    console.log(data.selected + 1);
 	  },
 	  handlePageClickHistory: function handlePageClickHistory(data) {
@@ -44807,7 +44652,7 @@
 	    this.setState({
 	      pageSelected: currentPage
 	    });
-	    this.loadfromServer(currentPage, 'history');
+	    this.loadfromServer(currentPage, "history");
 	    console.log(data.selected + 1);
 	  },
 	  render: function render() {
@@ -44830,7 +44675,7 @@
 	              _react2.default.createElement(
 	                'a',
 	                { href: '/#/dashboard' },
-	                'Dashboard'
+	                ' Dashboard'
 	              )
 	            ),
 	            _react2.default.createElement(
@@ -44847,24 +44692,21 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'container' },
-	          _react2.default.createElement(TabBookingsComponent, { headers: ['Upcoming Bookings', 'History'],
-	            bookingscreen: this,
-	            tabs: ['Upcoming Bookings', 'History'],
-	            bookings: this.state.bookings,
-	            history: this.state.history,
+	          _react2.default.createElement(TabComponent, {
+	            headers: ["Upcoming Bookings", "History"],
+	            bookingscreen: this, tabs: ["Upcoming Bookings", "History"],
+	            bookings: this.state.bookings, history: this.state.history,
 	            modalName: this.state.modalName,
 	            contact: this.state.contactNumber,
 	            pagenum: this.state.pageNum,
 	            pagenumHistory: this.state.pageNumHistory,
-	            tours: this.state.tour })
+	            tours: this.state.tour
+	          })
 	        )
 	      ),
 	      _react2.default.createElement(
 	        'div',
-	        { className: 'modal fade',
-	          id: 'forgotPwModalBookings',
-	          tabindex: '-1',
-	          role: 'dialog' },
+	        { className: 'modal fade', id: 'forgotPwModalBookings', tabindex: '-1', role: 'dialog' },
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'modal-dialog', role: 'document' },
@@ -44876,10 +44718,7 @@
 	              { className: 'modal-body' },
 	              _react2.default.createElement(
 	                'button',
-	                { type: 'button',
-	                  className: 'close',
-	                  'data-dismiss': 'modal',
-	                  'aria-label': 'Close' },
+	                { type: 'button', className: 'close', 'data-dismiss': 'modal', 'aria-label': 'Close' },
 	                _react2.default.createElement(
 	                  'span',
 	                  { 'aria-hidden': 'true' },
@@ -45692,31 +45531,31 @@
 	      var self = this;
 	      var counter = 1;
 
-	      var classname = 'odd';
+	      var classname = "odd";
 	      // const headers = ['heading 1', 'heading 2'];
 	      var listItems = this.props.bookings.map(function (item) {
 	        if (counter % 2 == 0) {
-	          classname = 'even';
+	          classname = "even";
 	        } else {
-	          classname = 'odd';
+	          classname = "odd";
 	        }
 	        counter++;
 	        function setInfo(item) {
-	          $('#name').html(item.first_name + ' ' + item.last_name);
-	          $('#phone').html(item.phone);
+	          $("#name").html(item.first_name + " " + item.last_name);
+	          $("#phone").html(item.phone);
 	        }
 	        function showDetails(bookingId) {
-	          window.location.href = '/#/bookingDetails/' + bookingId;
+	          window.location.href = "/#/bookingDetails/" + bookingId;
 	        }
 	        return _react2.default.createElement(
 	          'div',
-	          { className: classname + ' booking-card' },
+	          { className: classname + " booking-card" },
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'img', onClick: function onClick() {
 	                return showDetails(item.id);
 	              } },
-	            _react2.default.createElement('img', { src: item.tour.thumbnail_image ? item.tour.thumbnail_image.size_tiny : 'images/src.jpg', onerror: 'this.src=\'images/notFound.png\'' })
+	            _react2.default.createElement('img', { src: item.tour.thumbnail_image.size_tiny })
 	          ),
 	          _react2.default.createElement(
 	            'div',
@@ -45734,24 +45573,27 @@
 	              _react2.default.createElement(
 	                'p',
 	                null,
-	                'Booked by:',
+	                'Booked by: ',
 	                item.first_name,
+	                ' ',
 	                item.last_name,
-	                ' | Booking Date:',
-	                moment(item.created_at).format('D MMMM')
+	                '  |  Booking Date: ',
+	                moment(item.created_at).format("D MMMM"),
+	                ' '
 	              ),
 	              _react2.default.createElement(
 	                'p',
 	                null,
 	                _react2.default.createElement('img', { src: 'images/icon-date.png' }),
-	                'Trip Date:',
-	                moment(item.date_of_travel).format('D MMMM YYYY')
+	                'Trip Date: ',
+	                moment(item.date_of_travel).format("D MMMM YYYY"),
+	                ' '
 	              ),
 	              _react2.default.createElement(
 	                'p',
 	                null,
 	                _react2.default.createElement('img', { src: 'images/icon-travellar.png' }),
-	                'Travelers:',
+	                'Travelers: ',
 	                item.no_of_people
 	              )
 	            ),
@@ -45760,10 +45602,7 @@
 	              { className: 'contact' },
 	              _react2.default.createElement(
 	                'div',
-	                { className: 'contact-info',
-	                  'data-toggle': 'modal',
-	                  'data-target': '#forgotPwModalBookings',
-	                  onClick: function onClick() {
+	                { className: 'contact-info', 'data-toggle': 'modal', 'data-target': '#forgotPwModalBookings', onClick: function onClick() {
 	                    return setInfo(item);
 	                  } },
 	                _react2.default.createElement(
@@ -45779,25 +45618,25 @@
 	      });
 	      var counter = 1;
 
-	      var classname = 'odd';
+	      var classname = "odd";
 	      var listItemsHistory = this.props.history.map(function (item) {
 
 	        if (counter % 2 == 0) {
-	          classname = 'even';
+	          classname = "even";
 	        } else {
-	          classname = 'odd';
+	          classname = "odd";
 	        }
 	        counter++;
 	        function setInfo(item) {
-	          $('#name').html(item.first_name + ' ' + item.last_name);
-	          $('#phone').html(item.phone);
+	          $("#name").html(item.first_name + " " + item.last_name);
+	          $("#phone").html(item.phone);
 	        }
 	        function showDetails(bookingId) {
-	          window.location.href = '/#/bookingDetails/' + bookingId;
+	          window.location.href = "/#/bookingDetails/" + bookingId;
 	        }
 	        return _react2.default.createElement(
 	          'div',
-	          { className: classname + ' booking-card' },
+	          { className: classname + " booking-card" },
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'img', onClick: function onClick() {
@@ -45805,10 +45644,8 @@
 	              } },
 	            _react2.default.createElement(
 	              'object',
-	              { data: 'images/notFound.png',
-	                type: 'image/png',
-	                className: 'image-booking-default' },
-	              _react2.default.createElement('img', { src: item.tour.thumbnail_image ? item.tour.thumbnail_image.size_tiny : 'images/src.jpg', onerror: 'this.src=\'images/notFound.png\'' })
+	              { data: 'images/notFound.png', type: 'image/png', className: 'image-booking-default' },
+	              _react2.default.createElement('img', { src: item.tour.thumbnail_image ? item.tour.thumbnail_image.size_tiny : "images/src.jpg", onerror: 'this.src=\'images/notFound.png\'' })
 	            )
 	          ),
 	          _react2.default.createElement(
@@ -45827,24 +45664,27 @@
 	              _react2.default.createElement(
 	                'p',
 	                null,
-	                'Booked by:',
+	                'Booked by: ',
 	                item.first_name,
+	                ' ',
 	                item.last_name,
-	                ' | Booking Date:',
-	                moment(item.created_at).format('D MMMM')
+	                '  |  Booking Date: ',
+	                moment(item.created_at).format("D MMMM"),
+	                ' '
 	              ),
 	              _react2.default.createElement(
 	                'p',
 	                null,
 	                _react2.default.createElement('img', { src: 'images/icon-date.png' }),
-	                'Trip Date:',
-	                moment(item.date_of_travel).format('D MMMM YYYY')
+	                'Trip Date: ',
+	                moment(item.date_of_travel).format("D MMMM YYYY"),
+	                ' '
 	              ),
 	              _react2.default.createElement(
 	                'p',
 	                null,
 	                _react2.default.createElement('img', { src: 'images/icon-travellar.png' }),
-	                'Travelers:',
+	                'Travelers: ',
 	                item.no_of_people
 	              )
 	            ),
@@ -45853,10 +45693,7 @@
 	              { className: 'contact' },
 	              _react2.default.createElement(
 	                'div',
-	                { className: 'contact-info',
-	                  'data-toggle': 'modal',
-	                  'data-target': '#forgotPwModalBookings',
-	                  onClick: function onClick() {
+	                { className: 'contact-info', 'data-toggle': 'modal', 'data-target': '#forgotPwModalBookings', onClick: function onClick() {
 	                    return setInfo(item);
 	                  } },
 	                _react2.default.createElement(
@@ -45883,18 +45720,18 @@
 	        var from = -1;
 	        var to = -1;
 
-	        if (timeDate == 'Today') {
-	          from = moment().format('YYYY-MM-DD');
-	          to = moment().format('YYYY-MM-DD');
-	        } else if (timeDate == 'Tomorrow') {
-	          from = moment(moment().add('days', 1)).format('YYYY-MM-DD');
-	          to = moment(moment().add('days', 1)).format('YYYY-MM-DD');
-	        } else if (timeDate == 'Weekend') {
-	          from = moment().day(6).format('YYYY-MM-DD');
-	          to = moment().day(7).format('YYYY-MM-DD');
+	        if (timeDate == "Today") {
+	          from = moment().format("YYYY-MM-DD");
+	          to = moment().format("YYYY-MM-DD");
+	        } else if (timeDate == "Tomorrow") {
+	          from = moment(moment().add('days', 1)).format("YYYY-MM-DD");
+	          to = moment(moment().add('days', 1)).format("YYYY-MM-DD");
+	        } else if (timeDate == "Weekend") {
+	          from = moment().day(6).format("YYYY-MM-DD");
+	          to = moment().day(7).format("YYYY-MM-DD");
 	        }
-	        if ($('.selection:last').text() != ' All') {
-	          var tourId = $('.selection:last').data('id');
+	        if ($(".selection:last").text() != " All") {
+	          var tourId = $(".selection:last").data("id");
 	        } else {
 	          var tourId = -1;
 	        }
@@ -45902,25 +45739,14 @@
 	      }
 	      function getDate(dateTime) {
 	        console.log(dateTime);
-	        if ($('.selection:last').text() != ' All') {
-	          var tourId = $('.selection:last').data('id');
+	        if ($(".selection:last").text() != " All") {
+	          var tourId = $(".selection:last").data("id");
 	        } else {
 	          var tourId = -1;
 	        }
-	        var from = moment(dateTime).format('YYYY-MM-DD');
-	        var to = moment(dateTime).format('YYYY-MM-DD');
-	        self.props.bookingscreen.getData(from, to, tourId, 'history');
-	      }
-	      function getDateBookings(dateTime) {
-	        console.log(dateTime);
-	        if ($('.selection:first').text() != ' All') {
-	          var tourId = $('.selection:first').data('id');
-	        } else {
-	          var tourId = -1;
-	        }
-	        var from = moment(dateTime).format('YYYY-MM-DD');
-	        var to = moment(dateTime).format('YYYY-MM-DD');
-	        self.props.bookingscreen.getData(from, to, tourId, 'bookings');
+	        var from = moment(dateTime).format("YYYY-MM-DD");
+	        var to = moment(dateTime).format("YYYY-MM-DD");
+	        self.props.bookingscreen.getData(from, to, tourId, "history");
 	      }
 
 	      return _react2.default.createElement(
@@ -45934,11 +45760,11 @@
 	            null,
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'sort-list' },
+	              { className: 'sort-list bookings-list' },
 	              _react2.default.createElement(
 	                'p',
 	                null,
-	                'Sort By:'
+	                'Sort By: '
 	              ),
 	              _react2.default.createElement(
 	                'div',
@@ -45946,9 +45772,7 @@
 	                _react2.default.createElement('input', { type: 'checkbox', id: 'sortcb1' }),
 	                _react2.default.createElement(
 	                  'label',
-	                  { 'for': 'sortcb1', onClick: function onClick() {
-	                      return callGetData('Today', 'bookings');
-	                    } },
+	                  { 'for': 'sortcb1' },
 	                  'Today'
 	                )
 	              ),
@@ -45958,9 +45782,7 @@
 	                _react2.default.createElement('input', { type: 'checkbox', id: 'sortcb2' }),
 	                _react2.default.createElement(
 	                  'label',
-	                  { 'for': 'sortcb2', onClick: function onClick() {
-	                      return callGetData('Tomorrow', 'bookings');
-	                    } },
+	                  { 'for': 'sortcb2' },
 	                  'Tomorrow'
 	                )
 	              ),
@@ -45970,19 +45792,14 @@
 	                _react2.default.createElement('input', { type: 'checkbox', id: 'sortcb3' }),
 	                _react2.default.createElement(
 	                  'label',
-	                  { 'for': 'sortcb3', onClick: function onClick() {
-	                      return callGetData('Weekend', 'bookings');
-	                    } },
+	                  { 'for': 'sortcb3' },
 	                  'This Weekend'
 	                )
 	              ),
 	              _react2.default.createElement(
 	                'div',
 	                { className: 'sort-dropdown' },
-	                _react2.default.createElement(_reactInputCalendar2.default, { format: 'DD/MM/YYYY',
-	                  placeholder: 'Trip Date',
-	                  customIcon: 'glyphicon glyphicon-menu-down',
-	                  onChange: getDateBookings })
+	                _react2.default.createElement(_reactInputCalendar2.default, { format: 'DD/MM/YYYY', date: '4-12-2014' })
 	              ),
 	              _react2.default.createElement(
 	                'div',
@@ -45996,7 +45813,7 @@
 	                    _react2.default.createElement(
 	                      'span',
 	                      { className: 'selection' },
-	                      'All'
+	                      ' All'
 	                    ),
 	                    _react2.default.createElement('span', { className: 'glyphicon glyphicon-menu-down' })
 	                  ),
@@ -46046,7 +45863,7 @@
 	              _react2.default.createElement(
 	                'p',
 	                null,
-	                'Sort By:'
+	                'Sort By: '
 	              ),
 	              _react2.default.createElement(
 	                'div',
@@ -46055,7 +45872,7 @@
 	                _react2.default.createElement(
 	                  'label',
 	                  { 'for': 'sortcb1', onClick: function onClick() {
-	                      return callGetData('Today', 'history');
+	                      return callGetData("Today", "history");
 	                    } },
 	                  'Today'
 	                )
@@ -46067,7 +45884,7 @@
 	                _react2.default.createElement(
 	                  'label',
 	                  { 'for': 'sortcb2', onClick: function onClick() {
-	                      return callGetData('Tomorrow', 'history');
+	                      return callGetData("Tomorrow", "history");
 	                    } },
 	                  'Tomorrow'
 	                )
@@ -46079,7 +45896,7 @@
 	                _react2.default.createElement(
 	                  'label',
 	                  { 'for': 'sortcb3', onClick: function onClick() {
-	                      return callGetData('Weekend', 'history');
+	                      return callGetData("Weekend", "history");
 	                    } },
 	                  'This Weekend'
 	                )
@@ -46087,10 +45904,7 @@
 	              _react2.default.createElement(
 	                'div',
 	                { className: 'sort-dropdown' },
-	                _react2.default.createElement(_reactInputCalendar2.default, { format: 'DD/MM/YYYY',
-	                  placeholder: 'Trip Date',
-	                  customIcon: 'glyphicon glyphicon-menu-down',
-	                  onChange: getDate })
+	                _react2.default.createElement(_reactInputCalendar2.default, { format: 'DD/MM/YYYY', placeholder: 'Trip Date', customIcon: 'glyphicon glyphicon-menu-down', onChange: getDate })
 	              ),
 	              _react2.default.createElement(
 	                'div',
@@ -46104,7 +45918,7 @@
 	                    _react2.default.createElement(
 	                      'span',
 	                      { className: 'selection' },
-	                      'All'
+	                      ' All'
 	                    ),
 	                    _react2.default.createElement('span', { className: 'glyphicon glyphicon-menu-down' })
 	                  ),
@@ -49252,7 +49066,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var TabComponent = __webpack_require__(455);
+	var TabComponent = __webpack_require__(358);
 
 	var STATES = __webpack_require__(239);
 
@@ -49263,28 +49077,28 @@
 
 	  getInitialState: function getInitialState() {
 	    return {
-	      name: '',
+	      name: "",
 	      bookable_pattern: [],
 	      discounted_price: 0,
 	      no_of_people: 0,
 	      discount_amount: 0,
-	      discount_code: '',
+	      discount_code: "",
 	      variant: {
 	        sub_variant: {
-	          name: ''
+	          name: ""
 	        }
 	      },
 	      tax_amount: 0,
 	      inventory_count: 0,
 	      amount: 0,
-	      bookingid: '',
-	      customerName: '',
-	      time: '',
-	      place: '',
-	      pickup_place: '',
-	      dot: '',
-	      email: '',
-	      phone: ''
+	      bookingid: "",
+	      customerName: "",
+	      time: "",
+	      place: "",
+	      pickup_place: "",
+	      dot: "",
+	      email: "",
+	      phone: ""
 
 	    };
 	  },
@@ -49302,14 +49116,14 @@
 	    var data = {};
 	    var clientInfo = this.props.route.config().getClientInfo();
 	    var header = {
-	      'X-Thrill-Client-Id': clientInfo.client_id,
-	      'X-Thrill-Auth-Token': clientInfo.auth_token
+	      "X-Thrill-Client-Id": clientInfo.client_id,
+	      "X-Thrill-Auth-Token": clientInfo.auth_token
 	    };
 
 	    this.props.route.config().httpInterceptor(this.props.route.config().url().BOOKINGS_DETAILS + this.props.params.bookingid, 'GET', data, header, urlparams).then(function (result) {
 	      self.setState({
 	        name: result.tour.name,
-	        bookable_pattern: result.variant.bookable_patterns.join(', '),
+	        bookable_pattern: result.variant.bookable_patterns.join(", "),
 	        discounted_price: result.variant.sub_variant.fixed_pricings[0].discounted_price,
 	        no_of_people: result.no_of_people,
 	        discount_amount: result.discount_amount,
@@ -49319,10 +49133,10 @@
 	        variant: result.variant,
 	        amount: result.amount,
 	        bookingid: result.transaction_id,
-	        customerName: result.first_name + ' ' + result.last_name,
-	        time: '',
-	        place: '',
-	        pickup_place: result.pickup_location ? result.pickup_location.name : 'N/A',
+	        customerName: result.first_name + " " + result.last_name,
+	        time: "",
+	        place: "",
+	        pickup_place: result.pickup_location ? result.pickup_location.name : "N/A",
 	        dot: result.date_of_travel,
 	        email: result.email,
 	        phone: result.phone
@@ -49332,7 +49146,7 @@
 	      console.log(result);
 	    }, function (result) {
 	      var message = JSON.parse(result.responseText);
-	      self.props.route.notification._addNotification(window.event, 'error', message.message);
+	      self.props.route.notification._addNotification(window.event, "error", message.message);
 	    });
 	  },
 	  render: function render() {
@@ -49356,7 +49170,7 @@
 	              _react2.default.createElement(
 	                'a',
 	                { href: '/#/dashboard' },
-	                'Dashboard'
+	                ' Dashboard'
 	              )
 	            ),
 	            _react2.default.createElement(
@@ -49412,7 +49226,7 @@
 	                        _react2.default.createElement(
 	                          'p',
 	                          null,
-	                          this.state.variant.name + ' - ' + this.state.variant.sub_variant.name
+	                          this.state.variant.name + " - " + this.state.variant.sub_variant.name
 	                        ),
 	                        _react2.default.createElement('hr', null),
 	                        _react2.default.createElement(
@@ -49423,7 +49237,7 @@
 	                        _react2.default.createElement(
 	                          'p',
 	                          null,
-	                          'Name :',
+	                          'Name : ',
 	                          this.state.customerName
 	                        ),
 	                        _react2.default.createElement(
@@ -49438,14 +49252,15 @@
 	                              _react2.default.createElement(
 	                                'p',
 	                                null,
-	                                'Passengers'
+	                                'Passengers '
 	                              ),
 	                              _react2.default.createElement(
 	                                'p',
 	                                null,
 	                                this.state.inventory_count,
-	                                ' x ',
+	                                '  x  ',
 	                                _react2.default.createElement('i', { className: 'fa fa-inr' }),
+	                                ' ',
 	                                this.state.discounted_price
 	                              )
 	                            ),
@@ -49456,6 +49271,7 @@
 	                                'p',
 	                                null,
 	                                _react2.default.createElement('i', { 'aria-hidden': 'true', className: 'fa fa-inr' }),
+	                                ' ',
 	                                this.state.no_of_people * this.state.discounted_price
 	                              )
 	                            )
@@ -49469,8 +49285,9 @@
 	                              _react2.default.createElement(
 	                                'p',
 	                                null,
-	                                'Discount',
-	                                this.state.discount_code ? '(' + this.state.discount_code + ')' : ''
+	                                'Discount ',
+	                                this.state.discount_code ? "(" + this.state.discount_code + ")" : "",
+	                                ' '
 	                              )
 	                            ),
 	                            _react2.default.createElement(
@@ -49481,6 +49298,7 @@
 	                                null,
 	                                '- ',
 	                                _react2.default.createElement('i', { 'aria-hidden': 'true', className: 'fa fa-inr' }),
+	                                ' ',
 	                                this.state.discount_amount
 	                              )
 	                            )
@@ -49494,7 +49312,7 @@
 	                              _react2.default.createElement(
 	                                'p',
 	                                null,
-	                                'Tax'
+	                                'Tax '
 	                              )
 	                            ),
 	                            _react2.default.createElement(
@@ -49504,6 +49322,7 @@
 	                                'p',
 	                                null,
 	                                _react2.default.createElement('i', { 'aria-hidden': 'true', className: 'fa fa-inr' }),
+	                                ' ',
 	                                this.state.tax_amount
 	                              )
 	                            )
@@ -49523,7 +49342,9 @@
 	                                null,
 	                                'Total Price : ',
 	                                _react2.default.createElement('i', { 'aria-hidden': 'true', className: 'fa fa-inr' }),
-	                                this.state.amount
+	                                ' ',
+	                                this.state.amount,
+	                                ' '
 	                              )
 	                            )
 	                          )
@@ -49581,7 +49402,7 @@
 	                        _react2.default.createElement(
 	                          'h3',
 	                          null,
-	                          moment(this.state.dot).format('DD MMMM YYYY')
+	                          moment(this.state.dot).format("DD MMMM YYYY")
 	                        ),
 	                        _react2.default.createElement(
 	                          'p',
@@ -49591,7 +49412,7 @@
 	                        _react2.default.createElement(
 	                          'h3',
 	                          null,
-	                          this.state.time || 'N/A'
+	                          this.state.time || "N/A"
 	                        ),
 	                        _react2.default.createElement(
 	                          'p',
@@ -49624,516 +49445,6 @@
 
 	'use strict';
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _reactTabView = __webpack_require__(348);
-
-	var _react = __webpack_require__(2);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactPaginate = __webpack_require__(351);
-
-	var _reactPaginate2 = _interopRequireDefault(_reactPaginate);
-
-	var _reactInputCalendar = __webpack_require__(359);
-
-	var _reactInputCalendar2 = _interopRequireDefault(_reactInputCalendar);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var moment = __webpack_require__(244);
-
-	var TabBookingsComponent = function (_Component) {
-	  _inherits(TabBookingsComponent, _Component);
-
-	  function TabBookingsComponent() {
-	    _classCallCheck(this, TabBookingsComponent);
-
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(TabBookingsComponent).apply(this, arguments));
-	  }
-
-	  _createClass(TabBookingsComponent, [{
-	    key: 'render',
-	    value: function render() {
-	      var self = this;
-	      var counter = 1;
-
-	      var classname = 'odd';
-	      // const headers = ['heading 1', 'heading 2'];
-	      var listItems = this.props.bookings.map(function (item) {
-	        if (counter % 2 == 0) {
-	          classname = 'even';
-	        } else {
-	          classname = 'odd';
-	        }
-	        counter++;
-	        function setInfo(item) {
-	          $('#name').html(item.first_name + ' ' + item.last_name);
-	          $('#phone').html(item.phone);
-	        }
-	        function showDetails(bookingId) {
-	          window.location.href = '/#/bookingDetails/' + bookingId;
-	        }
-	        return _react2.default.createElement(
-	          'div',
-	          { className: classname + ' booking-card' },
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'img', onClick: function onClick() {
-	                return showDetails(item.id);
-	              } },
-	            _react2.default.createElement('img', { src: item.tour.thumbnail_image ? item.tour.thumbnail_image.size_tiny : 'images/src.jpg', onerror: 'this.src=\'images/notFound.png\'' })
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'info' },
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'details' },
-	              _react2.default.createElement(
-	                'h3',
-	                { onClick: function onClick() {
-	                    return showDetails(item.id);
-	                  } },
-	                item.tour.name
-	              ),
-	              _react2.default.createElement(
-	                'p',
-	                null,
-	                'Booked by:',
-	                item.first_name,
-	                item.last_name,
-	                ' | Booking Date:',
-	                moment(item.created_at).format('D MMMM')
-	              ),
-	              _react2.default.createElement(
-	                'p',
-	                null,
-	                _react2.default.createElement('img', { src: 'images/icon-date.png' }),
-	                'Trip Date:',
-	                moment(item.date_of_travel).format('D MMMM YYYY')
-	              ),
-	              _react2.default.createElement(
-	                'p',
-	                null,
-	                _react2.default.createElement('img', { src: 'images/icon-travellar.png' }),
-	                'Travelers:',
-	                item.no_of_people
-	              )
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'contact' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'contact-info',
-	                  'data-toggle': 'modal',
-	                  'data-target': '#forgotPwModalBookings',
-	                  onClick: function onClick() {
-	                    return setInfo(item);
-	                  } },
-	                _react2.default.createElement(
-	                  'span',
-	                  null,
-	                  _react2.default.createElement('img', { src: 'images/icon-phone.png' })
-	                ),
-	                'Contact Details'
-	              )
-	            )
-	          )
-	        );
-	      });
-	      var counter = 1;
-
-	      var classname = 'odd';
-	      var listItemsHistory = this.props.history.map(function (item) {
-
-	        if (counter % 2 == 0) {
-	          classname = 'even';
-	        } else {
-	          classname = 'odd';
-	        }
-	        counter++;
-	        function setInfo(item) {
-	          $('#name').html(item.first_name + ' ' + item.last_name);
-	          $('#phone').html(item.phone);
-	        }
-	        function showDetails(bookingId) {
-	          window.location.href = '/#/bookingDetails/' + bookingId;
-	        }
-	        return _react2.default.createElement(
-	          'div',
-	          { className: classname + ' booking-card' },
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'img', onClick: function onClick() {
-	                return showDetails(item.id);
-	              } },
-	            _react2.default.createElement(
-	              'object',
-	              { data: 'images/notFound.png',
-	                type: 'image/png',
-	                className: 'image-booking-default' },
-	              _react2.default.createElement('img', { src: item.tour.thumbnail_image ? item.tour.thumbnail_image.size_tiny : 'images/src.jpg', onerror: 'this.src=\'images/notFound.png\'' })
-	            )
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'info' },
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'details' },
-	              _react2.default.createElement(
-	                'h3',
-	                { onClick: function onClick() {
-	                    return showDetails(item.id);
-	                  } },
-	                item.tour.name
-	              ),
-	              _react2.default.createElement(
-	                'p',
-	                null,
-	                'Booked by:',
-	                item.first_name,
-	                item.last_name,
-	                ' | Booking Date:',
-	                moment(item.created_at).format('D MMMM')
-	              ),
-	              _react2.default.createElement(
-	                'p',
-	                null,
-	                _react2.default.createElement('img', { src: 'images/icon-date.png' }),
-	                'Trip Date:',
-	                moment(item.date_of_travel).format('D MMMM YYYY')
-	              ),
-	              _react2.default.createElement(
-	                'p',
-	                null,
-	                _react2.default.createElement('img', { src: 'images/icon-travellar.png' }),
-	                'Travelers:',
-	                item.no_of_people
-	              )
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'contact' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'contact-info',
-	                  'data-toggle': 'modal',
-	                  'data-target': '#forgotPwModalBookings',
-	                  onClick: function onClick() {
-	                    return setInfo(item);
-	                  } },
-	                _react2.default.createElement(
-	                  'span',
-	                  null,
-	                  _react2.default.createElement('img', { src: 'images/icon-phone.png' })
-	                ),
-	                'Contact Details'
-	              )
-	            )
-	          )
-	        );
-	      });
-	      var tours = this.props.tours.map(function (item) {
-
-	        return _react2.default.createElement(
-	          'li',
-	          { 'data-id': item.id },
-	          item.name
-	        );
-	      });
-	      var self = this;
-	      function callGetData(timeDate, tabSection) {
-	        var from = -1;
-	        var to = -1;
-
-	        if (timeDate == 'Today') {
-	          from = moment().format('YYYY-MM-DD');
-	          to = moment().format('YYYY-MM-DD');
-	        } else if (timeDate == 'Tomorrow') {
-	          from = moment(moment().add('days', 1)).format('YYYY-MM-DD');
-	          to = moment(moment().add('days', 1)).format('YYYY-MM-DD');
-	        } else if (timeDate == 'Weekend') {
-	          from = moment().day(6).format('YYYY-MM-DD');
-	          to = moment().day(7).format('YYYY-MM-DD');
-	        }
-	        if ($('.selection:last').text() != ' All') {
-	          var tourId = $('.selection:last').data('id');
-	        } else {
-	          var tourId = -1;
-	        }
-	        self.props.bookingscreen.getData(from, to, tourId, tabSection);
-	      }
-	      function getDate(dateTime) {
-	        console.log(dateTime);
-	        if ($('.selection:last').text() != ' All') {
-	          var tourId = $('.selection:last').data('id');
-	        } else {
-	          var tourId = -1;
-	        }
-	        var from = moment(dateTime).format('YYYY-MM-DD');
-	        var to = moment(dateTime).format('YYYY-MM-DD');
-	        self.props.bookingscreen.getData(from, to, tourId, 'history');
-	      }
-	      function getDateBookings(dateTime) {
-	        console.log(dateTime);
-	        if ($('.selection:first').text() != ' All') {
-	          var tourId = $('.selection:first').data('id');
-	        } else {
-	          var tourId = -1;
-	        }
-	        var from = moment(dateTime).format('YYYY-MM-DD');
-	        var to = moment(dateTime).format('YYYY-MM-DD');
-	        self.props.bookingscreen.getData(from, to, tourId, 'bookings');
-	      }
-
-	      return _react2.default.createElement(
-	        'div',
-	        null,
-	        _react2.default.createElement(
-	          _reactTabView.Tabs,
-	          { headers: this.props.headers },
-	          _react2.default.createElement(
-	            _reactTabView.Tab,
-	            null,
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'sort-list' },
-	              _react2.default.createElement(
-	                'p',
-	                null,
-	                'Sort By:'
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'checkbox' },
-	                _react2.default.createElement('input', { type: 'checkbox', id: 'sortcb1' }),
-	                _react2.default.createElement(
-	                  'label',
-	                  { 'for': 'sortcb1', onClick: function onClick() {
-	                      return callGetData('Today', 'bookings');
-	                    } },
-	                  'Today'
-	                )
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'checkbox' },
-	                _react2.default.createElement('input', { type: 'checkbox', id: 'sortcb2' }),
-	                _react2.default.createElement(
-	                  'label',
-	                  { 'for': 'sortcb2', onClick: function onClick() {
-	                      return callGetData('Tomorrow', 'bookings');
-	                    } },
-	                  'Tomorrow'
-	                )
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'checkbox' },
-	                _react2.default.createElement('input', { type: 'checkbox', id: 'sortcb3' }),
-	                _react2.default.createElement(
-	                  'label',
-	                  { 'for': 'sortcb3', onClick: function onClick() {
-	                      return callGetData('Weekend', 'bookings');
-	                    } },
-	                  'This Weekend'
-	                )
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'sort-dropdown' },
-	                _react2.default.createElement(_reactInputCalendar2.default, { format: 'DD/MM/YYYY',
-	                  placeholder: 'Trip Date',
-	                  customIcon: 'glyphicon glyphicon-menu-down',
-	                  onChange: getDateBookings })
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'sort-dropdown' },
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'dropdown' },
-	                  _react2.default.createElement(
-	                    'button',
-	                    { className: 'btn dropdown-toggle', 'data-toggle': 'dropdown' },
-	                    _react2.default.createElement(
-	                      'span',
-	                      { className: 'selection' },
-	                      'All'
-	                    ),
-	                    _react2.default.createElement('span', { className: 'glyphicon glyphicon-menu-down' })
-	                  ),
-	                  _react2.default.createElement(
-	                    'ul',
-	                    { className: 'dropdown-menu tour-dropdown' },
-	                    tours
-	                  )
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'tab-pane active', id: 'tabNewBookings' },
-	              listItems
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'no-message-bookings text-center' },
-	              'No upcoming bookings.'
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'bookings-list text-center' },
-	              _react2.default.createElement(_reactPaginate2.default, { previousLabel: "previous",
-	                nextLabel: "next",
-	                breakLabel: _react2.default.createElement(
-	                  'a',
-	                  { href: '' },
-	                  '...'
-	                ),
-	                pageNum: self.props.pagenum,
-	                marginPagesDisplayed: 2,
-	                pageRangeDisplayed: 5,
-	                clickCallback: self.props.bookingscreen.handlePageClick,
-	                containerClassName: "pagination",
-	                subContainerClassName: "pages pagination",
-	                activeClassName: "active" })
-	            )
-	          ),
-	          _react2.default.createElement(
-	            _reactTabView.Tab,
-	            null,
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'sort-list' },
-	              _react2.default.createElement(
-	                'p',
-	                null,
-	                'Sort By:'
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'checkbox' },
-	                _react2.default.createElement('input', { type: 'checkbox', id: 'sortcb1' }),
-	                _react2.default.createElement(
-	                  'label',
-	                  { 'for': 'sortcb1', onClick: function onClick() {
-	                      return callGetData('Today', 'history');
-	                    } },
-	                  'Today'
-	                )
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'checkbox' },
-	                _react2.default.createElement('input', { type: 'checkbox', id: 'sortcb2' }),
-	                _react2.default.createElement(
-	                  'label',
-	                  { 'for': 'sortcb2', onClick: function onClick() {
-	                      return callGetData('Tomorrow', 'history');
-	                    } },
-	                  'Tomorrow'
-	                )
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'checkbox' },
-	                _react2.default.createElement('input', { type: 'checkbox', id: 'sortcb3' }),
-	                _react2.default.createElement(
-	                  'label',
-	                  { 'for': 'sortcb3', onClick: function onClick() {
-	                      return callGetData('Weekend', 'history');
-	                    } },
-	                  'This Weekend'
-	                )
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'sort-dropdown' },
-	                _react2.default.createElement(_reactInputCalendar2.default, { format: 'DD/MM/YYYY',
-	                  placeholder: 'Trip Date',
-	                  customIcon: 'glyphicon glyphicon-menu-down',
-	                  onChange: getDate })
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'sort-dropdown' },
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'dropdown' },
-	                  _react2.default.createElement(
-	                    'button',
-	                    { className: 'btn dropdown-toggle', 'data-toggle': 'dropdown' },
-	                    _react2.default.createElement(
-	                      'span',
-	                      { className: 'selection' },
-	                      'All'
-	                    ),
-	                    _react2.default.createElement('span', { className: 'glyphicon glyphicon-menu-down' })
-	                  ),
-	                  _react2.default.createElement(
-	                    'ul',
-	                    { className: 'dropdown-menu tour-dropdown' },
-	                    tours
-	                  )
-	                )
-	              )
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'tab-pane active ', id: 'tabNewBookings' },
-	              listItemsHistory
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'no-message-history text-center' },
-	              'No bookings history.'
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'history-list text-center' },
-	              _react2.default.createElement(_reactPaginate2.default, { previousLabel: "previous",
-	                nextLabel: "next",
-	                breakLabel: _react2.default.createElement(
-	                  'a',
-	                  { href: '' },
-	                  '...'
-	                ),
-	                pageNum: self.props.pagenumHistory,
-	                marginPagesDisplayed: 2,
-	                pageRangeDisplayed: 5,
-	                clickCallback: self.props.bookingscreen.handlePageClickHistory,
-	                containerClassName: "pagination",
-	                subContainerClassName: "pages pagination",
-	                activeClassName: "active" })
-	            )
-	          )
-	        )
-	      );
-	    }
-	  }]);
-
-	  return TabBookingsComponent;
-	}(_react.Component);
-
-	module.exports = TabBookingsComponent;
-
-/***/ },
-/* 456 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
 	var _reactRouter = __webpack_require__(170);
 
 	var _reactTabView = __webpack_require__(348);
@@ -50148,7 +49459,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var TabProfileComponent = __webpack_require__(457);
+	var TabProfileComponent = __webpack_require__(456);
 
 	var STATES = __webpack_require__(239);
 
@@ -50157,30 +49468,9 @@
 
 	  getInitialState: function getInitialState() {
 	    return {
-	      profile: {
-	        bank_detail: {
-	          name: '',
-	          account_holder: '',
-	          account_number: '',
-	          branch_name: '',
-	          ifsc: '',
-	          iban: '',
-	          swift_code: '',
-	          pan_number: '',
-	          service_tax_number: ''
-	        },
-	        city: '',
-	        country: '',
-	        state: '',
-	        vendor_associates: [{
-	          name: '',
-	          email: '',
-	          phone: ''
-	        }]
-	      },
-	      Tabsheader: ['Vendor Profile', 'Details', 'Contact Info', 'Bank Details'],
+	      profile: {},
+	      Tabsheader: ["Vendor Profile", "Details", "Contact Info", "Bank Details"],
 	      country: []
-
 	    };
 	  },
 
@@ -50204,15 +49494,12 @@
 	  loadfromServer: function loadfromServer(pageNo) {
 
 	    var self = this;
-	    console.log('url-data-page:' + this.state.pageSelected);
+	    console.log("url-data-page:" + this.state.pageSelected);
 	    //console.log(JSON.parse(localStorage.getItem("clientInfo")).client.client_id);
 	    var urlparams = {};
 	    var data = {};
 	    var clientInfo = this.props.route.config().getClientInfo();
-	    var header = {
-	      'X-Thrill-Client-Id': clientInfo.client_id,
-	      'X-Thrill-Auth-Token': clientInfo.auth_token
-	    };
+	    var header = { "X-Thrill-Client-Id": clientInfo.client_id, "X-Thrill-Auth-Token": clientInfo.auth_token };
 
 	    this.props.route.config().httpInterceptor(this.props.route.config().url().PROFILE, 'GET', data, header, urlparams).then(function (result) {
 	      self.setState({
@@ -50221,7 +49508,7 @@
 	      console.log(result);
 	    }, function (result) {
 	      var message = JSON.parse(result.responseText);
-	      self.props.route.notification._addNotification(window.event, 'error', message.message);
+	      self.props.route.notification._addNotification(window.event, "error", message.message);
 	    });
 	  },
 
@@ -50237,7 +49524,8 @@
 	    return _react2.default.createElement(
 	      'div',
 	      null,
-	      _react2.default.createElement(TabProfileComponent, { headers: this.state.Tabsheader,
+	      _react2.default.createElement(TabProfileComponent, {
+	        headers: this.state.Tabsheader,
 	        profile: this.state.profile,
 	        config: this.props.route,
 	        countries: this.state.country })
@@ -50249,7 +49537,7 @@
 	module.exports = ProfileScreen;
 
 /***/ },
-/* 457 */
+/* 456 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -50262,10 +49550,10 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var VendorProfile = __webpack_require__(458);
-	var DetailsProfile = __webpack_require__(459);
-	var ContactInfoProfile = __webpack_require__(460);
-	var BankDetailsProfile = __webpack_require__(461);
+	var VendorProfile = __webpack_require__(457);
+	var DetailsProfile = __webpack_require__(458);
+	var ContactInfoProfile = __webpack_require__(459);
+	var BankDetailsProfile = __webpack_require__(460);
 
 	var TabProfileComponent = _react2.default.createClass({
 	  displayName: 'TabProfileComponent',
@@ -50276,10 +49564,7 @@
 	      profile: {}
 	    };
 	  },
-	  componentDidMount: function componentDidMount() {
-
-	    console.log(this.props.profile);
-	  },
+	  componentDidMount: function componentDidMount() {},
 	  render: function render() {
 
 	    return _react2.default.createElement(
@@ -50301,9 +49586,7 @@
 	        _react2.default.createElement(
 	          _reactTabView.Tab,
 	          null,
-	          _react2.default.createElement(ContactInfoProfile, { profile: this.props.profile,
-	            countries: this.props.countries,
-	            bank_details: this.props.profile.bank_detail })
+	          _react2.default.createElement(ContactInfoProfile, { profile: this.props.profile, countries: this.props.countries })
 	        ),
 	        _react2.default.createElement(
 	          _reactTabView.Tab,
@@ -50318,7 +49601,7 @@
 	module.exports = TabProfileComponent;
 
 /***/ },
-/* 458 */
+/* 457 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -50334,27 +49617,27 @@
 	  getInitialState: function getInitialState() {
 	    console.log(this.props.data.photo);
 	    return {
-	      photo: '',
-	      name: '',
+	      photo: "",
+	      name: "",
 
-	      phone: '',
-	      email: '',
-	      description: ''
+	      phone: "",
+	      email: "",
+	      description: ""
 	    };
 	  },
 	  showEdit: function showEdit() {
 
 	    this.setState({
-	      photo: $('#photo').prop('src'),
-	      name: $('#name').html(),
+	      photo: $("#photo").prop("src"),
+	      name: $("#name").html(),
 
-	      phone: $('#phone').html(),
-	      email: $('#email').html(),
-	      description: $('#description').html()
+	      phone: $("#phone").html(),
+	      email: $("#email").html(),
+	      description: $("#description").html()
 	    });
-	    $('.vendor-profile.actual').addClass('hide');
-	    $('.vendor-profile.edit').removeClass('hide');
-	    $('.vendor-profile.edit').addClass('\'animated bounceInLeft\'');
+	    $(".vendor-profile.actual").addClass("hide");
+	    $(".vendor-profile.edit").removeClass("hide");
+	    $(".vendor-profile.edit").addClass("'animated bounceInLeft'");
 	  },
 	  updateName: function updateName(e) {
 
@@ -50383,12 +49666,12 @@
 	  componentDidMount: function componentDidMount() {
 	    console.log(this.props);
 
-	    $('.vendor-profile.actual').addClass('animated bounceInLeft');
-	    $('.vendor-profile.edit').addClass('\'animated bounceInLeft\'');
+	    $(".vendor-profile.actual").addClass('animated bounceInLeft');
+	    $(".vendor-profile.edit").addClass("'animated bounceInLeft'");
 	  },
 	  showActual: function showActual() {
-	    $('.vendor-profile.actual').removeClass('hide');
-	    $('.vendor-profile.edit').addClass('hide');
+	    $(".vendor-profile.actual").removeClass("hide");
+	    $(".vendor-profile.edit").addClass("hide");
 	  },
 	  save: function save() {
 	    var data = {
@@ -50403,12 +49686,12 @@
 	    var clientInfo = this.utils().getClientInfo();
 	    var self = this;
 	    this.utils().httpInterceptor(this.utils().url().PROFILE_SAVE, 'PUT', data, header, clientInfo).then(function (result) {
-	      $('#name').html(self.state.name);
-	      $('#email').html(self.state.email);
-	      $('#phone').html(self.state.phone);
-	      $('#description').html(self.state.description);
-	      $('.vendor-profile.actual').removeClass('hide');
-	      $('.vendor-profile.edit').addClass('hide');
+	      $("#name").html(self.state.name);
+	      $("#email").html(self.state.email);
+	      $("#phone").html(self.state.phone);
+	      $("#description").html(self.state.description);
+	      $(".vendor-profile.actual").removeClass("hide");
+	      $(".vendor-profile.edit").addClass("hide");
 	    }, function (result) {
 	      var message = JSON.parse(result.responseText);
 	      console.log(message);
@@ -50453,15 +49736,16 @@
 	              { id: 'phone' },
 	              this.props.data.phone1
 	            ),
-	            '     ',
+	            '          ',
 	            React.createElement(
 	              'strong',
 	              null,
 	              'Email:'
 	            ),
+	            ' ',
 	            React.createElement(
 	              'a',
-	              { href: 'mailto:' + this.props.data.email, id: 'email' },
+	              { href: "mailto:" + this.props.data.email, id: 'email' },
 	              this.props.data.email
 	            )
 	          ),
@@ -50511,10 +49795,7 @@
 	                  { className: 'field-name' },
 	                  'Vendor Name'
 	                ),
-	                React.createElement('input', { type: 'text',
-	                  value: this.state.name,
-	                  onChange: this.updateName,
-	                  fieldName: 'name' })
+	                React.createElement('input', { type: 'text', value: this.state.name, onChange: this.updateName, fieldName: 'name' })
 	              )
 	            )
 	          ),
@@ -50532,9 +49813,7 @@
 	                  { className: 'field-name' },
 	                  'Email'
 	                ),
-	                React.createElement('input', { type: 'text',
-	                  value: this.state.email,
-	                  onChange: this.updateEmail })
+	                React.createElement('input', { type: 'text', value: this.state.email, onChange: this.updateEmail })
 	              )
 	            ),
 	            React.createElement(
@@ -50548,9 +49827,7 @@
 	                  { className: 'field-name' },
 	                  'Phone'
 	                ),
-	                React.createElement('input', { type: 'text',
-	                  value: this.state.phone,
-	                  onChange: this.updatePhone })
+	                React.createElement('input', { type: 'text', value: this.state.phone, onChange: this.updatePhone })
 	              )
 	            )
 	          ),
@@ -50584,7 +49861,7 @@
 	module.exports = VendorProfile;
 
 /***/ },
-/* 459 */
+/* 458 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -50600,27 +49877,27 @@
 	  mixins: [ConfigMixin],
 	  getInitialState: function getInitialState() {
 	    return {
-	      gender: '',
-	      companyName: '',
-	      companyWebsite: ''
+	      gender: "",
+	      companyName: "",
+	      companyWebsite: ""
 	    };
 	  },
 	  componentDidMount: function componentDidMount() {
 
-	    $('.details-profile').addClass('animated bounceInRight');
-	    $('.details').hide();
-	    console.log('>>>>>>' + $('#company_name').html());
-	    $(document).on('click', '.dropdown-menu li', function (e) {
+	    $(".details-profile").addClass('animated bounceInRight');
+	    $(".details").hide();
+	    console.log(">>>>>>" + $("#company_name").html());
+	    $(document).on("click", ".dropdown-menu li", function (e) {
 
-	      $(e.target).parents('.dropdown').find('.selection').text($(this).text());
-	      $(e.target).parents('.dropdown').find('.selection').val($(this).text());
+	      $(e.target).parents(".dropdown").find('.selection').text($(this).text());
+	      $(e.target).parents(".dropdown").find('.selection').val($(this).text());
 	    });
 	    var self = this;
 	    setTimeout(function () {}, 100);
 	  },
 	  showActual: function showActual() {
-	    $('.details-section').removeClass('hide');
-	    $('.details-section-edit').addClass('hide');
+	    $(".details-section").removeClass("hide");
+	    $(".details-section-edit").addClass("hide");
 	  },
 	  updateCompanyName: function updateCompanyName(e) {
 	    this.setState({
@@ -50634,18 +49911,18 @@
 	  },
 	  showEdit: function showEdit() {
 	    this.setState({
-	      gender: $('#gender').html() == 'Not Available' ? '' : $('#gender').html(),
-	      companyName: $('#company_name').html(),
-	      companyWebsite: $('#company_website').html()
+	      gender: $("#gender").html() == "Not Available" ? "" : $("#gender").html(),
+	      companyName: $("#company_name").html(),
+	      companyWebsite: $("#company_website").html()
 
 	    });
-	    $('.details-section').addClass('hide');
-	    $('.details-section-edit').removeClass('hide');
+	    $(".details-section").addClass("hide");
+	    $(".details-section-edit").removeClass("hide");
 	  },
 	  save: function save() {
 	    var data = {
 	      profile: {
-	        gender: $('.selection').html(),
+	        gender: $(".selection").html(),
 	        company_name: this.state.companyName,
 	        company_website: this.state.companyWebsite
 	      }
@@ -50654,12 +49931,12 @@
 	    var clientInfo = this.utils().getClientInfo();
 	    var self = this;
 	    this.utils().httpInterceptor(this.utils().url().PROFILE_SAVE, 'PUT', data, header, clientInfo).then(function (result) {
-	      $('#gender').html($('.selection').html());
-	      $('#company_name').html(self.state.companyName);
-	      $('#company_website').html(self.state.companyWebsite);
+	      $("#gender").html($(".selection").html());
+	      $("#company_name").html(self.state.companyName);
+	      $("#company_website").html(self.state.companyWebsite);
 
-	      $('.details-section').removeClass('hide');
-	      $('.details-section-edit').addClass('hide');
+	      $(".details-section").removeClass("hide");
+	      $(".details-section-edit").addClass("hide");
 	    }, function (result) {
 	      var message = JSON.parse(result.responseText);
 	      console.log(message);
@@ -50672,9 +49949,7 @@
 	      null,
 	      React.createElement(
 	        'div',
-	        { role: 'tabpanel',
-	          className: 'tab-pane details-profile',
-	          id: 'tabDetails2' },
+	        { role: 'tabpanel', className: 'tab-pane details-profile', id: 'tabDetails2' },
 	        React.createElement(
 	          'div',
 	          { className: 'details-section' },
@@ -50687,7 +49962,7 @@
 	              React.createElement(
 	                'td',
 	                null,
-	                'Vendor Id'
+	                'Vendor Id '
 	              ),
 	              React.createElement(
 	                'td',
@@ -50701,12 +49976,12 @@
 	              React.createElement(
 	                'td',
 	                null,
-	                'Registration Date'
+	                'Registration Date '
 	              ),
 	              React.createElement(
 	                'td',
 	                null,
-	                moment(this.props.profile.registration_date).format('MMM D, YYYY')
+	                moment(this.props.profile.registration_date).format("MMM D, YYYY")
 	              )
 	            ),
 	            React.createElement(
@@ -50720,7 +49995,7 @@
 	              React.createElement(
 	                'td',
 	                { id: 'gender' },
-	                this.props.profile.gender || 'Not Available'
+	                this.props.profile.gender || "Not Available"
 	              )
 	            ),
 	            React.createElement(
@@ -50734,7 +50009,7 @@
 	              React.createElement(
 	                'td',
 	                { id: 'company_name' },
-	                this.props.profile.company_name || 'Not Available'
+	                this.props.profile.company_name || "Not Available"
 	              )
 	            ),
 	            React.createElement(
@@ -50748,7 +50023,7 @@
 	              React.createElement(
 	                'td',
 	                { id: 'company_website' },
-	                this.props.profile.company_website || 'Not Available'
+	                this.props.profile.company_website || "Not Available"
 	              )
 	            )
 	          ),
@@ -50770,7 +50045,7 @@
 	              React.createElement(
 	                'td',
 	                null,
-	                'Vendor Id'
+	                'Vendor Id '
 	              ),
 	              React.createElement(
 	                'td',
@@ -50784,12 +50059,12 @@
 	              React.createElement(
 	                'td',
 	                null,
-	                'Registration Date'
+	                'Registration Date '
 	              ),
 	              React.createElement(
 	                'td',
 	                null,
-	                moment(this.props.profile.registration_date).format('MMM D, YYYY')
+	                moment(this.props.profile.registration_date).format("MMM D, YYYY")
 	              )
 	            ),
 	            React.createElement(
@@ -50808,13 +50083,11 @@
 	                  { className: 'dropdown' },
 	                  React.createElement(
 	                    'button',
-	                    { className: 'btn dropdown-toggle',
-	                      type: 'button',
-	                      'data-toggle': 'dropdown' },
+	                    { className: 'btn dropdown-toggle', type: 'button', 'data-toggle': 'dropdown' },
 	                    React.createElement(
 	                      'span',
 	                      { className: 'selection' },
-	                      this.state.gender || 'Choose'
+	                      this.state.gender || "Choose"
 	                    ),
 	                    React.createElement('span', { className: 'glyphicon glyphicon-triangle-bottom' })
 	                  ),
@@ -50846,9 +50119,8 @@
 	              React.createElement(
 	                'td',
 	                null,
-	                React.createElement('input', { type: 'text',
-	                  value: this.state.companyName,
-	                  onChange: this.updateCompanyName })
+	                React.createElement('input', { type: 'text', value: this.state.companyName, onChange: this.updateCompanyName }),
+	                ' '
 	              )
 	            ),
 	            React.createElement(
@@ -50862,9 +50134,7 @@
 	              React.createElement(
 	                'td',
 	                null,
-	                React.createElement('input', { type: 'text',
-	                  value: this.state.companyWebsite,
-	                  onChange: this.updateCompanyWebsite })
+	                React.createElement('input', { type: 'text', value: this.state.companyWebsite, onChange: this.updateCompanyWebsite })
 	              )
 	            )
 	          ),
@@ -50888,7 +50158,7 @@
 	module.exports = DetailsProfile;
 
 /***/ },
-/* 460 */
+/* 459 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -50898,636 +50168,556 @@
 	var React = __webpack_require__(2);
 
 	var ContactInfoProfile = React.createClass({
-	  displayName: 'ContactInfoProfile',
+	    displayName: 'ContactInfoProfile',
 
-	  mixins: [ConfigMixin],
-	  getInitialState: function getInitialState() {
-	    return {
-	      country: {},
-	      city: {},
-	      states: [],
-	      cities: [],
-	      countryId: '',
-	      stateId: '',
-	      cityId: ''
-	    };
-	  },
-	  showEdit: function showEdit() {
-	    // this.setState({
-	    //   gender: ($("#gender").html() == "Not Available")?"":$("#gender").html(),
-	    //   companyName: $("#company_name").html(),
-	    //   companyWebsite: $("#company_website").html()
+	    mixins: [ConfigMixin],
+	    getInitialState: function getInitialState() {
+	        return {
+	            country: {},
+	            city: {},
+	            states: [],
+	            cities: []
+	        };
+	    }, showEdit: function showEdit() {
+	        // this.setState({
+	        //   gender: ($("#gender").html() == "Not Available")?"":$("#gender").html(),
+	        //   companyName: $("#company_name").html(),
+	        //   companyWebsite: $("#company_website").html()
 
-	    // });
-	    $('#sEmailTxt').val($('#sEmail').text());
-	    $('#sPhoneTxt').val($('#sPhone').text());
-	    $('#address1Txt').val($('#address1').text());
-	    $('#address2Txt').val($('#address2').text());
-	    $('#assistNameTxt').val($('#assistName').text());
-	    $('#assistPhoneTxt').val($('#assistPhone').text());
-	    $('#assistEmailTxt').val($('#assistEmail').text());
-	    $('#zipcodeTxt').val($('#zipcode').text());
-	    $('.contact-details').addClass('hide');
-	    $('.contact-details-edit').removeClass('hide');
-	  },
-	  componentDidMount: function componentDidMount() {
-	    $('.contact-details').addClass('animated bounceInRight');
-	    var self = this;
+	        // });
+	        $(".contact-details").addClass("hide");
+	        $(".contact-details-edit").removeClass("hide");
+	    },
+	    componentDidMount: function componentDidMount() {
+	        $(".contact-details").addClass('animated bounceInRight');
+	        var self = this;
+	        $(document).on("click", ".country-dropdown .dropdown-menu li", function (e) {
+	            console.log($(e.target).text());
+	            $(e.target).closest(".dropdown").find('.selection-country').text($(e.target).text());
+	            $(e.target).closest(".dropdown").find('.selection-country').val($(e.target).text());
+	            $(e.target).closest(".dropdown").find('.selection-country').prop("data-id", $(e.target).data("id"));
+	            var data = {};
+	            var header = {};
+	            var clientInfo = self.utils().getClientInfo();
+	            clientInfo["country_id"] = parseInt($(e.target).data("id"));
 
-	    $(document).on('click', '.country-dropdown .dropdown-menu li', function (e) {
-
-	      $(e.target).closest('.dropdown').find('.selection-country').text($(e.target).text());
-	      $(e.target).closest('.dropdown').find('.selection-country').val($(e.target).text());
-	      $(e.target).closest('.dropdown').find('.selection-country').prop('data-id', $(e.target).data('id'));
-	      self.setState({
-	        countryId: $(e.target).data('id')
-	      });
-	      var data = {};
-	      var header = {};
-	      var clientInfo = self.utils().getClientInfo();
-	      clientInfo['country_id'] = parseInt($(e.target).data('id'));
-
-	      self.utils().httpInterceptor(self.utils().url().STATE, 'GET', data, header, clientInfo).then(function (result) {
-	        self.setState({
-	          states: result.states
+	            self.utils().httpInterceptor(self.utils().url().STATE, 'GET', data, header, clientInfo).then(function (result) {
+	                self.setState({
+	                    states: result.states
+	                });
+	            }, function (result) {
+	                var message = JSON.parse(result.responseText);
+	                console.log(message);
+	                // self.props.config.notification._addNotification(window.event, "error", message.message);
+	            });
 	        });
-	      }, function (result) {
-	        var message = JSON.parse(result.responseText);
-	        console.log(message);
-	        // self.props.config.notification._addNotification(window.event, "error", message.message);
-	      });
-	    });
-	    $(document).on('click', '.state-dropdown .dropdown-menu li', function (e) {
-	      $(e.target).closest('.dropdown').find('.selection-state').text($(e.target).text());
-	      $(e.target).closest('.dropdown').find('.selection-state').val($(e.target).text());
-	      $(e.target).closest('.dropdown').find('.selection-state').prop('data-id', $(e.target).data('id'));
-	      self.setState({
-	        stateId: $(e.target).data('id')
-	      });
-	      var data = {};
-	      var header = {};
-	      var clientInfo = self.utils().getClientInfo();
-	      clientInfo['country_id'] = parseInt($('.selection-country').prop('data-id'));
-	      clientInfo['state_id'] = parseInt($(e.target).data('id'));
+	        $(document).on("click", ".state-dropdown .dropdown-menu li", function (e) {
+	            $(e.target).closest(".dropdown").find('.selection-state').text($(e.target).text());
+	            $(e.target).closest(".dropdown").find('.selection-state').val($(e.target).text());
+	            $(e.target).closest(".dropdown").find('.selection-state').prop("data-id", $(e.target).data("id"));
+	            var data = {};
+	            var header = {};
+	            var clientInfo = self.utils().getClientInfo();
+	            clientInfo["country_id"] = parseInt($(".selection-country").prop("data-id"));
+	            clientInfo["state_id"] = parseInt($(e.target).data("id"));
 
-	      self.utils().httpInterceptor(self.utils().url().CITIES, 'GET', data, header, clientInfo).then(function (result) {
-	        self.setState({
-	          cities: result.cities
+	            self.utils().httpInterceptor(self.utils().url().CITIES, 'GET', data, header, clientInfo).then(function (result) {
+	                self.setState({
+	                    cities: result.cities
+	                });
+	            }, function (result) {
+	                var message = JSON.parse(result.responseText);
+	                console.log(message);
+	                // self.props.config.notification._addNotification(window.event, "error", message.message);
+	            });
 	        });
-	      }, function (result) {
-	        var message = JSON.parse(result.responseText);
-	        console.log(message);
-	        // self.props.config.notification._addNotification(window.event, "error", message.message);
-	      });
-	    });
-	    $(document).on('click', '.city-dropdown .dropdown-menu li', function (e) {
-	      self.setState({
-	        cityId: $(e.target).data('id')
-	      });
-	      $(e.target).closest('.dropdown').find('.selection-city').text($(e.target).text());
-	      $(e.target).closest('.dropdown').find('.selection-city').val($(e.target).text());
-	      $(e.target).closest('.dropdown').find('.selection-city').prop('data-id', $(e.target).data('id'));
-	    });
-	  },
-	  save: function save() {
-	    var data = {
-	      profile: {
-	        country_id: this.state.countryId,
-	        city_id: this.state.cityId,
-	        state_id: this.state.stateId
-	      }
-	    };
-	    data.profile['phone2'] = $('#sPhoneTxt').val();
-	    data.profile['secondary_email'] = $('#sEmailTxt').val();
-	    data.profile['address1'] = $('#address1Txt').val();
-	    data.profile['address2'] = $('#address2Txt').val();
-	    data.profile['postal_code'] = $('#zipcodeTxt').val();
-	    data.profile['vendor_associates_attributes'] = [{
-	      name: $('#assistNameTxt').val(),
-	      email: $('#assistEmailTxt').val(),
-	      phone: $('#assistPhoneTxt').val()
-	    }];
-	    var header = {};
-	    var clientInfo = this.utils().getClientInfo();
-	    var self = this;
-	    this.utils().httpInterceptor(this.utils().url().PROFILE_SAVE, 'PUT', data, header, clientInfo).then(function (result) {
-	      $('.contact-details').removeClass('hide');
-	      $('.contact-details-edit').addClass('hide');
-	    }, function (result) {
-	      var message = JSON.parse(result.responseText);
-	      console.log(message);
-	      // self.props.config.notification._addNotification(window.event, "error", message.message);
-	    });
-	  },
-	  render: function render() {
-	    var listCoutryItems = this.props.countries.map(function (item) {
+	        $(document).on("click", ".city-dropdown .dropdown-menu li", function (e) {
+	            $(e.target).closest(".dropdown").find('.selection-city').text($(e.target).text());
+	            $(e.target).closest(".dropdown").find('.selection-city').val($(e.target).text());
+	            $(e.target).closest(".dropdown").find('.selection-city').prop("data-id", $(e.target).data("id"));
+	        });
+	    },
+	    render: function render() {
+	        var listCoutryItems = this.props.countries.map(function (item) {
 
-	      return React.createElement(
-	        'li',
-	        { 'data-id': item.id },
-	        item.name
-	      );
-	    });
-	    var listStateItems = this.state.states.map(function (item) {
+	            return React.createElement(
+	                'li',
+	                { 'data-id': item.id },
+	                item.name
+	            );
+	        });
+	        var listStateItems = this.state.states.map(function (item) {
 
-	      return React.createElement(
-	        'li',
-	        { 'data-id': item.id },
-	        item.name
-	      );
-	    });
-	    var listCitiesItems = this.state.cities.map(function (item) {
+	            return React.createElement(
+	                'li',
+	                { 'data-id': item.id },
+	                item.name
+	            );
+	        });
+	        var listCitiesItems = this.state.cities.map(function (item) {
 
-	      return React.createElement(
-	        'li',
-	        { 'data-id': item.id },
-	        item.name
-	      );
-	    });
-	    console.log(this.props.profile);
-	    // var assistName = this.props.profile.vendor_associates.map(function(item){
-	    //     return (
-	    //             <span>{item.name}</span>
-	    //         );
-	    // });
-	    // var assistPhone = this.props.profile.vendor_associates.map(function(item){
-	    //     return (
-	    //             <span>{item.phone}</span>
-	    //         );
-	    // });
-	    // var assistEmail = this.props.profile.vendor_associates.map(function(item){
-	    //     return (
-	    //             <span>{item.email}</span>
-	    //         );
-	    // });
-	    // this.setState({
-	    //   countryId: this.props.profile.country,
-	    //   stateId: this.props.profile.state
-	    // });
-	    return React.createElement(
-	      'div',
-	      { role: 'tabpanel',
-	        className: 'tab-pane',
-	        id: 'tabContactInfo' },
-	      React.createElement(
-	        'div',
-	        { className: 'contact-details' },
-	        React.createElement(
-	          'table',
-	          null,
-	          React.createElement(
-	            'tr',
-	            null,
+	            return React.createElement(
+	                'li',
+	                { 'data-id': item.id },
+	                item.name
+	            );
+	        });
+	        // this.setState({
+	        //   countryId: this.props.profile.country,
+	        //   stateId: this.props.profile.state
+	        // });
+	        return React.createElement(
+	            'div',
+	            { role: 'tabpanel', className: 'tab-pane', id: 'tabContactInfo' },
 	            React.createElement(
-	              'td',
-	              null,
-	              'Email'
-	            ),
-	            React.createElement(
-	              'td',
-	              null,
-	              this.props.profile.email
-	            )
-	          ),
-	          React.createElement(
-	            'tr',
-	            null,
-	            React.createElement(
-	              'td',
-	              null,
-	              'Secondary Email'
-	            ),
-	            React.createElement(
-	              'td',
-	              { id: 'sEmail' },
-	              this.props.profile.secondary_email
-	            )
-	          ),
-	          React.createElement(
-	            'tr',
-	            null,
-	            React.createElement(
-	              'td',
-	              null,
-	              'Phone'
-	            ),
-	            React.createElement(
-	              'td',
-	              null,
-	              this.props.profile.phone1
-	            )
-	          ),
-	          React.createElement(
-	            'tr',
-	            null,
-	            React.createElement(
-	              'td',
-	              null,
-	              'Secondary Phone'
-	            ),
-	            React.createElement(
-	              'td',
-	              { id: 'sPhone' },
-	              this.props.profile.phone2
-	            )
-	          ),
-	          React.createElement(
-	            'tr',
-	            null,
-	            React.createElement(
-	              'td',
-	              null,
-	              'Address Line 1'
-	            ),
-	            React.createElement(
-	              'td',
-	              { id: 'address1' },
-	              this.props.profile.address1
-	            )
-	          ),
-	          React.createElement(
-	            'tr',
-	            null,
-	            React.createElement(
-	              'td',
-	              null,
-	              'Address Line 2'
-	            ),
-	            React.createElement(
-	              'td',
-	              { id: 'address2' },
-	              this.props.profile.address2
-	            )
-	          ),
-	          React.createElement(
-	            'tr',
-	            null,
-	            React.createElement(
-	              'td',
-	              null,
-	              'City/ Town'
-	            ),
-	            React.createElement(
-	              'td',
-	              null,
-	              this.props.profile.city
-	            )
-	          ),
-	          React.createElement(
-	            'tr',
-	            null,
-	            React.createElement(
-	              'td',
-	              null,
-	              'State/ Province'
-	            ),
-	            React.createElement(
-	              'td',
-	              null,
-	              this.props.profile.state
-	            )
-	          ),
-	          React.createElement(
-	            'tr',
-	            null,
-	            React.createElement(
-	              'td',
-	              null,
-	              'Zip/ Postal Code'
-	            ),
-	            React.createElement(
-	              'td',
-	              { id: 'zipcode' },
-	              this.props.profile.postal_code
-	            )
-	          ),
-	          React.createElement(
-	            'tr',
-	            null,
-	            React.createElement(
-	              'td',
-	              null,
-	              'Country'
-	            ),
-	            React.createElement(
-	              'td',
-	              null,
-	              this.props.profile.country
-	            )
-	          ),
-	          React.createElement(
-	            'tr',
-	            null,
-	            React.createElement(
-	              'td',
-	              null,
-	              'Assistant Name'
-	            ),
-	            React.createElement(
-	              'td',
-	              { id: 'assistName' },
-	              this.props.profile.vendor_associates[0].name
-	            )
-	          ),
-	          React.createElement(
-	            'tr',
-	            null,
-	            React.createElement(
-	              'td',
-	              null,
-	              'Assistant Email'
-	            ),
-	            React.createElement(
-	              'td',
-	              { id: 'assistEmail' },
-	              this.props.profile.vendor_associates[0].email
-	            )
-	          ),
-	          React.createElement(
-	            'tr',
-	            null,
-	            React.createElement(
-	              'td',
-	              null,
-	              'Assistant Phone'
-	            ),
-	            React.createElement(
-	              'td',
-	              { id: 'assistPhone' },
-	              this.props.profile.vendor_associates[0].phone
-	            )
-	          )
-	        ),
-	        React.createElement(
-	          'button',
-	          { className: 'btn btn-secondary btn-line', onClick: this.showEdit },
-	          'Edit Contact Info'
-	        )
-	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'contact-details-edit hide' },
-	        React.createElement(
-	          'table',
-	          null,
-	          React.createElement(
-	            'tr',
-	            null,
-	            React.createElement(
-	              'td',
-	              null,
-	              'Email'
-	            ),
-	            React.createElement(
-	              'td',
-	              null,
-	              'email@gmail.com'
-	            )
-	          ),
-	          React.createElement(
-	            'tr',
-	            null,
-	            React.createElement(
-	              'td',
-	              null,
-	              'Secondary Email'
-	            ),
-	            React.createElement(
-	              'td',
-	              null,
-	              React.createElement('input', { type: 'text', id: 'sEmailTxt' })
-	            )
-	          ),
-	          React.createElement(
-	            'tr',
-	            null,
-	            React.createElement(
-	              'td',
-	              null,
-	              'Phone'
-	            ),
-	            React.createElement(
-	              'td',
-	              null,
-	              this.props.profile.phone1
-	            )
-	          ),
-	          React.createElement(
-	            'tr',
-	            null,
-	            React.createElement(
-	              'td',
-	              null,
-	              'Secondary Phone'
-	            ),
-	            React.createElement(
-	              'td',
-	              null,
-	              React.createElement('input', { type: 'text', id: 'sPhoneTxt' })
-	            )
-	          ),
-	          React.createElement(
-	            'tr',
-	            null,
-	            React.createElement(
-	              'td',
-	              null,
-	              'Address Line 1'
-	            ),
-	            React.createElement(
-	              'td',
-	              null,
-	              React.createElement('input', { type: 'text', id: 'address1Txt' })
-	            )
-	          ),
-	          React.createElement(
-	            'tr',
-	            null,
-	            React.createElement(
-	              'td',
-	              null,
-	              'Address Line 2'
-	            ),
-	            React.createElement(
-	              'td',
-	              null,
-	              React.createElement('input', { type: 'text', id: 'address2Txt' })
-	            )
-	          ),
-	          React.createElement(
-	            'tr',
-	            null,
-	            React.createElement(
-	              'td',
-	              null,
-	              'Country'
-	            ),
-	            React.createElement(
-	              'td',
-	              null,
-	              React.createElement(
 	                'div',
-	                { className: 'dropdown country-dropdown' },
+	                { className: 'contact-details' },
 	                React.createElement(
-	                  'button',
-	                  { className: 'btn dropdown-toggle',
-	                    type: 'button',
-	                    'data-toggle': 'dropdown' },
-	                  React.createElement(
-	                    'span',
-	                    { className: 'selection-country' },
-	                    this.props.profile.country || 'Choose'
-	                  ),
-	                  React.createElement('span', { className: 'glyphicon glyphicon-triangle-bottom' })
+	                    'table',
+	                    null,
+	                    React.createElement(
+	                        'tr',
+	                        null,
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            'Email '
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            this.props.profile.email
+	                        )
+	                    ),
+	                    React.createElement(
+	                        'tr',
+	                        null,
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            'Secondary Email  '
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            this.props.profile.secondary_email
+	                        )
+	                    ),
+	                    React.createElement(
+	                        'tr',
+	                        null,
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            'Phone'
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            this.props.profile.phone1
+	                        )
+	                    ),
+	                    React.createElement(
+	                        'tr',
+	                        null,
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            'Secondary Phone '
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            this.props.profile.phone2
+	                        )
+	                    ),
+	                    React.createElement(
+	                        'tr',
+	                        null,
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            'Address Line 1'
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            this.props.profile.address1
+	                        )
+	                    ),
+	                    React.createElement(
+	                        'tr',
+	                        null,
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            'Address Line 2'
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            this.props.profile.address2
+	                        )
+	                    ),
+	                    React.createElement(
+	                        'tr',
+	                        null,
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            'City/ Town'
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            'this.props.profile.city'
+	                        )
+	                    ),
+	                    React.createElement(
+	                        'tr',
+	                        null,
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            'State/ Province'
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            'this.props.profile.state'
+	                        )
+	                    ),
+	                    React.createElement(
+	                        'tr',
+	                        null,
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            'Zip/ Postal Code'
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            this.props.profile.postal_code
+	                        )
+	                    ),
+	                    React.createElement(
+	                        'tr',
+	                        null,
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            'Country'
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            this.state.country[this.props.profile.country]
+	                        )
+	                    ),
+	                    React.createElement(
+	                        'tr',
+	                        null,
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            'Assistant Name'
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            this.props.profile.assistant_name
+	                        )
+	                    ),
+	                    React.createElement(
+	                        'tr',
+	                        null,
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            'Assistant Email'
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            this.props.profile.assistant_email
+	                        )
+	                    ),
+	                    React.createElement(
+	                        'tr',
+	                        null,
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            'Assistant Phone'
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            this.props.profile.assistant_phone
+	                        )
+	                    )
 	                ),
 	                React.createElement(
-	                  'ul',
-	                  { className: 'dropdown-menu' },
-	                  listCoutryItems
+	                    'button',
+	                    { className: 'btn btn-secondary btn-line', onClick: this.showEdit },
+	                    'Edit Contact Info'
 	                )
-	              )
-	            )
-	          ),
-	          React.createElement(
-	            'tr',
-	            null,
-	            React.createElement(
-	              'td',
-	              null,
-	              'State/ Province'
 	            ),
 	            React.createElement(
-	              'td',
-	              null,
-	              React.createElement(
 	                'div',
-	                { className: 'dropdown state-dropdown' },
+	                { className: 'contact-details-edit hide' },
 	                React.createElement(
-	                  'button',
-	                  { className: 'btn dropdown-toggle',
-	                    type: 'button',
-	                    'data-toggle': 'dropdown' },
-	                  React.createElement(
-	                    'span',
-	                    { className: 'selection-state' },
-	                    this.props.profile.state || 'Choose'
-	                  ),
-	                  React.createElement('span', { className: 'glyphicon glyphicon-triangle-bottom' })
+	                    'table',
+	                    null,
+	                    React.createElement(
+	                        'tr',
+	                        null,
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            'Email '
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            'email@gmail.com'
+	                        )
+	                    ),
+	                    React.createElement(
+	                        'tr',
+	                        null,
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            'Secondar Email  '
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            React.createElement('input', { type: 'text' })
+	                        )
+	                    ),
+	                    React.createElement(
+	                        'tr',
+	                        null,
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            'Phone'
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            '+91 9876 435 623'
+	                        )
+	                    ),
+	                    React.createElement(
+	                        'tr',
+	                        null,
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            'Secondary Phone '
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            React.createElement('input', { type: 'text' })
+	                        )
+	                    ),
+	                    React.createElement(
+	                        'tr',
+	                        null,
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            'Address Line 1'
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            React.createElement('input', { type: 'text' })
+	                        )
+	                    ),
+	                    React.createElement(
+	                        'tr',
+	                        null,
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            'Address Line 2'
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            React.createElement('input', { type: 'text' })
+	                        )
+	                    ),
+	                    React.createElement(
+	                        'tr',
+	                        null,
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            'Country'
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            React.createElement(
+	                                'div',
+	                                { className: 'dropdown country-dropdown' },
+	                                React.createElement(
+	                                    'button',
+	                                    { className: 'btn dropdown-toggle', type: 'button', 'data-toggle': 'dropdown' },
+	                                    React.createElement(
+	                                        'span',
+	                                        { className: 'selection-country' },
+	                                        'Choose'
+	                                    ),
+	                                    React.createElement('span', { className: 'glyphicon glyphicon-triangle-bottom' })
+	                                ),
+	                                React.createElement(
+	                                    'ul',
+	                                    { className: 'dropdown-menu' },
+	                                    listCoutryItems
+	                                )
+	                            )
+	                        )
+	                    ),
+	                    React.createElement(
+	                        'tr',
+	                        null,
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            'State/ Province'
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            React.createElement(
+	                                'div',
+	                                { className: 'dropdown state-dropdown' },
+	                                React.createElement(
+	                                    'button',
+	                                    { className: 'btn dropdown-toggle', type: 'button', 'data-toggle': 'dropdown' },
+	                                    React.createElement(
+	                                        'span',
+	                                        { className: 'selection-state' },
+	                                        'Choose'
+	                                    ),
+	                                    React.createElement('span', { className: 'glyphicon glyphicon-triangle-bottom' })
+	                                ),
+	                                React.createElement(
+	                                    'ul',
+	                                    { className: 'dropdown-menu' },
+	                                    listStateItems
+	                                )
+	                            )
+	                        )
+	                    ),
+	                    React.createElement(
+	                        'tr',
+	                        null,
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            'City/ Town'
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            React.createElement(
+	                                'div',
+	                                { className: 'dropdown city-dropdown' },
+	                                React.createElement(
+	                                    'button',
+	                                    { className: 'btn dropdown-toggle', type: 'button', 'data-toggle': 'dropdown' },
+	                                    'India',
+	                                    React.createElement('span', { className: 'glyphicon glyphicon-triangle-bottom' })
+	                                ),
+	                                React.createElement(
+	                                    'ul',
+	                                    { className: 'dropdown-menu' },
+	                                    listCitiesItems
+	                                )
+	                            )
+	                        )
+	                    ),
+	                    React.createElement(
+	                        'tr',
+	                        null,
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            'Zip/ Postal Code'
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            React.createElement('input', { type: 'text' })
+	                        )
+	                    ),
+	                    React.createElement(
+	                        'tr',
+	                        null,
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            'Assistant Name'
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            React.createElement('input', { type: 'text' })
+	                        )
+	                    ),
+	                    React.createElement(
+	                        'tr',
+	                        null,
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            'Assistant Email'
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            React.createElement('input', { type: 'text' })
+	                        )
+	                    ),
+	                    React.createElement(
+	                        'tr',
+	                        null,
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            'Assitant Phone'
+	                        ),
+	                        React.createElement(
+	                            'td',
+	                            null,
+	                            React.createElement('input', { type: 'text' })
+	                        )
+	                    )
 	                ),
 	                React.createElement(
-	                  'ul',
-	                  { className: 'dropdown-menu' },
-	                  listStateItems
+	                    'button',
+	                    { className: 'btn btn-secondary btn-line' },
+	                    'Update Contact Info'
 	                )
-	              )
 	            )
-	          ),
-	          React.createElement(
-	            'tr',
-	            null,
-	            React.createElement(
-	              'td',
-	              null,
-	              'City/ Town'
-	            ),
-	            React.createElement(
-	              'td',
-	              null,
-	              React.createElement(
-	                'div',
-	                { className: 'dropdown city-dropdown' },
-	                React.createElement(
-	                  'button',
-	                  { className: 'btn dropdown-toggle',
-	                    type: 'button',
-	                    'data-toggle': 'dropdown' },
-	                  React.createElement(
-	                    'span',
-	                    { className: 'selection-city' },
-	                    this.props.profile.city || 'Choose'
-	                  ),
-	                  React.createElement('span', { className: 'glyphicon glyphicon-triangle-bottom' })
-	                ),
-	                React.createElement(
-	                  'ul',
-	                  { className: 'dropdown-menu' },
-	                  listCitiesItems
-	                )
-	              )
-	            )
-	          ),
-	          React.createElement(
-	            'tr',
-	            null,
-	            React.createElement(
-	              'td',
-	              null,
-	              'Zip/ Postal Code'
-	            ),
-	            React.createElement(
-	              'td',
-	              null,
-	              React.createElement('input', { type: 'text', id: 'zipcodeTxt' })
-	            )
-	          ),
-	          React.createElement(
-	            'tr',
-	            null,
-	            React.createElement(
-	              'td',
-	              null,
-	              'Assistant Name'
-	            ),
-	            React.createElement(
-	              'td',
-	              null,
-	              React.createElement('input', { type: 'text', id: 'assistNameTxt' })
-	            )
-	          ),
-	          React.createElement(
-	            'tr',
-	            null,
-	            React.createElement(
-	              'td',
-	              null,
-	              'Assistant Email'
-	            ),
-	            React.createElement(
-	              'td',
-	              null,
-	              React.createElement('input', { type: 'text', id: 'assistEmailTxt' })
-	            )
-	          ),
-	          React.createElement(
-	            'tr',
-	            null,
-	            React.createElement(
-	              'td',
-	              null,
-	              'Assistant Phone'
-	            ),
-	            React.createElement(
-	              'td',
-	              null,
-	              React.createElement('input', { type: 'text', id: 'assistPhoneTxt' })
-	            )
-	          )
-	        ),
-	        React.createElement(
-	          'button',
-	          { className: 'btn btn-secondary btn-line', onClick: this.save },
-	          'Update Contact Info'
-	        )
-	      )
-	    );
-	  }
+	        );
+	    }
 
 	});
 
 	module.exports = ContactInfoProfile;
 
 /***/ },
-/* 461 */
+/* 460 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -51539,349 +50729,20 @@
 	var BankDetailsProfile = React.createClass({
 	  displayName: 'BankDetailsProfile',
 
-	  mixins: [ConfigMixin],
-	  getInitialState: function getInitialState() {
-	    return {
-	      'name': '',
-	      'account_holder': '',
-	      'account_number': '',
-	      'branch_name': '',
-	      'ifsc': '',
-	      'iban': '',
-	      'swift_code': '',
-	      'pan_number': '',
-	      'service_tax_number': ''
 
-	    };
-	  },
-
-	  componentDidMount: function componentDidMount() {
-	    $('.bank-details').addClass('animated bounceInRight');
-	  },
-	  updateName: function updateName(e) {
-	    this.setState({
-	      name: e.target.value
-	    });
-	  },
-	  updateAccHolder: function updateAccHolder(e) {
-	    this.setState({
-	      account_holder: e.target.value
-	    });
-	  },
-	  updateAccNum: function updateAccNum(e) {
-	    this.setState({
-	      account_number: e.target.value
-	    });
-	  },
-
-	  updateBranchName: function updateBranchName(e) {
-	    this.setState({
-	      branch_name: e.target.value
-	    });
-	  },
-	  updateIfsc: function updateIfsc(e) {
-	    this.setState({
-	      ifsc: e.target.value
-	    });
-	  },
-	  updateIban: function updateIban(e) {
-	    this.setState({
-	      iban: e.target.value
-	    });
-	  },
-	  updateSwiftCode: function updateSwiftCode(e) {
-	    this.setState({
-	      swift_code: e.target.value
-	    });
-	  },
-	  updateServiceTaxNum: function updateServiceTaxNum(e) {
-	    this.setState({
-	      service_tax_number: e.target.value
-	    });
-	  },
-	  updatePan: function updatePan(e) {
-	    this.setState({
-	      pan_number: e.target.value
-	    });
-	  },
-	  save: function save() {
-	    var data = {
-	      profile: {
-	        'bank_detail_attributes': {
-	          'name': $('#nameTxt').val(),
-	          'account_holder': $('#account_holderTxt').val(),
-	          'account_number': $('#account_numberTxt').val(),
-	          'branch_name': $('#branch_nameTxt').val(),
-	          'ifsc': $('#ifscTxt').val(),
-	          'iban': $('#ibanTxt').val(),
-	          'swift_code': $('#swift_codeTxt').val(),
-	          'pan_number': $('#pan_numberTxt').val(),
-	          'service_tax_number': $('#service_tax_numberTxt').val()
-	        }
-	      }
-	    };
-
-	    var header = {};
-	    var clientInfo = this.utils().getClientInfo();
-	    var self = this;
-	    this.utils().httpInterceptor(this.utils().url().PROFILE_SAVE, 'PUT', data, header, clientInfo).then(function (result) {
-	      $('.bank-fields').each(function () {
-	        $('#' + $(this).prop('id').replace(/Txt/, '') + '1').html($('#' + $(this).prop('id')).val());
-	      });
-	      $('.bank-details').removeClass('hide');
-	      $('.bank-details-edit').addClass('hide');
-	    }, function (result) {
-	      var message = JSON.parse(result.responseText);
-	      console.log(message);
-	      // self.props.config.notification._addNotification(window.event, "error", message.message);
-	    });
-	  },
-	  showEdit: function showEdit() {
-	    var self = this;
-
-	    this.setState({
-	      'name': $('#name1').text(),
-	      'account_holder': $('#account_holder1').text(),
-	      'account_number': $('#account_number1').text(),
-	      'branch_name': $('#branch_name1').text(),
-	      'ifsc': $('#ifsc1').text(),
-	      'iban': $('#iban1').text(),
-	      'swift_code': $('#swift_code1').text(),
-	      'pan_number': $('#pan_number1').text(),
-	      'service_tax_number': $('#service_tax_number1').text()
-
-	    });
-	    $('.bank-details').addClass('hide');
-	    $('.bank-details-edit').removeClass('hide');
-	  },
 	  render: function render() {
-
-	    var bankKeyArray = ['name', 'account_holder', 'account_number', 'branch_name', 'ifsc', 'iban', 'swift_code', 'pan_number', 'service_tax_number'];
-	    var bankValueArray = ['Bank Name', 'Account Holder', 'Account Number', 'Branch', 'IFSC', 'IBAN', 'Swift Code', 'PAN', 'Service Tax No'];
-	    var bankName = '';
-	    var accountHolder = '';
-	    var accountNumber = '';
-	    var branch = '';
-	    var ifsc = '';
-	    var iban = '';
-	    var swiftCode = '';
-	    var pan = '';
-	    var serviceTaxNo = '';
-	    var self = this;
-	    var bankArray = bankKeyArray.map(function (item) {
-	      return React.createElement(
-	        'tr',
-	        null,
-	        React.createElement(
-	          'td',
-	          null,
-	          bankValueArray[bankKeyArray.indexOf(item)]
-	        ),
-	        React.createElement(
-	          'td',
-	          { id: item + '1' },
-	          self.props.profile.bank_detail[item]
-	        )
-	      );
-	    });
-
 	    return React.createElement(
 	      'div',
-	      null,
+	      { className: "thank-you " + this.props.position },
 	      React.createElement(
-	        'div',
-	        { role: 'tabpanel',
-	          className: 'tab-pane',
-	          id: 'tabBankDetails' },
-	        React.createElement(
-	          'div',
-	          { className: 'bank-details' },
-	          React.createElement(
-	            'table',
-	            null,
-	            bankArray
-	          ),
-	          React.createElement(
-	            'button',
-	            { className: 'btn btn-secondary btn-line', onClick: this.showEdit },
-	            'Edit Bank Details'
-	          )
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'bank-details-edit hide' },
-	          React.createElement(
-	            'table',
-	            null,
-	            React.createElement(
-	              'tr',
-	              null,
-	              React.createElement(
-	                'td',
-	                null,
-	                'Bank Name'
-	              ),
-	              React.createElement(
-	                'td',
-	                null,
-	                React.createElement('input', { type: 'text',
-	                  id: 'nameTxt',
-	                  className: 'bank-fields',
-	                  value: this.state.name,
-	                  onChange: this.updateName })
-	              )
-	            ),
-	            React.createElement(
-	              'tr',
-	              null,
-	              React.createElement(
-	                'td',
-	                null,
-	                'Account Holder'
-	              ),
-	              React.createElement(
-	                'td',
-	                null,
-	                React.createElement('input', { type: 'text',
-	                  id: 'account_holderTxt',
-	                  className: 'bank-fields',
-	                  value: this.state.account_holder,
-	                  onChange: this.updateAccHolder })
-	              )
-	            ),
-	            React.createElement(
-	              'tr',
-	              null,
-	              React.createElement(
-	                'td',
-	                null,
-	                'Account Number'
-	              ),
-	              React.createElement(
-	                'td',
-	                null,
-	                React.createElement('input', { type: 'text',
-	                  id: 'account_numberTxt',
-	                  className: 'bank-fields',
-	                  value: this.state.account_number,
-	                  onChange: this.updateAccNum })
-	              )
-	            ),
-	            React.createElement(
-	              'tr',
-	              null,
-	              React.createElement(
-	                'td',
-	                null,
-	                'Branch'
-	              ),
-	              React.createElement(
-	                'td',
-	                null,
-	                React.createElement('input', { type: 'text',
-	                  id: 'branch_nameTxt',
-	                  className: 'bank-fields',
-	                  value: this.state.branch_name,
-	                  onChange: this.updateBranchName })
-	              )
-	            ),
-	            React.createElement(
-	              'tr',
-	              null,
-	              React.createElement(
-	                'td',
-	                null,
-	                'IFSC'
-	              ),
-	              React.createElement(
-	                'td',
-	                null,
-	                React.createElement('input', { type: 'text',
-	                  id: 'ifscTxt',
-	                  className: 'bank-fields',
-	                  value: this.state.ifsc,
-	                  onChange: this.updateIfsc })
-	              )
-	            ),
-	            React.createElement(
-	              'tr',
-	              null,
-	              React.createElement(
-	                'td',
-	                null,
-	                'IBAN'
-	              ),
-	              React.createElement(
-	                'td',
-	                null,
-	                React.createElement('input', { type: 'text',
-	                  id: 'ibanTxt',
-	                  className: 'bank-fields',
-	                  value: this.state.iban,
-	                  onChange: this.updateIban })
-	              )
-	            ),
-	            React.createElement(
-	              'tr',
-	              null,
-	              React.createElement(
-	                'td',
-	                null,
-	                'Swift Code'
-	              ),
-	              React.createElement(
-	                'td',
-	                null,
-	                React.createElement('input', { type: 'text',
-	                  id: 'swift_codeTxt',
-	                  className: 'bank-fields',
-	                  value: this.state.swift_code,
-	                  onChange: this.updateSwiftCode })
-	              )
-	            ),
-	            React.createElement(
-	              'tr',
-	              null,
-	              React.createElement(
-	                'td',
-	                null,
-	                'PAN'
-	              ),
-	              React.createElement(
-	                'td',
-	                null,
-	                React.createElement('input', { type: 'text',
-	                  id: 'pan_numberTxt',
-	                  className: 'bank-fields',
-	                  value: this.state.pan_number,
-	                  onChange: this.updatePan })
-	              )
-	            ),
-	            React.createElement(
-	              'tr',
-	              null,
-	              React.createElement(
-	                'td',
-	                null,
-	                'Service Tax No'
-	              ),
-	              React.createElement(
-	                'td',
-	                null,
-	                React.createElement('input', { type: 'text',
-	                  id: 'service_tax_numberTxt',
-	                  className: 'bank-fields',
-	                  value: this.state.service_tax_number,
-	                  onChange: this.updateServiceTaxNum })
-	              )
-	            )
-	          ),
-	          React.createElement(
-	            'button',
-	            { className: 'btn btn-secondary btn-line', onClick: this.save },
-	            'Update Bank Details'
-	          )
-	        )
+	        'h1',
+	        null,
+	        'BankDetailsProfile'
+	      ),
+	      React.createElement(
+	        _reactRouter.Link,
+	        { to: 'login' },
+	        'Login Now '
 	      )
 	    );
 	  }
@@ -51891,7 +50752,7 @@
 	module.exports = BankDetailsProfile;
 
 /***/ },
-/* 462 */
+/* 461 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -51900,8 +50761,7 @@
 
 	var React = __webpack_require__(2);
 
-	var TabVariantEditComponent = __webpack_require__(463);
-	var _ = __webpack_require__(233);
+	var TabVariantEditComponent = __webpack_require__(462);
 	var EditVariantScreen = React.createClass({
 	  displayName: 'EditVariantScreen',
 
@@ -51910,12 +50770,11 @@
 	    return {
 	      listing: {},
 	      variantDates: {}
-
 	    };
 	  },
 	  componentDidMount: function componentDidMount() {
 	    var self = this;
-	    console.log('url-data-page:' + this.state.pageSelected);
+	    console.log("url-data-page:" + this.state.pageSelected);
 	    //console.log(JSON.parse(localStorage.getItem("clientInfo")).client.client_id);
 
 	    var urlparams = {};
@@ -51923,41 +50782,17 @@
 	    var clientInfo = this.props.route.config().getClientInfo();
 	    var header = {};
 
-	    this.props.route.config().httpInterceptor(this.props.route.config().url().LISTING_DETAILS + this.props.params.listingid + '?', 'GET', data, header, this.props.route.config().getClientInfo()).then(function (result) {
-
-	      var header = {};
-	      var clientInfo = self.props.route.config().getClientInfo();
-	      clientInfo['country_id'] = parseInt(result.tour_location.country_id);
-
-	      clientInfo['state_id'] = parseInt(result.tour_location.state_id);
-
-	      self.props.route.config().httpInterceptor(self.props.route.config().url().STATE, 'GET', data, header, clientInfo).then(function (result1) {
-
-	        var filteredGoal = _.where(result1.states, {
-	          id: parseInt(result.tour_location.state_id)
-	        });
-
-	        result['state_name'] = filteredGoal[0].name;
-	        result['place_name'] = result.tour_location.name;
-	        self.setState({
-	          listing: result
-	        });
-	      }, function (result) {
-	        var message = JSON.parse(result.responseText);
-	        console.log(message);
-	        // self.props.config.notification._addNotification(window.event, "error", message.message);
+	    this.props.route.config().httpInterceptor(this.props.route.config().url().LISTING_DETAILS + this.props.params.listingid, 'GET', data, header, this.props.route.config().getClientInfo()).then(function (result) {
+	      self.setState({
+	        listing: result
 	      });
+	      self.props.route.config().setListing(self.state.listing);
 	    }, function (result) {
 	      var message = JSON.parse(result.responseText);
-	      self.props.route.notification._addNotification(window.event, 'error', message.message);
+	      self.props.route.notification._addNotification(window.event, "error", message.message);
 	    });
 	  },
-	  getUrls: function getUrls() {
-	    return {
-	      'listingid': this.props.params.listingid,
-	      'variantid': this.props.params.variantid
-	    };
-	  },
+
 	  render: function render() {
 	    return React.createElement(
 	      'div',
@@ -51978,7 +50813,7 @@
 	              React.createElement(
 	                'a',
 	                { href: '/#/dashboard' },
-	                'Dashboard'
+	                ' Dashboard'
 	              )
 	            ),
 	            React.createElement(
@@ -51987,7 +50822,7 @@
 	              React.createElement(
 	                'a',
 	                { href: '/#/listings' },
-	                'Listing'
+	                'Listing '
 	              )
 	            ),
 	            React.createElement(
@@ -52006,8 +50841,7 @@
 	                'h3',
 	                null,
 	                this.state.listing.name,
-	                ', ',
-	                this.state.listing.state_name
+	                ', Karnata'
 	              ),
 	              React.createElement(
 	                'ul',
@@ -52023,6 +50857,7 @@
 	                      null,
 	                      this.state.listing.average_rating
 	                    ),
+	                    ' ',
 	                    this.state.listing.reviews_count,
 	                    ' Reviews'
 	                  )
@@ -52031,6 +50866,7 @@
 	                  'li',
 	                  null,
 	                  React.createElement('img', { src: 'images/icon-day.png' }),
+	                  ' ',
 	                  this.state.listing.days,
 	                  ' Days'
 	                ),
@@ -52038,6 +50874,7 @@
 	                  'li',
 	                  null,
 	                  React.createElement('img', { src: 'images/icon-night.png' }),
+	                  ' ',
 	                  this.state.listing.nights,
 	                  ' Night'
 	                ),
@@ -52045,9 +50882,7 @@
 	                  'li',
 	                  null,
 	                  React.createElement('img', { src: 'images/icon-location.png' }),
-	                  this.state.listing.place_name,
-	                  ',',
-	                  this.state.listing.state_name
+	                  ' Coorg, Karnataka'
 	                )
 	              )
 	            ),
@@ -52069,6 +50904,7 @@
 	                    'p',
 	                    { className: 'price' },
 	                    React.createElement('i', { className: 'fa fa-inr', 'aria-hidden': 'true' }),
+	                    ' ',
 	                    this.state.listing.price
 	                  )
 	                )
@@ -52083,10 +50919,7 @@
 	        React.createElement(
 	          'div',
 	          { className: 'container' },
-	          React.createElement(TabVariantEditComponent, { variantDates: this.state.variantDates,
-	            config: this.props.route.config,
-	            listObj: this,
-	            listing: this.state.listing })
+	          React.createElement(TabVariantEditComponent, { variantDates: this.state.variantDates, config: this.props.route.config })
 	        )
 	      )
 	    );
@@ -52097,7 +50930,7 @@
 	module.exports = EditVariantScreen;
 
 /***/ },
-/* 463 */
+/* 462 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -52110,498 +50943,308 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var CalendarComponent = __webpack_require__(464);
-	var GregorianCalendar = __webpack_require__(556);
+	var CalendarComponent = __webpack_require__(463);
+	var GregorianCalendar = __webpack_require__(555);
 	var date1 = new GregorianCalendar(); // defaults to en_US
 	var moment = __webpack_require__(244);
-	var _ = __webpack_require__(233);
 	var now = new Date();
 	if (now.getMonth() == 11) {
-	  var current = new Date(now.getFullYear() + 2, 0, 1);
+	    var current = new Date(now.getFullYear() + 2, 0, 1);
 	} else {
-	  var current = new Date(now.getFullYear(), now.getMonth() + 2, 1);
+	    var current = new Date(now.getFullYear(), now.getMonth() + 2, 1);
 	}
 	date1.setTime(current);
 
 	var date2 = new GregorianCalendar(); // defaults to en_US
 	var now = new Date();
 	if (now.getMonth() == 11) {
-	  var current = new Date(now.getFullYear() + 3, 0, 1);
+	    var current = new Date(now.getFullYear() + 3, 0, 1);
 	} else {
-	  var current = new Date(now.getFullYear(), now.getMonth() + 3, 1);
+	    var current = new Date(now.getFullYear(), now.getMonth() + 3, 1);
 	}
 	date2.setTime(current);
 	var date = new GregorianCalendar(); // defaults to en_US
 	var now = new Date();
 	if (now.getMonth() == 11) {
-	  var current = new Date(now.getFullYear() + 1, 0, 1);
+	    var current = new Date(now.getFullYear() + 1, 0, 1);
 	} else {
-	  var current = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+	    var current = new Date(now.getFullYear(), now.getMonth() + 1, 1);
 	}
 	date.setTime(current);
 
 	var TabVariantEditComponent = _react2.default.createClass({
-	  displayName: 'TabVariantEditComponent',
+	    displayName: 'TabVariantEditComponent',
 
-	  getInitialState: function getInitialState() {
+	    getInitialState: function getInitialState() {
 
-	    return {
+	        return {
 
-	      variantDates: {},
-	      calendarDates: [],
-	      weekdaysFlag: [],
-	      patternFlag: 0,
-	      repeatFlag: false,
-	      check_all_days: false,
-	      check_all_weekends: false,
-	      check_all_weekdays: false,
-	      all_days: '',
-	      all_weekdays: '',
-	      all_weekends: '',
-	      seed: {
-	        inventories: []
-	      }
-	    };
-	  },
-	  getNextDate: function getNextDate() {
-	    var date = new GregorianCalendar(); // defaults to en_US
-	    var now = new Date();
-	    var current = new Date(now.getFullYear(), now.getMonth() + this.state.calendarDates.length + 1, 1);
-	    date.setTime(current);
-	    var arrayDates = this.state.calendarDates;
-	    arrayDates.push(date);
-	    this.setState({
-	      calendarDates: arrayDates
-	    });
-	  },
-	  componentDidMount: function componentDidMount() {
-	    this.getNextDate();
-	    this.getNextDate();
-	    var self = this;
-	    $('.scroll-bar').bind('scroll', function () {
-	      if ($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight) {
-	        self.getNextDate();
-	      }
-	    });
-	    $(document).on('click', '.edit-link', function (e) {
-	      $(e.target).closest('td').find('.gray-section').hide();
-	      $(e.target).closest('td').find('.gray-section2').show();
-	      $(e.target).addClass('hide');
-	      $(e.target).next().removeClass('hide');
-	    });
-	    $(document).on('click', '.save-link', function (e) {
-	      var urlparams = {};
-
-	      var clientInfo = self.props.config().getClientInfo();
-	      var data = clientInfo;
-	      data['variants_date_capacity'] = {};
-	      var seat = 0;
-	      $.each($(e.target).closest('td').find('.gray-section2 input'), function (key, value) {
-	        if ($(value).val() != '') {
-	          seat = $(value).val();
-	        }
-	      });
-	      var datesParams = {
-	        date: moment($(e.target).closest('td').prop('title')).format('YYYY-MM-DD'),
-	        seats: seat
-	      };
-	      data['variants_date_capacity'][self.props.listObj.getUrls().variantid] = {
-	        dates: [datesParams]
-	      };
-	      var header = {
-	        'Content-Type': 'application/json'
-	      };
-
-	      console.log(JSON.stringify(data));
-	      self.props.config().httpInterceptor(self.props.config().url().VARIANT + self.props.listObj.getUrls().listingid + '/add_update_date_capacity?', 'POST', JSON.stringify(data), header, self.props.config().getClientInfo()).then(function (result) {
-
-	        $(e.target).closest('td').find('.gray-section').show();
-
-	        $(e.target).closest('td').find('.gray-section2').hide();
-	        $(e.target).addClass('hide');
-	        $(e.target).prev().removeClass('hide');
-	      }, function () {});
-	    });
-
-	    $('.rc-calendar-table').first().find('td').each(function (i) {
-	      console.log('step' + i);
-	      if (parseInt($(this).find('div').html()) < parseInt($('.rc-calendar-today').find('div').html())) {
-	        $(this).html('<div class="rc-calendar-date"><a class="link" href="#">Edit</a><p class=" grey">' + $(this).find('div').html() + '</p></div>');
-	      } else {
-	        $(this).html('<div class="rc-calendar-date"><a class="link" href="#">Edit</a><p>' + $(this).find('div').html() + '</p><div class="gray-section"><div class="total">0/0</div></div><div class="gray-section2"><div class="total">Total seats <input type="text" ></div></div></div>');
-	      }
-	    });
-	    $('.rc-calendar-table:not(:first)').find('td').each(function (i) {
-
-	      $(this).html('<div class="rc-calendar-date"><a class="link" href="#">Edit</a><p>' + $(this).find('div').html() + '</p><div class="gray-section"><div class="total">0/0</div></div><div class="gray-section2"><div class="total">Total seats <input type="text" ></div></div></div>');
-	    });
-	    console.log(this.props.listObj.getUrls());
-	    var urlparams = {};
-	    var data = {};
-	    var clientInfo = this.props.config().getClientInfo();
-	    var header = {
-	      'Content-Type': 'application/json'
-	    };
-
-	    this.props.config().httpInterceptor(this.props.config().url().VARIANT + this.props.listObj.getUrls().listingid + '/available_dates?', 'GET', data, header, this.props.config().getClientInfo()).then(function (result) {
-
-	      var arrayDays = ['all_days', 'all_weekdays', 'all_weekends', 'all_mondays', 'all_tuesdays', 'all_wednesdays', 'all_thursdays', 'all_fridays', 'all_saturdays', 'all_sundays'];
-	      var arrayDaysCount = [[1, 2, 3, 4, 5, 6, 7], [1, 2, 3, 4, 5], [6, 7], 1, 2, 3, 4, 5, 6, 7];
-	      $.each(result.variants[self.props.listObj.getUrls().variantid].pattern, function (key, val) {
-	        if (val.enabled) {
-	          if ($.isArray(arrayDaysCount[arrayDays.indexOf(key)])) {
-	            self.state.weekdaysFlag = arrayDaysCount[arrayDays.indexOf(key)];
-	            self.state['check_' + key] = 'checked';
-	            self.state[key] = val.capacity;
-	          } else {
-	            self.state.weekdaysFlag.push(arrayDaysCount[arrayDays.indexOf(key)]);
-	            $('.weekday[value=\'' + arrayDaysCount[arrayDays.indexOf(key)] + '\']').prop('checked', 'checked');
-	            $('.weekday[value=\'' + arrayDaysCount[arrayDays.indexOf(key)] + '\']').next().next().val(val.capacity);
-	          }
-	        }
-	      });
-	      self.setState({
-	        variantDates: result.variants[self.props.listObj.getUrls().variantid].all_dates
-	      });
-	    }, function () {});
-	    this.props.config().httpInterceptor(this.props.config().url().SEED, 'GET', data, header, this.props.config().getClientInfo()).then(function (result) {
-	      self.setState({
-	        seed: result
-	      });
-	    }, function (result) {
-	      var message = JSON.parse(result.responseText);
-	      self.props.route.notification._addNotification(window.event, 'error', message.message);
-	    });
-
-	    console.log('======================');
-	    var self1 = this;
-
-	    $(document).on('click', '.weekday', function (e) {
-
-	      var self1 = e.target;
-
-	      if ($(e.target).is(':checked')) {
-
-	        if (self.state.weekdaysFlag.indexOf(parseInt($(e.target).val())) == -1) {
-	          var weeks = self.state.weekdaysFlag;
-	          weeks.push(parseInt($(e.target).val()));
-	        }
-
-	        self.setState({
-	          weekdaysFlag: weeks
-	        });
-	        //   $(e.target).closest(".rc-calendar-table").find("td").each(function(i) {
-	        //     if(parseInt($(self).val()) == parseInt(moment($(this).prop("title")).isoWeekday())){
-	        //       console.log($(this).find("div").html());
-	        //       if($(this).find("p").hasClass("grey")){
-	        //         $(this).removeClass("active");
-	        //       }else{
-	        //         $(this).addClass("active");
-	        //       }
-	        //     }
-	        // });
-	      } else {
-	          //   $(e.target).closest(".rc-calendar-table").find("td").each(function(i) {
-	          //     if(parseInt($(self).val()) == parseInt(moment($(this).prop("title")).isoWeekday())){
-
-	          //       $(this).removeClass("active");
-	          //     }
-	          // });
-
-	          if (self.state.weekdaysFlag.indexOf(parseInt($(e.target).val())) != -1) {
-	            var weeks = self.state.weekdaysFlag;
-	            weeks.splice(weeks.indexOf(parseInt($(e.target).val())), 1);
-	          }
-
-	          self.setState({
-	            weekdaysFlag: weeks
-	          });
-	        }
-	    });
-	    var self = this;
-	    $('#repeat_action').on('click', function (e) {
-	      if ($('#repeat_action').is(':checked')) {
-
-	        self.setState({
-	          repeatFlag: true
-	        });
-	      } else {
-	        self.setState({
-	          repeatFlag: false
-	        });
-	      }
-	    });
-	    $('.patterns').on('click', function (e) {
-	      var repeat = ':first';
-	      self.state.check_all_days = false;
-	      self.state.check_all_weekdays = false;
-	      self.state.check_all_weekends = false;
-	      $('.patterns').removeClass('active');
-	      $('.patterns').find('input').prop('checked', false);
-	      $(this).find('input').prop('checked', 'checked');
-	      $(this).addClass('active');
-	      // $(".rc-calendar-table"+repeat+" .rc-calendar-column-header input").each(function(i){
-	      //         if($(this).is(":checked")){
-	      //             $(this).trigger("click");
-	      //         }
-
-	      //     });
-
-	      //$(".rc-calendar-table"+repeat).find("td").removeClass("active");
-	      if ($(this).data('pattern') == '1') {
-	        self.setState({
-	          patternFlag: 1
-	        });
-	        self.setState({
-	          weekdaysFlag: [1, 2, 3, 4, 5, 6, 7]
-
-	        });
-	        self.state.check_all_days = 'checked';
-	        // $(".rc-calendar-table"+repeat+" .rc-calendar-column-header input").each(function(i){
-	        //     if(!$(this).is(":checked")){
-	        //         $(this).trigger("click");
-	        //     }
-
-	        // });
-	      } else if ($(this).data('pattern') == '2') {
-	          self.setState({
-	            patternFlag: 2
-	          });
-	          self.setState({
-	            weekdaysFlag: [6, 7]
-
-	          });
-	          self.state.check_all_weekends = 'checked';
-	          // if(!$(".rc-calendar-table"+repeat+" .rc-calendar-column-header input[value='7']").is(":checked")){
-	          //     $(".rc-calendar-table"+repeat+" .rc-calendar-column-header input[value='7']").trigger("click");
-	          // }
-	          //  if(!$(".rc-calendar-table"+repeat+" .rc-calendar-column-header input[value='6']").is(":checked")){
-	          //     $(".rc-calendar-table"+repeat+" .rc-calendar-column-header input[value='6']").trigger("click");
-	          // }
-	        } else {
+	            variantDates: {}
+	        };
+	    },
+	    componentDidMount: function componentDidMount() {
+	        var urlparams = {};
+	        var data = {};
+	        var clientInfo = this.props.config().getClientInfo();
+	        var header = {};
+	        var self = this;
+	        this.props.config().httpInterceptor(this.props.config().url().VARIANT, 'GET', data, header, this.props.config().getClientInfo()).then(function (result) {
+	            console.log(">>>>>>");
+	            console.log(result.variants["152"]);
 	            self.setState({
-	              patternFlag: 3
+	                variantDates: result.variants["152"]
 	            });
-	            self.setState({
-	              weekdaysFlag: [1, 2, 3, 4, 5]
+	            for (var item in result.variants["152"]) {
 
-	            });
-	            self.state.check_all_weekdays = 'checked';
-	            // if(!$(".rc-calendar-table"+repeat+" .rc-calendar-column-header input[value='1']").is(":checked")){
-	            //     $(".rc-calendar-table"+repeat+" .rc-calendar-column-header input[value='1']").trigger("click");
-	            // }
-	            //   if(!$(".rc-calendar-table"+repeat+" .rc-calendar-column-header input[value='2']").is(":checked")){
-	            //     $(".rc-calendar-table"+repeat+" .rc-calendar-column-header input[value='2']").trigger("click");
-	            // }
-	            //  if(!$(".rc-calendar-table"+repeat+" .rc-calendar-column-header input[value='3']").is(":checked")){
-	            //     $(".rc-calendar-table"+repeat+" .rc-calendar-column-header input[value='3']").trigger("click");
-	            // }
-	            //  if(!$(".rc-calendar-table"+repeat+" .rc-calendar-column-header input[value='4']").is(":checked")){
-	            //     $(".rc-calendar-table"+repeat+" .rc-calendar-column-header input[value='4']").trigger("click");
-	            // }
-	            //  if(!$(".rc-calendar-table"+repeat+" .rc-calendar-column-header input[value='5']").is(":checked")){
-	            //     $(".rc-calendar-table"+repeat+" .rc-calendar-column-header input[value='5']").trigger("click");
-	            // }
-	          }
-	      $('.weekday').prop('checked', false);
-	      $.each(self.state.weekdaysFlag, function (key, val) {
-	        $('.weekday[value=\'' + val + '\']').prop('checked', 'checked');
-	      });
-	    });
-	  },
-	  redirectVariantEdit: function redirectVariantEdit() {
-	    window.location.href = '/#/listingDetails/' + this.props.listObj.getUrls().listingid;
-	  },
-	  saveAndRedirectVariantEdit: function saveAndRedirectVariantEdit() {
-	    var self = this;
-	    var data = this.props.config().getClientInfo();
-
-	    var array = {};
-	    $('.price-edit input').each(function () {
-	      console.log($(this).data('id'));
-	      array[$(this).data('id')] = {
-	        mrp: $(this).val()
-	      };
-	    });
-	    data['fixed_pricings'] = array;
-	    var header = {
-	      'Content-Type': 'application/json'
-	    };
-	    this.props.config().httpInterceptor(this.props.config().url().VARIANT + this.props.listObj.getUrls().listingid + '/update_fixed_pricings?', 'POST', data, header, this.props.config().getClientInfo()).then(function (result) {
-	      window.location.href = '/#/listingDetails/' + self.props.listObj.getUrls().listingid;
-	    }, function (result) {
-	      var message = JSON.parse(result.responseText);
-	      self.props.route.notification._addNotification(window.event, 'error', message.message);
-	    });
-	  },
-	  render: function render() {
-	    var self = this;
-
-	    var item = _.where(this.props.listing.variants, {
-	      id: parseInt(this.props.listObj.getUrls().variantid)
-	    });
-	    if (item.length > 0) {
-	      var subVariants = item[0].sub_variants.map(function (items) {
-	        var subVariantsPrice = $.map(items.fixed_pricings, function (val) {
-	          var inventoryObj = _.where(self.state.seed.inventories, {
-	            id: val.inventory_id
-	          });
-	          return _react2.default.createElement(
-	            'p',
-	            { className: 'price-edit' },
-	            _react2.default.createElement('input', { type: 'text',
-	              placeholder: 'Amount',
-	              value: val.price,
-	              'data-id': val.id }),
-	            '  ' + inventoryObj[0].name
-	          );
+	                $("[title='" + moment(item).format('YYYY-M-D') + "']").addClass("active");
+	                $("[title='" + moment(item).format('YYYY-M-D') + "'] .total").html(result.variants["152"][item].sold_count + "/" + result.variants["152"][item].capacity);
+	            }
+	        }, function (result) {
+	            var message = JSON.parse(result.responseText);
 	        });
+	        console.log("======================");
+	        $(document).on("click", ".weekday", function (e) {
+	            console.log("sfasf");
+	            var self = e.target;
+	            console.log($(e.target).val());
+	            if ($(e.target).is(":checked")) {
+	                $(e.target).closest(".rc-calendar-table").find("td").each(function (i) {
+	                    if (parseInt($(self).val()) == parseInt(moment($(this).prop("title")).isoWeekday())) {
+	                        console.log($(this).find("div").html());
+	                        if ($(this).find("p").hasClass("grey")) {
+	                            $(this).removeClass("active");
+	                        } else {
+	                            $(this).addClass("active");
+	                        }
+	                    }
+	                });
+	            } else {
+	                $(e.target).closest(".rc-calendar-table").find("td").each(function (i) {
+	                    if (parseInt($(self).val()) == parseInt(moment($(this).prop("title")).isoWeekday())) {
+
+	                        $(this).removeClass("active");
+	                    }
+	                });
+	            }
+	        });
+	        $(".rc-calendar-table").first().find("td").each(function (i) {
+	            console.log("step" + i);
+	            if (parseInt($(this).find("div").html()) < parseInt($(".rc-calendar-today").find("div").html())) {
+	                $(this).html('<div class="rc-calendar-date"><a class="link" href="#">Edit</a><p class=" grey">' + $(this).find("div").html() + '</p></div>');
+	            } else {
+	                $(this).html('<div class="rc-calendar-date"><a class="link" href="#">Edit</a><p>' + $(this).find("div").html() + '</p><div class="gray-section"><div class="total">0/0</div></div><div class="gray-section2"><div class="total">Total seats <input type="text" ></div></div></div>');
+	            }
+	        });
+	        $(".rc-calendar-table:not(:first)").find("td").each(function (i) {
+
+	            $(this).html('<div class="rc-calendar-date"><a class="link" href="#">Edit</a><p>' + $(this).find("div").html() + '</p><div class="gray-section"><div class="total">0/0</div></div><div class="gray-section2"><div class="total">Total seats <input type="text" ></div></div></div>');
+	        });
+	        $(".patterns").on("click", function (e) {
+	            var repeat = ":first";
+	            if ($("#repeat_action").is(":checked")) {
+	                repeat = "";
+	            }
+	            $(".patterns").removeClass("active");
+	            $(".patterns").find("input").prop("checked", false);
+	            $(this).find("input").prop("checked", "checked");
+	            $(this).addClass("active");
+	            $(".rc-calendar-table" + repeat + " .rc-calendar-column-header input").each(function (i) {
+	                if ($(this).is(":checked")) {
+	                    $(this).trigger("click");
+	                }
+	            });
+
+	            $(".rc-calendar-table" + repeat).find("td").removeClass("active");
+	            if ($(this).data("pattern") == "1") {
+	                $(".rc-calendar-table" + repeat + " .rc-calendar-column-header input").each(function (i) {
+	                    if (!$(this).is(":checked")) {
+	                        $(this).trigger("click");
+	                    }
+	                });
+	            } else if ($(this).data("pattern") == "2") {
+	                if (!$(".rc-calendar-table" + repeat + " .rc-calendar-column-header input[value='7']").is(":checked")) {
+	                    $(".rc-calendar-table" + repeat + " .rc-calendar-column-header input[value='7']").trigger("click");
+	                }
+	                if (!$(".rc-calendar-table" + repeat + " .rc-calendar-column-header input[value='6']").is(":checked")) {
+	                    $(".rc-calendar-table" + repeat + " .rc-calendar-column-header input[value='6']").trigger("click");
+	                }
+	            } else {
+	                if (!$(".rc-calendar-table" + repeat + " .rc-calendar-column-header input[value='1']").is(":checked")) {
+	                    $(".rc-calendar-table" + repeat + " .rc-calendar-column-header input[value='1']").trigger("click");
+	                }
+	                if (!$(".rc-calendar-table" + repeat + " .rc-calendar-column-header input[value='2']").is(":checked")) {
+	                    $(".rc-calendar-table" + repeat + " .rc-calendar-column-header input[value='2']").trigger("click");
+	                }
+	                if (!$(".rc-calendar-table" + repeat + " .rc-calendar-column-header input[value='3']").is(":checked")) {
+	                    $(".rc-calendar-table" + repeat + " .rc-calendar-column-header input[value='3']").trigger("click");
+	                }
+	                if (!$(".rc-calendar-table" + repeat + " .rc-calendar-column-header input[value='4']").is(":checked")) {
+	                    $(".rc-calendar-table" + repeat + " .rc-calendar-column-header input[value='4']").trigger("click");
+	                }
+	                if (!$(".rc-calendar-table" + repeat + " .rc-calendar-column-header input[value='5']").is(":checked")) {
+	                    $(".rc-calendar-table" + repeat + " .rc-calendar-column-header input[value='5']").trigger("click");
+	                }
+	            }
+	        });
+	    },
+	    render: function render() {
 
 	        return _react2.default.createElement(
-	          'div',
-	          { className: 'sub-variants' },
-	          _react2.default.createElement(
-	            'h3',
-	            null,
-	            items.name
-	          ),
-	          subVariantsPrice,
-	          _react2.default.createElement('hr', null)
-	        );
-	      });
-	    } else {
-	      var subVariants = '';
-	    }
-
-	    var calendarItems = $.map(this.state.calendarDates, function (item) {
-
-	      return _react2.default.createElement(
-	        'div',
-	        { className: 'calendar' },
-	        _react2.default.createElement(CalendarComponent, { month: item,
-	          pattern: self.state.patternFlag,
-	          weekdaysFlag: self.state.weekdaysFlag,
-	          repeatFlag: self.state.repeatFlag,
-	          variantDates: self.state.variantDates })
-	      );
-	    });
-
-	    return _react2.default.createElement(
-	      'div',
-	      null,
-	      _react2.default.createElement(
-	        _reactTabView.Tabs,
-	        { headers: ['Edit Private tour variant'] },
-	        _react2.default.createElement(
-	          _reactTabView.Tab,
-	          null,
-	          _react2.default.createElement(
 	            'div',
-	            { className: 'tab-content' },
+	            null,
 	            _react2.default.createElement(
-	              'div',
-	              { className: 'tab-pane active' },
-	              _react2.default.createElement(
-	                'h3',
-	                null,
-	                'Customize Dates & Seats'
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'seat-options' },
+	                _reactTabView.Tabs,
+	                { headers: ["Edit Private tour variant"] },
 	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'item patterns', 'data-pattern': '1' },
-	                  _react2.default.createElement('input', { type: 'radio',
-	                    name: 'seat-option',
-	                    id: 'cb1',
-	                    checked: this.state.check_all_days }),
-	                  _react2.default.createElement(
-	                    'label',
-	                    { 'for': 'cb1' },
-	                    'All Days'
-	                  ),
-	                  _react2.default.createElement('input', { type: 'text',
-	                    placeholder: 'Seats',
-	                    value: this.state.all_days })
-	                ),
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'item patterns', 'data-pattern': '2' },
-	                  _react2.default.createElement('input', { type: 'radio',
-	                    name: 'seat-option',
-	                    id: 'cb2',
-	                    checked: this.state.check_all_weekends }),
-	                  _react2.default.createElement(
-	                    'label',
-	                    { 'for': 'cb2' },
-	                    'All Weekends'
-	                  ),
-	                  _react2.default.createElement('input', { type: 'text',
-	                    placeholder: 'Seats',
-	                    value: this.state.all_weekends })
-	                ),
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'item patterns', 'data-pattern': '3' },
-	                  _react2.default.createElement('input', { type: 'radio',
-	                    name: 'seat-option',
-	                    id: 'cb3',
-	                    checked: this.state.check_all_weekdays }),
-	                  _react2.default.createElement(
-	                    'label',
-	                    { 'for': 'cb3' },
-	                    'All Weekdays'
-	                  ),
-	                  _react2.default.createElement('input', { type: 'text',
-	                    placeholder: 'Seats',
-	                    value: this.state.all_weekdays })
+	                    _reactTabView.Tab,
+	                    null,
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'tab-content' },
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'tab-pane active' },
+	                            _react2.default.createElement(
+	                                'h3',
+	                                null,
+	                                'Customize Dates & Seats'
+	                            ),
+	                            _react2.default.createElement(
+	                                'div',
+	                                { className: 'seat-options' },
+	                                _react2.default.createElement(
+	                                    'div',
+	                                    { className: 'item patterns', 'data-pattern': '1' },
+	                                    _react2.default.createElement('input', { type: 'radio', name: 'seat-option', id: 'cb1' }),
+	                                    _react2.default.createElement(
+	                                        'label',
+	                                        { 'for': 'cb1' },
+	                                        'All Days'
+	                                    ),
+	                                    _react2.default.createElement('input', { type: 'text', placeholder: 'Seats' })
+	                                ),
+	                                _react2.default.createElement(
+	                                    'div',
+	                                    { className: 'item patterns', 'data-pattern': '2' },
+	                                    _react2.default.createElement('input', { type: 'radio', name: 'seat-option', id: 'cb2' }),
+	                                    _react2.default.createElement(
+	                                        'label',
+	                                        { 'for': 'cb2' },
+	                                        'All Weekends'
+	                                    ),
+	                                    _react2.default.createElement('input', { type: 'text', placeholder: 'Seats' })
+	                                ),
+	                                _react2.default.createElement(
+	                                    'div',
+	                                    { className: 'item patterns', 'data-pattern': '3' },
+	                                    _react2.default.createElement('input', { type: 'radio', name: 'seat-option', id: 'cb3' }),
+	                                    _react2.default.createElement(
+	                                        'label',
+	                                        { 'for': 'cb3' },
+	                                        'All Weekdays'
+	                                    ),
+	                                    _react2.default.createElement('input', { type: 'text', placeholder: 'Seats' })
+	                                )
+	                            ),
+	                            _react2.default.createElement(
+	                                'div',
+	                                { className: 'seat-options repeat-text' },
+	                                _react2.default.createElement(
+	                                    'div',
+	                                    { className: 'item item-border' },
+	                                    _react2.default.createElement('input', { type: 'checkbox', id: 'repeat_action' }),
+	                                    _react2.default.createElement(
+	                                        'label',
+	                                        { htmlFor: 'repeat_action' },
+	                                        'Repeat for upcoming months'
+	                                    )
+	                                )
+	                            ),
+	                            _react2.default.createElement(
+	                                'div',
+	                                { className: 'scroll-bar' },
+	                                _react2.default.createElement(
+	                                    'div',
+	                                    { className: 'calendar' },
+	                                    _react2.default.createElement(CalendarComponent, { month: date })
+	                                ),
+	                                _react2.default.createElement(
+	                                    'div',
+	                                    { className: 'calendar' },
+	                                    _react2.default.createElement(CalendarComponent, { month: date1 })
+	                                ),
+	                                _react2.default.createElement(
+	                                    'div',
+	                                    { className: 'calendar' },
+	                                    _react2.default.createElement(CalendarComponent, { month: date2 })
+	                                )
+	                            ),
+	                            _react2.default.createElement(
+	                                'h3',
+	                                null,
+	                                'With Breakfast'
+	                            ),
+	                            _react2.default.createElement(
+	                                'p',
+	                                null,
+	                                'Get your jungle gear on because it\'s time to go on an African Safari. '
+	                            ),
+	                            _react2.default.createElement(
+	                                'p',
+	                                { className: 'price-edit' },
+	                                ' ',
+	                                _react2.default.createElement('input', { type: 'text', placeholder: 'Amount' }),
+	                                ' per adult'
+	                            ),
+	                            _react2.default.createElement('hr', null),
+	                            _react2.default.createElement(
+	                                'h3',
+	                                null,
+	                                'Without Breakfast'
+	                            ),
+	                            _react2.default.createElement(
+	                                'p',
+	                                null,
+	                                'Get your jungle gear on because it\'s time to go on an African Safari. '
+	                            ),
+	                            _react2.default.createElement(
+	                                'p',
+	                                { className: 'price-edit' },
+	                                ' ',
+	                                _react2.default.createElement('input', { type: 'text', placeholder: 'Amount' }),
+	                                ' per adult'
+	                            ),
+	                            _react2.default.createElement(
+	                                'p',
+	                                { className: 'price-edit' },
+	                                ' ',
+	                                _react2.default.createElement('input', { type: 'text', placeholder: 'Amount' }),
+	                                ' per infant'
+	                            ),
+	                            _react2.default.createElement('hr', null),
+	                            _react2.default.createElement('p', null),
+	                            _react2.default.createElement(
+	                                'button',
+	                                { className: 'btn btn-secondary' },
+	                                'Update Changes'
+	                            ),
+	                            _react2.default.createElement(
+	                                'button',
+	                                { className: 'btn btn-cancel' },
+	                                'Cancel'
+	                            )
+	                        )
+	                    )
 	                )
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'seat-options repeat-text' },
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'item item-border' },
-	                  _react2.default.createElement('input', { type: 'checkbox', id: 'repeat_action' }),
-	                  _react2.default.createElement(
-	                    'label',
-	                    { htmlFor: 'repeat_action' },
-	                    'Repeat for upcoming months'
-	                  )
-	                )
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'scroll-bar' },
-	                calendarItems
-	              ),
-	              _react2.default.createElement('hr', null),
-	              subVariants,
-	              _react2.default.createElement('p', null),
-	              _react2.default.createElement(
-	                'button',
-	                { className: 'btn btn-secondary', onClick: this.saveAndRedirectVariantEdit },
-	                'Update Changes'
-	              ),
-	              _react2.default.createElement(
-	                'button',
-	                { className: 'btn btn-cancel', onClick: this.redirectVariantEdit },
-	                'Cancel'
-	              )
 	            )
-	          )
-	        )
-	      )
-	    );
-	  }
+	        );
+	    }
 	});
 
 	module.exports = TabVariantEditComponent;
 
 /***/ },
-/* 464 */
+/* 463 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -52614,11 +51257,11 @@
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _FullCalendar = __webpack_require__(465);
+	var _FullCalendar = __webpack_require__(464);
 
 	var _FullCalendar2 = _interopRequireDefault(_FullCalendar);
 
-	var _rcSelect = __webpack_require__(484);
+	var _rcSelect = __webpack_require__(483);
 
 	var _rcSelect2 = _interopRequireDefault(_rcSelect);
 
@@ -52645,86 +51288,44 @@
 
 
 	  componentDidMount: function componentDidMount() {
-	    $('.rc-calendar-next-month-btn-day').hide();
-	    $('.rc-calendar-full-header-switcher').hide();
-	    if ($('.rc-calendar-table').length == 2) {
-	      $('.rc-calendar-table').first().find('th').each(function (i) {
-	        var weekday = i == 0 ? 7 : i;
-	        $(this).html('<span class=\'rc-calendar-column-header item\'><input type=\'checkbox\' value=\'' + weekday + '\' class=\'weekday\' id=\'week1_' + i + '\'><label for=\'week1_' + i + '\'> ' + moment().day($(this).prop('title')).format('ddd') + '</label><input type=\'text\' placeholder=\'Seats\'></span>');
-	      });
-	    }
+	    $(".rc-calendar-next-month-btn-day").hide();
+	    $(".rc-calendar-full-header-switcher").hide();
+	    $(".rc-calendar-table").first().find("th").each(function (i) {
+	      var weekday = i == 0 ? 7 : i;
+	      $(this).html("<span class='rc-calendar-column-header'><input type='checkbox' value='" + weekday + "' class='weekday' id='week1_" + i + "'><label for='week1_" + i + "'> " + $(this).prop("title") + "</label></span>");
+	    });
+	    $(".rc-calendar-table:not(:first):not(:last)").find("th").each(function (i) {
+	      var weekday = i == 0 ? 7 : i;
+	      $(this).html("<span class='rc-calendar-column-header'><input type='checkbox' value='" + weekday + "' class='weekday' id='week2_" + i + "'><label for='week2_" + i + "'> " + $(this).prop("title") + "</label></span>");
+	    });
+	    $(".rc-calendar-table").last().find("th").each(function (i) {
+	      var weekday = i == 0 ? 7 : i;
+	      $(this).html("<span class='rc-calendar-column-header'><input type='checkbox' value='" + weekday + "' class='weekday' id='week3_" + i + "'><label for='week3_" + i + "'> " + $(this).prop("title") + "</label></span>");
+	    });
 
-	    $(document).off('click', 'td').on('click', 'td', function (e) {
-	      if (moment($(this).prop('title')).unix() >= moment($('.rc-calendar-today').prop('title')).unix()) {
-	        if (!$(e.target).closest('td').hasClass('active')) {
+	    $(document).off("click", "td").on("click", "td", function (e) {
+	      if (moment($(this).prop("title")).unix() >= moment($(".rc-calendar-today").prop("title")).unix()) {
+	        if (!$(e.target).closest("td").hasClass("active")) {
 	          console.log($(e.target));
-	          $(e.target).closest('td').addClass('active');
+	          $(e.target).closest("td").addClass("active");
 	        }
 	      }
 	    });
 	  },
 	  render: function render() {
-	    console.log(this.props.weekdaysFlag);
-	    var self = this;
-	    $('.rc-calendar-table').find('td').each(function (i) {
-
-	      if (parseInt($(this).find('div').html()) < parseInt($('.rc-calendar-today').find('div').html())) {
-	        $(this).html('<div class="rc-calendar-date"><a class="link" href="#">Edit</a><p class=" grey">' + $(this).find('div').html() + '</p></div>');
-	      } else {
-	        $(this).html('<div class="rc-calendar-date"><a class="link edit-link" href="javascript:void(0)">Edit</a><a class="link save-link hide" href="javascript:void(0)">Save</a><p>' + $(this).find('div').html() + '</p><div class="gray-section"><div class="total">0/0</div></div><div class="gray-section2"><div class="total">Total seats <input type="text" ></div></div></div>');
-	      }
-	    });
-	    console.log('step5');
-	    $('.rc-calendar-table').find('td').each(function (i) {
-	      $(this).removeClass('active');
-	    });
-	    if (this.props.repeatFlag) {
-	      console.log('step4');
-	      $('.rc-calendar-table').find('td').each(function (i) {
-	        console.log(self.props.weekdaysFlag.indexOf(parseInt(moment($(this).prop('title')).isoWeekday())));
-	        $(this).removeClass('active');
-	        if (self.props.variantDates[moment($(this).prop('title')).format('YYYY-MM-DD')]) {
-	          $(this).find('.gray-section .total').html(self.props.variantDates[moment($(this).prop('title')).format('YYYY-MM-DD')].sold_count + '/' + self.props.variantDates[moment($(this).prop('title')).format('YYYY-MM-DD')].capacity);
-	          $(this).find('.gray-section2 .total input').val(self.props.variantDates[moment($(this).prop('title')).format('YYYY-MM-DD')].capacity);
-
-	          if (self.props.variantDates[moment($(this).prop('title')).format('YYYY-MM-DD')].is_customized_date) {
-	            $(this).addClass('active');
-	          }
-	        }
-
-	        if (self.props.weekdaysFlag.indexOf(parseInt(moment($(this).prop('title')).isoWeekday())) != -1) {
-	          console.log('step2');
-	          if (!$(this).find('p').hasClass('grey')) {
-	            console.log(self.props.weekdaysFlag.indexOf(parseInt(moment($(this).prop('title')).isoWeekday())));
-	            $(this).addClass('active');
-	          }
-	        }
-	      });
-	    } else {
-	      console.log('step20');
-	      $('.rc-calendar-table').first().find('td').each(function (i) {
-	        $(this).removeClass('active');
-
-	        if (self.props.weekdaysFlag.indexOf(parseInt(moment($(this).prop('title')).isoWeekday())) != -1) {
-
-	          if (!$(this).find('p').hasClass('grey')) {
-
-	            $(this).addClass('active');
-	          }
-	        }
-	      });
-	    }
-
 	    return _react2.default.createElement(
 	      'div',
 	      { style: { zIndex: 1000, position: 'relative' } },
-	      _react2.default.createElement(_FullCalendar2.default, { style: { margin: 10 },
+	      _react2.default.createElement(_FullCalendar2.default, {
+	        style: { margin: 10 },
 	        Select: _rcSelect2.default,
 	        value: this.props.month,
 	        fullscreen: true,
 	        onSelect: onSelect,
 	        type: this.state.type,
-	        onTypeChange: this.onTypeChange })
+	        onTypeChange: this.onTypeChange
+
+	      })
 	    );
 	  }
 	});
@@ -52732,7 +51333,7 @@
 	module.exports = CalendarComponent;
 
 /***/ },
-/* 465 */
+/* 464 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -52747,23 +51348,23 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _DateTable = __webpack_require__(466);
+	var _DateTable = __webpack_require__(465);
 
 	var _DateTable2 = _interopRequireDefault(_DateTable);
 
-	var _MonthTable = __webpack_require__(478);
+	var _MonthTable = __webpack_require__(477);
 
 	var _MonthTable2 = _interopRequireDefault(_MonthTable);
 
-	var _CalendarMixin = __webpack_require__(480);
+	var _CalendarMixin = __webpack_require__(479);
 
 	var _CalendarMixin2 = _interopRequireDefault(_CalendarMixin);
 
-	var _CommonMixin = __webpack_require__(481);
+	var _CommonMixin = __webpack_require__(480);
 
 	var _CommonMixin2 = _interopRequireDefault(_CommonMixin);
 
-	var _CalendarHeader = __webpack_require__(483);
+	var _CalendarHeader = __webpack_require__(482);
 
 	var _CalendarHeader2 = _interopRequireDefault(_CalendarHeader);
 
@@ -52899,7 +51500,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 466 */
+/* 465 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -52914,11 +51515,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _DateTHead = __webpack_require__(467);
+	var _DateTHead = __webpack_require__(466);
 
 	var _DateTHead2 = _interopRequireDefault(_DateTHead);
 
-	var _DateTBody = __webpack_require__(469);
+	var _DateTBody = __webpack_require__(468);
 
 	var _DateTBody2 = _interopRequireDefault(_DateTBody);
 
@@ -52960,7 +51561,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 467 */
+/* 466 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -52975,7 +51576,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _DateConstants = __webpack_require__(468);
+	var _DateConstants = __webpack_require__(467);
 
 	var _DateConstants2 = _interopRequireDefault(_DateConstants);
 
@@ -53064,7 +51665,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 468 */
+/* 467 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -53079,7 +51680,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 469 */
+/* 468 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -53092,11 +51693,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _DateConstants = __webpack_require__(468);
+	var _DateConstants = __webpack_require__(467);
 
 	var _DateConstants2 = _interopRequireDefault(_DateConstants);
 
-	var _util = __webpack_require__(470);
+	var _util = __webpack_require__(469);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -53335,7 +51936,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 470 */
+/* 469 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -53356,7 +51957,7 @@
 	exports.isTimeValid = isTimeValid;
 	exports.isAllowedDate = isAllowedDate;
 
-	var _gregorianCalendarFormat = __webpack_require__(471);
+	var _gregorianCalendarFormat = __webpack_require__(470);
 
 	var _gregorianCalendarFormat2 = _interopRequireDefault(_gregorianCalendarFormat);
 
@@ -53450,7 +52051,7 @@
 	}
 
 /***/ },
-/* 471 */
+/* 470 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -53462,10 +52063,10 @@
 
 	'use strict';
 
-	var GregorianCalendar = __webpack_require__(472);
-	var enUsLocale = __webpack_require__(476);
+	var GregorianCalendar = __webpack_require__(471);
+	var enUsLocale = __webpack_require__(475);
 	var MAX_VALUE = Number.MAX_VALUE;
-	var warning = __webpack_require__(477);
+	var warning = __webpack_require__(476);
 
 	/**
 	 * date or time style enum
@@ -54291,7 +52892,7 @@
 	// gc_format@163.com
 
 /***/ },
-/* 472 */
+/* 471 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -54302,9 +52903,9 @@
 	'use strict';
 
 	var toInt = parseInt;
-	var Utils = __webpack_require__(473);
-	var defaultLocale = __webpack_require__(475);
-	var Const = __webpack_require__(474);
+	var Utils = __webpack_require__(472);
+	var defaultLocale = __webpack_require__(474);
+	var Const = __webpack_require__(473);
 
 	/*
 	 * GregorianCalendar class.
@@ -55645,7 +54246,7 @@
 	 */
 
 /***/ },
-/* 473 */
+/* 472 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -55656,7 +54257,7 @@
 
 	'use strict';
 
-	var Const = __webpack_require__(474);
+	var Const = __webpack_require__(473);
 	var floor = Math.floor;
 	var ACCUMULATED_DAYS_IN_MONTH
 	//   1/1 2/1 3/1 4/1 5/1 6/1 7/1 8/1 9/1 10/1 11/1 12/1
@@ -55781,7 +54382,7 @@
 	};
 
 /***/ },
-/* 474 */
+/* 473 */
 /***/ function(module, exports) {
 
 	/*
@@ -55910,7 +54511,7 @@
 	};
 
 /***/ },
-/* 475 */
+/* 474 */
 /***/ function(module, exports) {
 
 	/*
@@ -55928,7 +54529,7 @@
 	};
 
 /***/ },
-/* 476 */
+/* 475 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -55947,7 +54548,7 @@
 	};
 
 /***/ },
-/* 477 */
+/* 476 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -56014,7 +54615,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 478 */
+/* 477 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56029,7 +54630,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _classnames = __webpack_require__(479);
+	var _classnames = __webpack_require__(478);
 
 	var _classnames2 = _interopRequireDefault(_classnames);
 
@@ -56203,7 +54804,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 479 */
+/* 478 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -56257,7 +54858,7 @@
 
 
 /***/ },
-/* 480 */
+/* 479 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56270,15 +54871,15 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _classnames = __webpack_require__(479);
+	var _classnames = __webpack_require__(478);
 
 	var _classnames2 = _interopRequireDefault(_classnames);
 
-	var _gregorianCalendar = __webpack_require__(472);
+	var _gregorianCalendar = __webpack_require__(471);
 
 	var _gregorianCalendar2 = _interopRequireDefault(_gregorianCalendar);
 
-	var _index = __webpack_require__(470);
+	var _index = __webpack_require__(469);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -56395,7 +54996,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 481 */
+/* 480 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56406,11 +55007,11 @@
 
 	var _react = __webpack_require__(2);
 
-	var _en_US = __webpack_require__(482);
+	var _en_US = __webpack_require__(481);
 
 	var _en_US2 = _interopRequireDefault(_en_US);
 
-	var _index = __webpack_require__(470);
+	var _index = __webpack_require__(469);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -56458,7 +55059,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 482 */
+/* 481 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56467,7 +55068,7 @@
 	  value: true
 	});
 
-	var _en_US = __webpack_require__(476);
+	var _en_US = __webpack_require__(475);
 
 	var _en_US2 = _interopRequireDefault(_en_US);
 
@@ -56500,7 +55101,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 483 */
+/* 482 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56709,7 +55310,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 484 */
+/* 483 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56719,15 +55320,15 @@
 	});
 	exports.OptGroup = exports.Option = undefined;
 
-	var _Select = __webpack_require__(485);
+	var _Select = __webpack_require__(484);
 
 	var _Select2 = _interopRequireDefault(_Select);
 
-	var _Option = __webpack_require__(555);
+	var _Option = __webpack_require__(554);
 
 	var _Option2 = _interopRequireDefault(_Option);
 
-	var _OptGroup = __webpack_require__(508);
+	var _OptGroup = __webpack_require__(507);
 
 	var _OptGroup2 = _interopRequireDefault(_OptGroup);
 
@@ -56740,7 +55341,7 @@
 	exports["default"] = _Select2["default"];
 
 /***/ },
-/* 485 */
+/* 484 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56759,31 +55360,31 @@
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _rcUtil = __webpack_require__(486);
+	var _rcUtil = __webpack_require__(485);
 
-	var _classnames = __webpack_require__(490);
+	var _classnames = __webpack_require__(489);
 
 	var _classnames2 = _interopRequireDefault(_classnames);
 
-	var _OptGroup = __webpack_require__(508);
+	var _OptGroup = __webpack_require__(507);
 
 	var _OptGroup2 = _interopRequireDefault(_OptGroup);
 
-	var _rcAnimate = __webpack_require__(509);
+	var _rcAnimate = __webpack_require__(508);
 
 	var _rcAnimate2 = _interopRequireDefault(_rcAnimate);
 
-	var _componentClasses = __webpack_require__(515);
+	var _componentClasses = __webpack_require__(514);
 
 	var _componentClasses2 = _interopRequireDefault(_componentClasses);
 
-	var _util = __webpack_require__(518);
+	var _util = __webpack_require__(517);
 
-	var _SelectTrigger = __webpack_require__(534);
+	var _SelectTrigger = __webpack_require__(533);
 
 	var _SelectTrigger2 = _interopRequireDefault(_SelectTrigger);
 
-	var _FilterMixin = __webpack_require__(553);
+	var _FilterMixin = __webpack_require__(552);
 
 	var _FilterMixin2 = _interopRequireDefault(_FilterMixin);
 
@@ -57597,31 +56198,31 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 486 */
+/* 485 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = {
-	  guid: __webpack_require__(487),
-	  classSet: __webpack_require__(488),
-	  joinClasses: __webpack_require__(491),
-	  KeyCode: __webpack_require__(492),
-	  PureRenderMixin: __webpack_require__(493),
-	  shallowEqual: __webpack_require__(494),
-	  createChainedFunction: __webpack_require__(499),
+	  guid: __webpack_require__(486),
+	  classSet: __webpack_require__(487),
+	  joinClasses: __webpack_require__(490),
+	  KeyCode: __webpack_require__(491),
+	  PureRenderMixin: __webpack_require__(492),
+	  shallowEqual: __webpack_require__(493),
+	  createChainedFunction: __webpack_require__(498),
 	  Dom: {
-	    addEventListener: __webpack_require__(500),
-	    contains: __webpack_require__(505)
+	    addEventListener: __webpack_require__(499),
+	    contains: __webpack_require__(504)
 	  },
 	  Children: {
-	    toArray: __webpack_require__(506),
-	    mapSelf: __webpack_require__(507)
+	    toArray: __webpack_require__(505),
+	    mapSelf: __webpack_require__(506)
 	  }
 	};
 
 /***/ },
-/* 487 */
+/* 486 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -57632,18 +56233,18 @@
 	};
 
 /***/ },
-/* 488 */
+/* 487 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var deprecate = __webpack_require__(489);
-	var classNames = __webpack_require__(490);
+	var deprecate = __webpack_require__(488);
+	var classNames = __webpack_require__(489);
 
 	module.exports = deprecate(classNames, '`rcUtil.classSet()` is deprecated, use `classNames()` by `require(\'classnames\')` instead');
 
 /***/ },
-/* 489 */
+/* 488 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {
@@ -57717,7 +56318,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 490 */
+/* 489 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -57771,18 +56372,18 @@
 
 
 /***/ },
-/* 491 */
+/* 490 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var deprecate = __webpack_require__(489);
-	var classNames = __webpack_require__(490);
+	var deprecate = __webpack_require__(488);
+	var classNames = __webpack_require__(489);
 
 	module.exports = deprecate(classNames, '`rcUtil.joinClasses()` is deprecated, use `classNames()` by `require(\'classnames\')` instead');
 
 /***/ },
-/* 492 */
+/* 491 */
 /***/ function(module, exports) {
 
 	/**
@@ -58307,12 +56908,12 @@
 	module.exports = KeyCode;
 
 /***/ },
-/* 493 */
+/* 492 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var shallowEqual = __webpack_require__(494);
+	var shallowEqual = __webpack_require__(493);
 
 	/**
 	 * If your React component's render function is "pure", e.g. it will render the
@@ -58347,12 +56948,12 @@
 	module.exports = ReactComponentWithPureRenderMixin;
 
 /***/ },
-/* 494 */
+/* 493 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var fetchKeys = __webpack_require__(495);
+	var fetchKeys = __webpack_require__(494);
 
 	module.exports = function shallowEqual(objA, objB, compare, compareContext) {
 
@@ -58400,7 +57001,7 @@
 	};
 
 /***/ },
-/* 495 */
+/* 494 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -58411,9 +57012,9 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var getNative = __webpack_require__(496),
-	    isArguments = __webpack_require__(497),
-	    isArray = __webpack_require__(498);
+	var getNative = __webpack_require__(495),
+	    isArguments = __webpack_require__(496),
+	    isArray = __webpack_require__(497);
 
 	/** Used to detect unsigned integer values. */
 	var reIsUint = /^\d+$/;
@@ -58642,7 +57243,7 @@
 
 
 /***/ },
-/* 496 */
+/* 495 */
 /***/ function(module, exports) {
 
 	/**
@@ -58785,7 +57386,7 @@
 
 
 /***/ },
-/* 497 */
+/* 496 */
 /***/ function(module, exports) {
 
 	/**
@@ -59034,7 +57635,7 @@
 
 
 /***/ },
-/* 498 */
+/* 497 */
 /***/ function(module, exports) {
 
 	/**
@@ -59220,7 +57821,7 @@
 
 
 /***/ },
-/* 499 */
+/* 498 */
 /***/ function(module, exports) {
 
 	/**
@@ -59247,7 +57848,7 @@
 	module.exports = createChainedFunction;
 
 /***/ },
-/* 500 */
+/* 499 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -59259,7 +57860,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _addDomEventListener = __webpack_require__(501);
+	var _addDomEventListener = __webpack_require__(500);
 
 	var _addDomEventListener2 = _interopRequireDefault(_addDomEventListener);
 
@@ -59278,7 +57879,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 501 */
+/* 500 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -59290,7 +57891,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _EventObject = __webpack_require__(502);
+	var _EventObject = __webpack_require__(501);
 
 	var _EventObject2 = _interopRequireDefault(_EventObject);
 
@@ -59320,7 +57921,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 502 */
+/* 501 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -59337,11 +57938,11 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _EventBaseObject = __webpack_require__(503);
+	var _EventBaseObject = __webpack_require__(502);
 
 	var _EventBaseObject2 = _interopRequireDefault(_EventBaseObject);
 
-	var _objectAssign = __webpack_require__(504);
+	var _objectAssign = __webpack_require__(503);
 
 	var _objectAssign2 = _interopRequireDefault(_objectAssign);
 
@@ -59603,7 +58204,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 503 */
+/* 502 */
 /***/ function(module, exports) {
 
 	/**
@@ -59671,7 +58272,7 @@
 	module.exports = exports["default"];
 
 /***/ },
-/* 504 */
+/* 503 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -59760,7 +58361,7 @@
 
 
 /***/ },
-/* 505 */
+/* 504 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -59778,7 +58379,7 @@
 	};
 
 /***/ },
-/* 506 */
+/* 505 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -59794,7 +58395,7 @@
 	};
 
 /***/ },
-/* 507 */
+/* 506 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -59811,7 +58412,7 @@
 	};
 
 /***/ },
-/* 508 */
+/* 507 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -59850,16 +58451,16 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 509 */
+/* 508 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// export this package's api
 	'use strict';
 
-	module.exports = __webpack_require__(510);
+	module.exports = __webpack_require__(509);
 
 /***/ },
-/* 510 */
+/* 509 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -59876,13 +58477,13 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _ChildrenUtils = __webpack_require__(511);
+	var _ChildrenUtils = __webpack_require__(510);
 
-	var _AnimateChild = __webpack_require__(512);
+	var _AnimateChild = __webpack_require__(511);
 
 	var _AnimateChild2 = _interopRequireDefault(_AnimateChild);
 
-	var _util = __webpack_require__(517);
+	var _util = __webpack_require__(516);
 
 	var _util2 = _interopRequireDefault(_util);
 
@@ -60189,7 +58790,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 511 */
+/* 510 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -60307,7 +58908,7 @@
 	}
 
 /***/ },
-/* 512 */
+/* 511 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -60326,11 +58927,11 @@
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _cssAnimation = __webpack_require__(513);
+	var _cssAnimation = __webpack_require__(512);
 
 	var _cssAnimation2 = _interopRequireDefault(_cssAnimation);
 
-	var _util = __webpack_require__(517);
+	var _util = __webpack_require__(516);
 
 	var _util2 = _interopRequireDefault(_util);
 
@@ -60410,7 +59011,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 513 */
+/* 512 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -60419,11 +59020,11 @@
 	  value: true
 	});
 
-	var _Event = __webpack_require__(514);
+	var _Event = __webpack_require__(513);
 
 	var _Event2 = _interopRequireDefault(_Event);
 
-	var _componentClasses = __webpack_require__(515);
+	var _componentClasses = __webpack_require__(514);
 
 	var _componentClasses2 = _interopRequireDefault(_componentClasses);
 
@@ -60600,7 +59201,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 514 */
+/* 513 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -60693,7 +59294,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 515 */
+/* 514 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -60701,9 +59302,9 @@
 	 */
 
 	try {
-	  var index = __webpack_require__(516);
+	  var index = __webpack_require__(515);
 	} catch (err) {
-	  var index = __webpack_require__(516);
+	  var index = __webpack_require__(515);
 	}
 
 	/**
@@ -60890,7 +59491,7 @@
 
 
 /***/ },
-/* 516 */
+/* 515 */
 /***/ function(module, exports) {
 
 	module.exports = function(arr, obj){
@@ -60902,7 +59503,7 @@
 	};
 
 /***/ },
-/* 517 */
+/* 516 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -60935,7 +59536,7 @@
 	module.exports = exports["default"];
 
 /***/ },
-/* 518 */
+/* 517 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -60956,7 +59557,7 @@
 	exports.getSelectKeys = getSelectKeys;
 	exports.findFirstMenuItem = findFirstMenuItem;
 
-	var _rcMenu = __webpack_require__(519);
+	var _rcMenu = __webpack_require__(518);
 
 	var _react = __webpack_require__(2);
 
@@ -61067,7 +59668,7 @@
 	}
 
 /***/ },
-/* 519 */
+/* 518 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -61077,23 +59678,23 @@
 	});
 	exports.Divider = exports.ItemGroup = exports.MenuItemGroup = exports.MenuItem = exports.Item = exports.SubMenu = undefined;
 
-	var _Menu = __webpack_require__(520);
+	var _Menu = __webpack_require__(519);
 
 	var _Menu2 = _interopRequireDefault(_Menu);
 
-	var _SubMenu = __webpack_require__(528);
+	var _SubMenu = __webpack_require__(527);
 
 	var _SubMenu2 = _interopRequireDefault(_SubMenu);
 
-	var _MenuItem = __webpack_require__(531);
+	var _MenuItem = __webpack_require__(530);
 
 	var _MenuItem2 = _interopRequireDefault(_MenuItem);
 
-	var _MenuItemGroup = __webpack_require__(532);
+	var _MenuItemGroup = __webpack_require__(531);
 
 	var _MenuItemGroup2 = _interopRequireDefault(_MenuItemGroup);
 
-	var _Divider = __webpack_require__(533);
+	var _Divider = __webpack_require__(532);
 
 	var _Divider2 = _interopRequireDefault(_Divider);
 
@@ -61108,7 +59709,7 @@
 	exports["default"] = _Menu2["default"];
 
 /***/ },
-/* 520 */
+/* 519 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -61121,15 +59722,15 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _MenuMixin = __webpack_require__(521);
+	var _MenuMixin = __webpack_require__(520);
 
 	var _MenuMixin2 = _interopRequireDefault(_MenuMixin);
 
-	var _objectAssign = __webpack_require__(525);
+	var _objectAssign = __webpack_require__(524);
 
 	var _objectAssign2 = _interopRequireDefault(_objectAssign);
 
-	var _util = __webpack_require__(526);
+	var _util = __webpack_require__(525);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -61357,7 +59958,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 521 */
+/* 520 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -61376,23 +59977,23 @@
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _rcUtil = __webpack_require__(486);
+	var _rcUtil = __webpack_require__(485);
 
-	var _classnames = __webpack_require__(490);
+	var _classnames = __webpack_require__(489);
 
 	var _classnames2 = _interopRequireDefault(_classnames);
 
-	var _domScrollIntoView = __webpack_require__(522);
+	var _domScrollIntoView = __webpack_require__(521);
 
 	var _domScrollIntoView2 = _interopRequireDefault(_domScrollIntoView);
 
-	var _objectAssign = __webpack_require__(525);
+	var _objectAssign = __webpack_require__(524);
 
 	var _objectAssign2 = _interopRequireDefault(_objectAssign);
 
-	var _util = __webpack_require__(526);
+	var _util = __webpack_require__(525);
 
-	var _DOMWrap = __webpack_require__(527);
+	var _DOMWrap = __webpack_require__(526);
 
 	var _DOMWrap2 = _interopRequireDefault(_DOMWrap);
 
@@ -61702,20 +60303,20 @@
 	module.exports = exports['default'];
 
 /***/ },
+/* 521 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	module.exports = __webpack_require__(522);
+
+/***/ },
 /* 522 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	module.exports = __webpack_require__(523);
-
-/***/ },
-/* 523 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var util = __webpack_require__(524);
+	var util = __webpack_require__(523);
 
 	function scrollIntoView(elem, container, config) {
 	  config = config || {};
@@ -61844,7 +60445,7 @@
 	module.exports = scrollIntoView;
 
 /***/ },
-/* 524 */
+/* 523 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -62288,7 +60889,7 @@
 	}, domUtils);
 
 /***/ },
-/* 525 */
+/* 524 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -62377,7 +60978,7 @@
 
 
 /***/ },
-/* 526 */
+/* 525 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -62420,7 +61021,7 @@
 	}
 
 /***/ },
-/* 527 */
+/* 526 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -62433,7 +61034,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _objectAssign = __webpack_require__(525);
+	var _objectAssign = __webpack_require__(524);
 
 	var _objectAssign2 = _interopRequireDefault(_objectAssign);
 
@@ -62466,7 +61067,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 528 */
+/* 527 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -62477,7 +61078,7 @@
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-	var _SubPopupMenu = __webpack_require__(529);
+	var _SubPopupMenu = __webpack_require__(528);
 
 	var _SubPopupMenu2 = _interopRequireDefault(_SubPopupMenu);
 
@@ -62485,13 +61086,13 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _rcUtil = __webpack_require__(486);
+	var _rcUtil = __webpack_require__(485);
 
-	var _classnames = __webpack_require__(490);
+	var _classnames = __webpack_require__(489);
 
 	var _classnames2 = _interopRequireDefault(_classnames);
 
-	var _util = __webpack_require__(526);
+	var _util = __webpack_require__(525);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -62525,7 +61126,7 @@
 	    onTitleClick: _react.PropTypes.func
 	  },
 
-	  mixins: [__webpack_require__(530)],
+	  mixins: [__webpack_require__(529)],
 
 	  getDefaultProps: function getDefaultProps() {
 	    return {
@@ -62865,7 +61466,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 529 */
+/* 528 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -62882,17 +61483,17 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _MenuMixin = __webpack_require__(521);
+	var _MenuMixin = __webpack_require__(520);
 
 	var _MenuMixin2 = _interopRequireDefault(_MenuMixin);
 
-	var _objectAssign = __webpack_require__(525);
+	var _objectAssign = __webpack_require__(524);
 
 	var _objectAssign2 = _interopRequireDefault(_objectAssign);
 
-	var _util = __webpack_require__(526);
+	var _util = __webpack_require__(525);
 
-	var _rcAnimate = __webpack_require__(509);
+	var _rcAnimate = __webpack_require__(508);
 
 	var _rcAnimate2 = _interopRequireDefault(_rcAnimate);
 
@@ -62988,7 +61589,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 530 */
+/* 529 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -62997,7 +61598,7 @@
 	  value: true
 	});
 
-	var _rcUtil = __webpack_require__(486);
+	var _rcUtil = __webpack_require__(485);
 
 	var _rcUtil2 = _interopRequireDefault(_rcUtil);
 
@@ -63067,7 +61668,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 531 */
+/* 530 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -63082,13 +61683,13 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _rcUtil = __webpack_require__(486);
+	var _rcUtil = __webpack_require__(485);
 
-	var _classnames = __webpack_require__(490);
+	var _classnames = __webpack_require__(489);
 
 	var _classnames2 = _interopRequireDefault(_classnames);
 
-	var _util = __webpack_require__(526);
+	var _util = __webpack_require__(525);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -63264,7 +61865,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 532 */
+/* 531 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -63327,7 +61928,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 533 */
+/* 532 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -63364,7 +61965,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 534 */
+/* 533 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -63375,7 +61976,7 @@
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-	var _rcTrigger = __webpack_require__(535);
+	var _rcTrigger = __webpack_require__(534);
 
 	var _rcTrigger2 = _interopRequireDefault(_rcTrigger);
 
@@ -63383,11 +61984,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _classnames = __webpack_require__(490);
+	var _classnames = __webpack_require__(489);
 
 	var _classnames2 = _interopRequireDefault(_classnames);
 
-	var _DropdownMenu = __webpack_require__(552);
+	var _DropdownMenu = __webpack_require__(551);
 
 	var _DropdownMenu2 = _interopRequireDefault(_DropdownMenu);
 
@@ -63532,15 +62133,15 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 535 */
+/* 534 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	module.exports = __webpack_require__(536);
+	module.exports = __webpack_require__(535);
 
 /***/ },
-/* 536 */
+/* 535 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -63561,13 +62162,13 @@
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _rcUtil = __webpack_require__(486);
+	var _rcUtil = __webpack_require__(485);
 
-	var _Popup = __webpack_require__(537);
+	var _Popup = __webpack_require__(536);
 
 	var _Popup2 = _interopRequireDefault(_Popup);
 
-	var _utils = __webpack_require__(551);
+	var _utils = __webpack_require__(550);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -63975,7 +62576,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 537 */
+/* 536 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -63994,19 +62595,19 @@
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _rcAlign = __webpack_require__(538);
+	var _rcAlign = __webpack_require__(537);
 
 	var _rcAlign2 = _interopRequireDefault(_rcAlign);
 
-	var _rcAnimate = __webpack_require__(509);
+	var _rcAnimate = __webpack_require__(508);
 
 	var _rcAnimate2 = _interopRequireDefault(_rcAnimate);
 
-	var _PopupInner = __webpack_require__(549);
+	var _PopupInner = __webpack_require__(548);
 
 	var _PopupInner2 = _interopRequireDefault(_PopupInner);
 
-	var _LazyRenderBox = __webpack_require__(550);
+	var _LazyRenderBox = __webpack_require__(549);
 
 	var _LazyRenderBox2 = _interopRequireDefault(_LazyRenderBox);
 
@@ -64204,7 +62805,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 538 */
+/* 537 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -64213,7 +62814,7 @@
 	  value: true
 	});
 
-	var _Align = __webpack_require__(539);
+	var _Align = __webpack_require__(538);
 
 	var _Align2 = _interopRequireDefault(_Align);
 
@@ -64224,7 +62825,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 539 */
+/* 538 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -64241,13 +62842,13 @@
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _domAlign = __webpack_require__(540);
+	var _domAlign = __webpack_require__(539);
 
 	var _domAlign2 = _interopRequireDefault(_domAlign);
 
-	var _rcUtil = __webpack_require__(486);
+	var _rcUtil = __webpack_require__(485);
 
-	var _isWindow = __webpack_require__(548);
+	var _isWindow = __webpack_require__(547);
 
 	var _isWindow2 = _interopRequireDefault(_isWindow);
 
@@ -64369,7 +62970,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 540 */
+/* 539 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -64385,27 +62986,27 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _utils = __webpack_require__(541);
+	var _utils = __webpack_require__(540);
 
 	var _utils2 = _interopRequireDefault(_utils);
 
-	var _getOffsetParent = __webpack_require__(542);
+	var _getOffsetParent = __webpack_require__(541);
 
 	var _getOffsetParent2 = _interopRequireDefault(_getOffsetParent);
 
-	var _getVisibleRectForElement = __webpack_require__(543);
+	var _getVisibleRectForElement = __webpack_require__(542);
 
 	var _getVisibleRectForElement2 = _interopRequireDefault(_getVisibleRectForElement);
 
-	var _adjustForViewport = __webpack_require__(544);
+	var _adjustForViewport = __webpack_require__(543);
 
 	var _adjustForViewport2 = _interopRequireDefault(_adjustForViewport);
 
-	var _getRegion = __webpack_require__(545);
+	var _getRegion = __webpack_require__(544);
 
 	var _getRegion2 = _interopRequireDefault(_getRegion);
 
-	var _getElFuturePos = __webpack_require__(546);
+	var _getElFuturePos = __webpack_require__(545);
 
 	var _getElFuturePos2 = _interopRequireDefault(_getElFuturePos);
 
@@ -64592,7 +63193,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 541 */
+/* 540 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -65090,7 +63691,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 542 */
+/* 541 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65101,7 +63702,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _utils = __webpack_require__(541);
+	var _utils = __webpack_require__(540);
 
 	var _utils2 = _interopRequireDefault(_utils);
 
@@ -65148,7 +63749,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 543 */
+/* 542 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65159,11 +63760,11 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _utils = __webpack_require__(541);
+	var _utils = __webpack_require__(540);
 
 	var _utils2 = _interopRequireDefault(_utils);
 
-	var _getOffsetParent = __webpack_require__(542);
+	var _getOffsetParent = __webpack_require__(541);
 
 	var _getOffsetParent2 = _interopRequireDefault(_getOffsetParent);
 
@@ -65229,7 +63830,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 544 */
+/* 543 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65240,7 +63841,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _utils = __webpack_require__(541);
+	var _utils = __webpack_require__(540);
 
 	var _utils2 = _interopRequireDefault(_utils);
 
@@ -65289,7 +63890,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 545 */
+/* 544 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65300,7 +63901,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _utils = __webpack_require__(541);
+	var _utils = __webpack_require__(540);
 
 	var _utils2 = _interopRequireDefault(_utils);
 
@@ -65330,7 +63931,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 546 */
+/* 545 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65341,7 +63942,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _getAlignOffset = __webpack_require__(547);
+	var _getAlignOffset = __webpack_require__(546);
 
 	var _getAlignOffset2 = _interopRequireDefault(_getAlignOffset);
 
@@ -65371,7 +63972,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 547 */
+/* 546 */
 /***/ function(module, exports) {
 
 	/**
@@ -65416,7 +64017,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 548 */
+/* 547 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -65433,7 +64034,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 549 */
+/* 548 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65446,7 +64047,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _LazyRenderBox = __webpack_require__(550);
+	var _LazyRenderBox = __webpack_require__(549);
 
 	var _LazyRenderBox2 = _interopRequireDefault(_LazyRenderBox);
 
@@ -65490,7 +64091,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 550 */
+/* 549 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65538,7 +64139,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 551 */
+/* 550 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -65573,7 +64174,7 @@
 	}
 
 /***/ },
-/* 552 */
+/* 551 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65592,13 +64193,13 @@
 
 	var _reactDom = __webpack_require__(39);
 
-	var _util = __webpack_require__(518);
+	var _util = __webpack_require__(517);
 
-	var _rcMenu = __webpack_require__(519);
+	var _rcMenu = __webpack_require__(518);
 
 	var _rcMenu2 = _interopRequireDefault(_rcMenu);
 
-	var _domScrollIntoView = __webpack_require__(522);
+	var _domScrollIntoView = __webpack_require__(521);
 
 	var _domScrollIntoView2 = _interopRequireDefault(_domScrollIntoView);
 
@@ -65753,7 +64354,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 553 */
+/* 552 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65768,19 +64369,19 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _util = __webpack_require__(518);
+	var _util = __webpack_require__(517);
 
-	var _rcMenu = __webpack_require__(519);
+	var _rcMenu = __webpack_require__(518);
 
-	var _warning = __webpack_require__(554);
+	var _warning = __webpack_require__(553);
 
 	var _warning2 = _interopRequireDefault(_warning);
 
-	var _OptGroup = __webpack_require__(508);
+	var _OptGroup = __webpack_require__(507);
 
 	var _OptGroup2 = _interopRequireDefault(_OptGroup);
 
-	var _Option = __webpack_require__(555);
+	var _Option = __webpack_require__(554);
 
 	var _Option2 = _interopRequireDefault(_Option);
 
@@ -65902,7 +64503,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 554 */
+/* 553 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -65969,7 +64570,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 555 */
+/* 554 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -66008,7 +64609,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 556 */
+/* 555 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -66019,9 +64620,9 @@
 	'use strict';
 
 	var toInt = parseInt;
-	var Utils = __webpack_require__(557);
-	var defaultLocale = __webpack_require__(559);
-	var Const = __webpack_require__(558);
+	var Utils = __webpack_require__(556);
+	var defaultLocale = __webpack_require__(558);
+	var Const = __webpack_require__(557);
 
 	/*
 	 * GregorianCalendar class.
@@ -67362,7 +65963,7 @@
 	 */
 
 /***/ },
-/* 557 */
+/* 556 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -67373,7 +65974,7 @@
 
 	'use strict';
 
-	var Const = __webpack_require__(558);
+	var Const = __webpack_require__(557);
 	var floor = Math.floor;
 	var ACCUMULATED_DAYS_IN_MONTH
 	//   1/1 2/1 3/1 4/1 5/1 6/1 7/1 8/1 9/1 10/1 11/1 12/1
@@ -67498,7 +66099,7 @@
 	};
 
 /***/ },
-/* 558 */
+/* 557 */
 /***/ function(module, exports) {
 
 	/*
@@ -67627,7 +66228,7 @@
 	};
 
 /***/ },
-/* 559 */
+/* 558 */
 /***/ function(module, exports) {
 
 	/*
@@ -67645,7 +66246,7 @@
 	};
 
 /***/ },
-/* 560 */
+/* 559 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -67666,12 +66267,12 @@
 	    };
 	  },
 	  showDetails: function showDetails(listingid) {
-	    window.location.href = '/#/listingDetails/' + listingid;
+	    window.location.href = "/#/listingDetails/" + listingid;
 	  },
 	  componentDidMount: function componentDidMount() {
 	    this.props.route.config().redirectWithoutSession();
-	    $('.menu-option').removeClass('active');
-	    $('#listing_menu').addClass('active');
+	    $(".menu-option").removeClass("active");
+	    $("#listing_menu").addClass("active");
 	    var self = this;
 	    //console.log(JSON.parse(localStorage.getItem("clientInfo")).client.client_id);
 	    var data = {};
@@ -67682,10 +66283,10 @@
 	        listing: result
 	      });
 
-	      $('#pageloader').fadeOut();
+	      $("#pageloader").fadeOut();
 	    }, function (result) {
 	      var message = JSON.parse(result.responseText);
-	      self.props.route.notification._addNotification(window.event, 'error', message.message);
+	      self.props.route.notification._addNotification(window.event, "error", message.message);
 	    });
 	  },
 	  render: function render() {
@@ -67717,7 +66318,7 @@
 	                React.createElement(
 	                  'span',
 	                  null,
-	                  items.tour_properties.views_count || 'NA'
+	                  '10455'
 	                ),
 	                ' Views'
 	              ),
@@ -67727,7 +66328,7 @@
 	                React.createElement(
 	                  'span',
 	                  null,
-	                  items.tour_properties.enquiries_count || 'NA'
+	                  '428'
 	                ),
 	                ' Enquiries'
 	              ),
@@ -67737,7 +66338,7 @@
 	                React.createElement(
 	                  'span',
 	                  null,
-	                  items.reviews_count || 'NA'
+	                  items.reviews_count
 	                ),
 	                ' Reviews'
 	              ),
@@ -67747,7 +66348,7 @@
 	                React.createElement(
 	                  'span',
 	                  null,
-	                  items.sold_count || 'NA'
+	                  items.sold_count
 	                ),
 	                ' Bookings'
 	              )
@@ -67763,6 +66364,12 @@
 	                ' ',
 	                items.price
 	              )
+	            ),
+	            React.createElement(
+	              'div',
+	              { className: 'alert alert-danger' },
+	              React.createElement('i', { className: 'glyphicon glyphicon-warning-sign' }),
+	              'Your Booking Dates are going to Expire, update  it now!'
 	            )
 	          )
 	        )
@@ -67788,7 +66395,7 @@
 	              React.createElement(
 	                'a',
 	                { href: '/#/dashboard' },
-	                'Dashboard'
+	                ' Dashboard'
 	              )
 	            ),
 	            React.createElement(
@@ -67797,7 +66404,7 @@
 	              React.createElement(
 	                'a',
 	                { href: '/#/listings' },
-	                'Listing'
+	                'Listing '
 	              )
 	            )
 	          )
@@ -67824,7 +66431,7 @@
 	module.exports = ListingScreen;
 
 /***/ },
-/* 561 */
+/* 560 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -67843,11 +66450,10 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var TabListingComponent = __webpack_require__(562);
+	var TabListingComponent = __webpack_require__(561);
 
 	var STATES = __webpack_require__(239);
 
-	var _ = __webpack_require__(233);
 	var ListingDetailsScreen = _react2.default.createClass({
 	  displayName: 'ListingDetailsScreen',
 
@@ -67856,14 +66462,9 @@
 	      listing: {
 	        description_details: {},
 	        reviews: [],
-	        variants: [],
-	        feature_ids: [],
-	        sub_category_ids: []
+	        variants: []
 	      },
-	      variantDates: [{}],
-	      Tabsheader: ['Overview', 'Details', 'Variants', 'Reviews'],
-	      stateName: '',
-	      seed: {}
+	      Tabsheader: ["Overview", "Details", "Variants", "Reviews"]
 
 	    };
 	  },
@@ -67875,7 +66476,7 @@
 	  loadfromServer: function loadfromServer(pageNo) {
 
 	    var self = this;
-	    console.log('url-data-page:' + this.state.pageSelected);
+	    console.log("url-data-page:" + this.state.pageSelected);
 	    //console.log(JSON.parse(localStorage.getItem("clientInfo")).client.client_id);
 
 	    var urlparams = {};
@@ -67883,54 +66484,14 @@
 	    var clientInfo = this.props.route.config().getClientInfo();
 	    var header = {};
 
-	    this.props.route.config().httpInterceptor(this.props.route.config().url().LISTING_DETAILS + this.props.params.listingid + '?', 'GET', data, header, this.props.route.config().getClientInfo()).then(function (result) {
-
-	      var header = {};
-	      var clientInfo = self.props.route.config().getClientInfo();
-	      clientInfo['country_id'] = parseInt(result.tour_location.country_id);
-
-	      clientInfo['state_id'] = parseInt(result.tour_location.state_id);
-
-	      self.props.route.config().httpInterceptor(self.props.route.config().url().STATE, 'GET', data, header, clientInfo).then(function (result1) {
-
-	        var filteredGoal = _.where(result1.states, {
-	          id: parseInt(result.tour_location.state_id)
-	        });
-
-	        result['state_name'] = filteredGoal[0].name;
-	        result['place_name'] = result.tour_location.name;
-	        self.setState({
-	          listing: result
-	        });
-
-	        var variantDates = [];
-	        self.state.listing.variants.map(function (item) {
-	          self.props.route.config().httpInterceptor(self.props.route.config().url().VARIANT + self.props.params.listingid + '/variants_dates_data?variant_id=' + item.id + '&', 'GET', data, header, self.props.route.config().getClientInfo()).then(function (result) {
-
-	            variantDates.push(result.variants);
-	            self.setState({
-	              variantDates: variantDates
-	            });
-	          }, function (result) {
-	            var message = JSON.parse(result.responseText);
-	          });
-	        }, function (result) {
-	          var message = JSON.parse(result.responseText);
-	          console.log(message);
-	          // self.props.config.notification._addNotification(window.event, "error", message.message);
-	        });
-	      });
-	    }, function (result) {
-	      var message = JSON.parse(result.responseText);
-	      self.props.route.notification._addNotification(window.event, 'error', message.message);
-	    });
-	    this.props.route.config().httpInterceptor(this.props.route.config().url().SEED, 'GET', data, header, this.props.route.config().getClientInfo()).then(function (result) {
+	    this.props.route.config().httpInterceptor(this.props.route.config().url().LISTING_DETAILS + this.props.params.listingid, 'GET', data, header, this.props.route.config().getClientInfo()).then(function (result) {
 	      self.setState({
-	        seed: result
+	        listing: result
 	      });
+	      self.props.route.config().setListing(self.state.listing);
 	    }, function (result) {
 	      var message = JSON.parse(result.responseText);
-	      self.props.route.notification._addNotification(window.event, 'error', message.message);
+	      self.props.route.notification._addNotification(window.event, "error", message.message);
 	    });
 	  },
 
@@ -67962,7 +66523,7 @@
 	              _react2.default.createElement(
 	                'a',
 	                { href: '/#/dashboard' },
-	                'Dashboard'
+	                ' Dashboard'
 	              )
 	            ),
 	            _react2.default.createElement(
@@ -67971,7 +66532,7 @@
 	              _react2.default.createElement(
 	                'a',
 	                { href: '/#/listings' },
-	                'Listing'
+	                'Listing '
 	              )
 	            ),
 	            _react2.default.createElement(
@@ -67990,8 +66551,7 @@
 	                'h3',
 	                null,
 	                this.state.listing.name,
-	                ', ',
-	                this.state.listing.state_name
+	                ', Karnata'
 	              ),
 	              _react2.default.createElement(
 	                'ul',
@@ -68007,6 +66567,7 @@
 	                      null,
 	                      this.state.listing.average_rating
 	                    ),
+	                    ' ',
 	                    this.state.listing.reviews_count,
 	                    ' Reviews'
 	                  )
@@ -68015,6 +66576,7 @@
 	                  'li',
 	                  null,
 	                  _react2.default.createElement('img', { src: 'images/icon-day.png' }),
+	                  ' ',
 	                  this.state.listing.days,
 	                  ' Days'
 	                ),
@@ -68022,6 +66584,7 @@
 	                  'li',
 	                  null,
 	                  _react2.default.createElement('img', { src: 'images/icon-night.png' }),
+	                  ' ',
 	                  this.state.listing.nights,
 	                  ' Night'
 	                ),
@@ -68029,9 +66592,7 @@
 	                  'li',
 	                  null,
 	                  _react2.default.createElement('img', { src: 'images/icon-location.png' }),
-	                  this.state.listing.place_name,
-	                  ',',
-	                  this.state.listing.state_name
+	                  ' Coorg, Karnataka'
 	                )
 	              )
 	            ),
@@ -68053,6 +66614,7 @@
 	                    'p',
 	                    { className: 'price' },
 	                    _react2.default.createElement('i', { className: 'fa fa-inr', 'aria-hidden': 'true' }),
+	                    ' ',
 	                    this.state.listing.price
 	                  )
 	                )
@@ -68064,10 +66626,7 @@
 	      _react2.default.createElement(
 	        'div',
 	        { className: 'tab-section' },
-	        _react2.default.createElement(TabListingComponent, { headers: this.state.Tabsheader,
-	          listing: this.state.listing,
-	          seed: this.state.seed,
-	          variantDates: this.state.variantDates })
+	        _react2.default.createElement(TabListingComponent, { headers: this.state.Tabsheader, listing: this.state.listing })
 	      )
 	    );
 	  }
@@ -68077,7 +66636,7 @@
 	module.exports = ListingDetailsScreen;
 
 /***/ },
-/* 562 */
+/* 561 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -68098,10 +66657,10 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var OverviewListing = __webpack_require__(563);
-	var DetailsListing = __webpack_require__(564);
-	var ReviewsListing = __webpack_require__(565);
-	var VariantListing = __webpack_require__(566);
+	var OverviewListing = __webpack_require__(562);
+	var DetailsListing = __webpack_require__(563);
+	var ReviewsListing = __webpack_require__(564);
+	var VariantListing = __webpack_require__(565);
 
 	var TabListingComponent = function (_Component) {
 	  _inherits(TabListingComponent, _Component);
@@ -68125,7 +66684,7 @@
 	          _react2.default.createElement(
 	            _reactTabView.Tab,
 	            null,
-	            _react2.default.createElement(OverviewListing, { listing: this.props.listing, seed: this.props.seed })
+	            _react2.default.createElement(OverviewListing, { listing: this.props.listing })
 	          ),
 	          _react2.default.createElement(
 	            _reactTabView.Tab,
@@ -68135,9 +66694,7 @@
 	          _react2.default.createElement(
 	            _reactTabView.Tab,
 	            null,
-	            _react2.default.createElement(VariantListing, { listing: this.props.listing,
-	              variantDates: this.props.variantDates,
-	              seed: this.props.seed })
+	            _react2.default.createElement(VariantListing, { listing: this.props.listing })
 	          ),
 	          _react2.default.createElement(
 	            _reactTabView.Tab,
@@ -68155,7 +66712,7 @@
 	module.exports = TabListingComponent;
 
 /***/ },
-/* 563 */
+/* 562 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -68164,81 +66721,102 @@
 
 	var React = __webpack_require__(2);
 
-	var _ = __webpack_require__(233);
 	var OverviewListing = React.createClass({
-	  displayName: 'OverviewListing',
+	    displayName: 'OverviewListing',
 
 
-	  render: function render() {
-	    var featureArray = [];
-	    console.log(this.props.listing);
-	    var self = this;
-	    var features = this.props.listing.feature_ids.map(function (item) {
-	      var obj = _.where(self.props.seed.features, {
-	        'id': item
-	      });
-	      console.log(obj);
-
-	      return React.createElement(
-	        'div',
-	        { className: 'item' },
-	        React.createElement('img', { src: obj[0].icon_url }),
-	        React.createElement(
-	          'p',
-	          null,
-	          obj[0].name
-	        )
-	      );
-	    });
-	    var subCategories = this.props.listing.sub_category_ids.map(function (item) {
-	      var obj = _.where(self.props.seed.sub_categories, {
-	        'id': item
-	      });
-	      console.log(obj);
-	      if (obj.length != 0) {
+	    render: function render() {
 	        return React.createElement(
-	          'p',
-	          null,
-	          obj[0].name
+	            'div',
+	            { role: 'tabpanel', className: 'tab-pane active', id: 'tabOverview' },
+	            React.createElement(
+	                'div',
+	                { className: 'highlights' },
+	                React.createElement(
+	                    'div',
+	                    { className: 'item' },
+	                    React.createElement('img', { src: 'images/icon-meals.png' }),
+	                    React.createElement(
+	                        'p',
+	                        null,
+	                        'Meals'
+	                    )
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { className: 'item' },
+	                    React.createElement('img', { src: 'images/icon-transport.png' }),
+	                    React.createElement(
+	                        'p',
+	                        null,
+	                        'Transport'
+	                    )
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { className: 'item' },
+	                    React.createElement('img', { src: 'images/icon-cab.png' }),
+	                    React.createElement(
+	                        'p',
+	                        null,
+	                        'Pick-Up & Drop'
+	                    )
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { className: 'item' },
+	                    React.createElement('img', { src: 'images/icon-activities.png' }),
+	                    React.createElement(
+	                        'p',
+	                        null,
+	                        'Activities'
+	                    )
+	                )
+	            ),
+	            React.createElement(
+	                'h3',
+	                null,
+	                'Overview'
+	            ),
+	            React.createElement('p', { dangerouslySetInnerHTML: { __html: this.props.listing.overview } }),
+	            React.createElement(
+	                'h3',
+	                null,
+	                'Selected Categories'
+	            ),
+	            React.createElement(
+	                'div',
+	                { className: 'item2' },
+	                React.createElement(
+	                    'p',
+	                    null,
+	                    'Nature & Adventure'
+	                ),
+	                React.createElement(
+	                    'p',
+	                    null,
+	                    'Camping'
+	                ),
+	                React.createElement(
+	                    'p',
+	                    null,
+	                    'Stay Experience'
+	                ),
+	                React.createElement(
+	                    'p',
+	                    null,
+	                    'Sample text'
+	                )
+	            )
 	        );
-	      }
-	    });
-
-	    return React.createElement(
-	      'div',
-	      { role: 'tabpanel',
-	        className: 'tab-pane active',
-	        id: 'tabOverview' },
-	      React.createElement(
-	        'div',
-	        { className: 'highlights' },
-	        features
-	      ),
-	      React.createElement(
-	        'h3',
-	        null,
-	        'Overview'
-	      ),
-	      React.createElement('p', { dangerouslySetInnerHTML: { __html: this.props.listing.overview } }),
-	      React.createElement(
-	        'h3',
-	        null,
-	        'Selected Categories'
-	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'item2' },
-	        subCategories
-	      )
-	    );
-	  }
+	    }
 
 	});
 
 	module.exports = OverviewListing;
 
 /***/ },
-/* 564 */
+/* 563 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -68280,9 +66858,7 @@
 	    });
 	    return React.createElement(
 	      'div',
-	      { role: 'tabpanel',
-	        className: 'tab-pane',
-	        id: 'tabDetails' },
+	      { role: 'tabpanel', className: 'tab-pane', id: 'tabDetails' },
 	      React.createElement(
 	        'h3',
 	        null,
@@ -68374,7 +66950,7 @@
 	module.exports = DetailsListing;
 
 /***/ },
-/* 565 */
+/* 564 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -68386,113 +66962,341 @@
 	var cx = __webpack_require__(236);
 	var moment = __webpack_require__(244);
 	var ReviewsListing = React.createClass({
-	  displayName: 'ReviewsListing',
+	    displayName: 'ReviewsListing',
 
 
-	  render: function render() {
-	    console.log(this.props.listing);
-	    var self = this;
-	    var details = this.props.listing.reviews.map(function (item) {
-	      var rating = [1, 2, 3, 4, 5];
-	      var image = [item.uploads.length];
-	      var moreImage = image.map(function (items) {
-	        if (items > 10) {
-	          return React.createElement(
-	            'li',
-	            null,
-	            React.createElement(
-	              'span',
-	              { className: 'text' },
-	              '+ ',
-	              items - 10
-	            )
-	          );
-	        }
-	        return React.createElement('div', null);
-	      });
-	      var imageList = item.uploads.map(function (items) {
+	    render: function render() {
+	        console.log(this.props.listing);
+	        var self = this;
+	        var details = this.props.listing.reviews.map(function (item) {
+	            var rating = [1, 2, 3, 4, 5];
+	            var image = [item.uploads.length];
+	            var moreImage = image.map(function (items) {
+	                if (items > 10) {
+	                    return React.createElement(
+	                        'li',
+	                        null,
+	                        React.createElement(
+	                            'span',
+	                            { className: 'text' },
+	                            ' + ',
+	                            items - 10,
+	                            ' '
+	                        )
+	                    );
+	                }
+	                return React.createElement('div', null);
+	            });
+	            var imageList = item.uploads.map(function (items) {
 
-	        return React.createElement(
-	          'li',
-	          null,
-	          React.createElement('img', { src: items.size_tiny })
-	        );
-	      });
+	                return React.createElement(
+	                    'li',
+	                    null,
+	                    React.createElement('img', { src: items.size_tiny })
+	                );
+	            });
 
-	      var ratingList = rating.map(function (items) {
-	        if (item.rating >= items) {
-	          var rate = true;
-	        } else {
-	          var rate = false;
-	        }
-	        var classes = cx({
-	          'fa': true,
-	          'fa-star': true,
-	          'rate': rate
+	            var ratingList = rating.map(function (items) {
+	                if (item.rating >= items) {
+	                    var rate = true;
+	                } else {
+	                    var rate = false;
+	                }
+	                var classes = cx({
+	                    'fa': true,
+	                    'fa-star': true,
+	                    'rate': rate
+	                });
+
+	                return React.createElement('i', { className: classes, 'aria-hidden': 'true' });
+	            });
+	            var posted_day = moment(item.posted_at).fromNow();
+	            return React.createElement(
+	                'div',
+	                { className: 'review-item' },
+	                React.createElement(
+	                    'div',
+	                    { className: 'profile' },
+	                    React.createElement(
+	                        'div',
+	                        { className: 'pic' },
+	                        React.createElement('img', { src: item.user.size_tiny })
+	                    ),
+	                    React.createElement(
+	                        'div',
+	                        { className: 'info' },
+	                        React.createElement(
+	                            'h4',
+	                            null,
+	                            item.user.name
+	                        ),
+	                        React.createElement(
+	                            'p',
+	                            null,
+	                            posted_day
+	                        )
+	                    )
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { className: 'rating' },
+	                    ratingList
+	                ),
+	                React.createElement(
+	                    'p',
+	                    null,
+	                    'Do you believe in adventure and water sports? Then you need to head on for an exciting trekking and white water rafting experience to the Nishani Motte peak. Nishani is one of the unknown mountain ranges of Coorg, in the Western Ghats. '
+	                ),
+	                React.createElement(
+	                    'ul',
+	                    { className: 'album-thumb' },
+	                    imageList,
+	                    moreImage
+	                )
+	            );
 	        });
-
-	        return React.createElement('i', { className: classes, 'aria-hidden': 'true' });
-	      });
-	      var posted_day = moment(item.posted_at).fromNow();
-	      return React.createElement(
-	        'div',
-	        { className: 'review-item' },
-	        React.createElement(
-	          'div',
-	          { className: 'profile' },
-	          React.createElement(
+	        return React.createElement(
 	            'div',
-	            { className: 'pic' },
-	            React.createElement('img', { src: item.user.size_tiny })
-	          ),
-	          React.createElement(
-	            'div',
-	            { className: 'info' },
+	            { role: 'tabpanel', className: 'tab-pane', id: 'tabReviews' },
+	            details,
 	            React.createElement(
-	              'h4',
-	              null,
-	              item.user.name
+	                'div',
+	                { className: 'review-item' },
+	                React.createElement(
+	                    'div',
+	                    { className: 'profile' },
+	                    React.createElement(
+	                        'div',
+	                        { className: 'pic' },
+	                        React.createElement('img', { src: 'images/profile-pic2.jpg' })
+	                    ),
+	                    React.createElement(
+	                        'div',
+	                        { className: 'info' },
+	                        React.createElement(
+	                            'h4',
+	                            null,
+	                            'Mahantesh'
+	                        ),
+	                        React.createElement(
+	                            'p',
+	                            null,
+	                            '2 Hours ago'
+	                        )
+	                    )
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { className: 'rating' },
+	                    React.createElement('i', { className: 'fa fa-star rate', 'aria-hidden': 'true' }),
+	                    React.createElement('i', { className: 'fa fa-star rate', 'aria-hidden': 'true' }),
+	                    React.createElement('i', { className: 'fa fa-star rate', 'aria-hidden': 'true' }),
+	                    React.createElement('i', { className: 'fa fa-star rate', 'aria-hidden': 'true' }),
+	                    React.createElement('i', { className: 'fa fa-star', 'aria-hidden': 'true' })
+	                ),
+	                React.createElement(
+	                    'p',
+	                    null,
+	                    'Do you believe in adventure and water sports? Then you need to head on for an exciting trekking and white water rafting experience to the Nishani Motte peak. Nishani is one of the unknown mountain ranges of Coorg, in the Western Ghats. '
+	                ),
+	                React.createElement(
+	                    'ul',
+	                    { className: 'album-thumb' },
+	                    React.createElement(
+	                        'li',
+	                        null,
+	                        React.createElement('img', { src: 'images/album-thumb.jpg' })
+	                    ),
+	                    React.createElement(
+	                        'li',
+	                        null,
+	                        React.createElement('img', { src: 'images/album-thumb.jpg' })
+	                    ),
+	                    React.createElement(
+	                        'li',
+	                        null,
+	                        React.createElement('img', { src: 'images/album-thumb.jpg' })
+	                    ),
+	                    React.createElement(
+	                        'li',
+	                        null,
+	                        React.createElement('img', { src: 'images/album-thumb.jpg' })
+	                    ),
+	                    React.createElement(
+	                        'li',
+	                        null,
+	                        React.createElement('img', { src: 'images/album-thumb.jpg' })
+	                    ),
+	                    React.createElement(
+	                        'li',
+	                        null,
+	                        React.createElement('img', { src: 'images/album-thumb.jpg' })
+	                    ),
+	                    React.createElement(
+	                        'li',
+	                        null,
+	                        React.createElement('img', { src: 'images/album-thumb.jpg' })
+	                    ),
+	                    React.createElement(
+	                        'li',
+	                        null,
+	                        React.createElement('img', { src: 'images/album-thumb.jpg' })
+	                    ),
+	                    React.createElement(
+	                        'li',
+	                        null,
+	                        React.createElement('img', { src: 'images/album-thumb.jpg' })
+	                    ),
+	                    React.createElement(
+	                        'li',
+	                        null,
+	                        React.createElement('img', { src: 'images/album-thumb.jpg' })
+	                    ),
+	                    React.createElement(
+	                        'li',
+	                        null,
+	                        React.createElement(
+	                            'span',
+	                            { className: 'text' },
+	                            ' + 16 '
+	                        )
+	                    )
+	                ),
+	                React.createElement(
+	                    'button',
+	                    { className: 'btn btn-secondary' },
+	                    React.createElement('img', { src: 'images/icon-reply.png' }),
+	                    ' Respond to This review'
+	                )
 	            ),
 	            React.createElement(
-	              'p',
-	              null,
-	              posted_day
+	                'div',
+	                { className: 'review-item' },
+	                React.createElement(
+	                    'div',
+	                    { className: 'profile' },
+	                    React.createElement(
+	                        'div',
+	                        { className: 'pic' },
+	                        React.createElement('img', { src: 'images/profile-pic2.jpg' })
+	                    ),
+	                    React.createElement(
+	                        'div',
+	                        { className: 'info' },
+	                        React.createElement(
+	                            'h4',
+	                            null,
+	                            'Mahantesh'
+	                        ),
+	                        React.createElement(
+	                            'p',
+	                            null,
+	                            '2 Hours ago'
+	                        )
+	                    )
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { className: 'rating' },
+	                    React.createElement('i', { className: 'fa fa-star rate', 'aria-hidden': 'true' }),
+	                    React.createElement('i', { className: 'fa fa-star rate', 'aria-hidden': 'true' }),
+	                    React.createElement('i', { className: 'fa fa-star rate', 'aria-hidden': 'true' }),
+	                    React.createElement('i', { className: 'fa fa-star rate', 'aria-hidden': 'true' }),
+	                    React.createElement('i', { className: 'fa fa-star', 'aria-hidden': 'true' })
+	                ),
+	                React.createElement(
+	                    'p',
+	                    null,
+	                    'Do you believe in adventure and water sports? Then you need to head on for an exciting trekking and white water rafting experience to the Nishani Motte peak. Nishani is one of the unknown mountain ranges of Coorg, in the Western Ghats. '
+	                ),
+	                React.createElement(
+	                    'ul',
+	                    { className: 'album-thumb' },
+	                    React.createElement(
+	                        'li',
+	                        null,
+	                        React.createElement('img', { src: 'images/album-thumb.jpg' })
+	                    ),
+	                    React.createElement(
+	                        'li',
+	                        null,
+	                        React.createElement('img', { src: 'images/album-thumb.jpg' })
+	                    ),
+	                    React.createElement(
+	                        'li',
+	                        null,
+	                        React.createElement('img', { src: 'images/album-thumb.jpg' })
+	                    ),
+	                    React.createElement(
+	                        'li',
+	                        null,
+	                        React.createElement('img', { src: 'images/album-thumb.jpg' })
+	                    ),
+	                    React.createElement(
+	                        'li',
+	                        null,
+	                        React.createElement('img', { src: 'images/album-thumb.jpg' })
+	                    ),
+	                    React.createElement(
+	                        'li',
+	                        null,
+	                        React.createElement('img', { src: 'images/album-thumb.jpg' })
+	                    ),
+	                    React.createElement(
+	                        'li',
+	                        null,
+	                        React.createElement('img', { src: 'images/album-thumb.jpg' })
+	                    ),
+	                    React.createElement(
+	                        'li',
+	                        null,
+	                        React.createElement('img', { src: 'images/album-thumb.jpg' })
+	                    ),
+	                    React.createElement(
+	                        'li',
+	                        null,
+	                        React.createElement('img', { src: 'images/album-thumb.jpg' })
+	                    ),
+	                    React.createElement(
+	                        'li',
+	                        null,
+	                        React.createElement('img', { src: 'images/album-thumb.jpg' })
+	                    ),
+	                    React.createElement(
+	                        'li',
+	                        null,
+	                        React.createElement(
+	                            'span',
+	                            { className: 'text' },
+	                            ' + 16 '
+	                        )
+	                    )
+	                ),
+	                React.createElement(
+	                    'div',
+	                    { className: 'reply-box' },
+	                    React.createElement('textarea', { placeholder: 'Type your response...' })
+	                ),
+	                React.createElement(
+	                    'button',
+	                    { className: 'btn btn-secondary' },
+	                    'Send Replay'
+	                ),
+	                React.createElement(
+	                    'button',
+	                    { className: 'btn btn-cancel' },
+	                    'Cancel'
+	                )
 	            )
-	          )
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'rating' },
-	          ratingList
-	        ),
-	        React.createElement(
-	          'p',
-	          null,
-	          'Do you believe in adventure and water sports? Then you need to head on for an exciting trekking and white water rafting experience to the Nishani Motte peak. Nishani is one of the unknown mountain ranges of Coorg, in the Western Ghats.'
-	        ),
-	        React.createElement(
-	          'ul',
-	          { className: 'album-thumb' },
-	          imageList,
-	          moreImage
-	        )
-	      );
-	    });
-	    return React.createElement(
-	      'div',
-	      { role: 'tabpanel',
-	        className: 'tab-pane',
-	        id: 'tabReviews' },
-	      details
-	    );
-	  }
+	        );
+	    }
 
 	});
 
 	module.exports = ReviewsListing;
 
 /***/ },
-/* 566 */
+/* 565 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -68502,37 +67306,39 @@
 	var React = __webpack_require__(2);
 
 	var moment = __webpack_require__(244);
-	var _ = __webpack_require__(233);
 	var VariantListing = React.createClass({
 	  displayName: 'VariantListing',
 
 	  showEditPage: function showEditPage(listingid, variantid) {
-	    window.location.href = '/#/edit-variant/' + listingid + '/' + variantid;
+	    window.location.href = "/#/edit-variant/" + listingid + "/" + variantid;
 	  },
 
 	  render: function render() {
 	    console.log(this.props.listing);
-
 	    var self = this;
 	    var numberCount = 1;
 	    var details = this.props.listing.variants.map(function (item) {
 
 	      var subVariants = item.sub_variants.map(function (items) {
-	        var subVariantsPrice = $.map(items.fixed_pricings, function (val) {
-	          var inventoryObj = _.where(self.props.seed.inventories, {
-	            id: val.inventory_id
-	          });
-	          console.log(inventoryObj);
+	        var subVariantsPrice = $.map(items.fixed_pricings, function (val, i) {
+	          if (i === 0) {
+	            var age = " per adult";
+	            var space = "";
+	          } else {
+	            var age = " per infant";
+	            var space = ",  ";
+	          }
 	          return React.createElement(
 	            'div',
 	            null,
+	            space,
 	            React.createElement(
 	              'span',
 	              { className: 'price' },
 	              React.createElement('i', { className: 'fa fa-inr', 'aria-hidden': 'true' }),
 	              val.price
 	            ),
-	            '  ' + inventoryObj[0].name
+	            age
 	          );
 	        });
 
@@ -68547,86 +67353,55 @@
 	          React.createElement(
 	            'p',
 	            null,
+	            'Get your jungle gear on because it\'s time to go on an African Safari. '
+	          ),
+	          React.createElement(
+	            'p',
+	            null,
 	            subVariantsPrice
 	          ),
 	          React.createElement('hr', null)
 	        );
 	      });
-	      console.log('===>>>>>');
-	      console.log(self.props.variantDates);
-	      var datesBlock = $.map(Object.keys(self.props.variantDates), function (item2) {
-	        console.log(self.props.variantDates[item2]);
-	        var id = Object.keys(self.props.variantDates[item2]);
-	        console.log(id[0] + '-' + item.id);
-	        if (id[0] == item.id) {
-	          var datesItems = $.map(Object.keys(self.props.variantDates[item2][item.id].pattern), function (items) {
-	            console.log(items);
-	            if (self.props.variantDates[item2][item.id].pattern[items].enabled) {
-	              return React.createElement(
-	                'div',
-	                { className: 'seat' },
-	                React.createElement(
-	                  'h2',
-	                  null,
-	                  items
-	                ),
-	                React.createElement(
-	                  'p',
-	                  null,
-	                  self.props.variantDates[item2][item.id].pattern[items].sold_count || 'NA',
-	                  React.createElement(
-	                    'span',
-	                    null,
-	                    'Occupied'
-	                  )
-	                ),
-	                React.createElement(
-	                  'p',
-	                  null,
-	                  self.props.variantDates[item2][item.id].pattern[items].capacity || 'NA',
-	                  React.createElement(
-	                    'span',
-	                    null,
-	                    'Total Seats'
-	                  )
-	                )
-	              );
-	            }
-	          });
-	        }
-	        //   if(!$.isEmptyObject(value)){
-	        //     if(value.enabled){
-	        //       return (
-	        //      <div className="seat">
-	        //                     <h2>{key}</h2>
-	        //                     <p>{value.sold_count||"NA"}<span>Occupied</span></p>
-	        //                     <p>{value.capacity ||  "NA"}<span>Total Seats</span></p>
-	        //                 </div>
-
-	        //        );
-
-	        //     }
-	        // }
-
+	      var detailsItems = $.map(item.this_month_bookable_dates, function (items, i) {
+	        var seatDate = moment(items.date).format('ddd, MMMM');
+	        var seatDay = moment(items.date).format('D');
 	        return React.createElement(
 	          'div',
-	          { className: 'seat-details' },
-	          datesItems
+	          { className: 'seat' },
+	          React.createElement(
+	            'h2',
+	            null,
+	            seatDay,
+	            ' ',
+	            React.createElement(
+	              'span',
+	              null,
+	              seatDate
+	            )
+	          ),
+	          React.createElement(
+	            'p',
+	            null,
+	            items.seats,
+	            React.createElement(
+	              'span',
+	              null,
+	              'Occupied'
+	            )
+	          ),
+	          React.createElement(
+	            'p',
+	            null,
+	            '100',
+	            React.createElement(
+	              'span',
+	              null,
+	              'Total Seats'
+	            )
+	          )
 	        );
 	      });
-
-	      // var detailsItems = $.map( item.this_month_bookable_dates, function( items, i ){
-	      //     var seatDate = moment(items.date).format('ddd, MMMM');
-	      //     var seatDay = moment(items.date).format('D');
-	      //      return (
-	      //      <div className="seat">
-	      //                     <h2>{seatDay} <span>{seatDate}</span></h2>
-	      //                     <p>{value.sold_count||"NA"}<span>Occupied</span></p>
-	      //                     <p>{value.capacity ||  "NA"}<span>Total Seats</span></p>
-	      //                 </div>
-
-	      //   );
-	      // });
 	      return React.createElement(
 	        'div',
 	        null,
@@ -68643,7 +67418,7 @@
 	            { className: 'btn btn-line btn-secondary', onClick: function onClick() {
 	                return self.showEditPage(self.props.listing.id, item.id);
 	              } },
-	            ' Edit '
+	            'Edit'
 	          )
 	        ),
 	        React.createElement(
@@ -68656,7 +67431,26 @@
 	          null,
 	          'Dates & Seats :'
 	        ),
-	        datesBlock,
+	        React.createElement(
+	          'div',
+	          { className: 'seat-details' },
+	          detailsItems,
+	          React.createElement(
+	            'div',
+	            { className: 'seat view-details' },
+	            React.createElement(
+	              'h2',
+	              null,
+	              React.createElement('i', { className: 'glyphicon glyphicon-calendar' }),
+	              ' ',
+	              React.createElement(
+	                'span',
+	                null,
+	                'View All Dates'
+	              )
+	            )
+	          )
+	        ),
 	        React.createElement(
 	          'div',
 	          { className: 'p-30' },
@@ -68666,9 +67460,7 @@
 	    });
 	    return React.createElement(
 	      'div',
-	      { role: 'tabpanel',
-	        className: 'tab-pane',
-	        id: 'tabVariants' },
+	      { role: 'tabpanel', className: 'tab-pane', id: 'tabVariants' },
 	      details
 	    );
 	  }
@@ -68678,14 +67470,14 @@
 	module.exports = VariantListing;
 
 /***/ },
-/* 567 */
+/* 566 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(2);
-	var merge = __webpack_require__(568);
-	var NotificationContainer = __webpack_require__(569);
-	var Constants = __webpack_require__(571);
-	var Styles = __webpack_require__(573);
+	var merge = __webpack_require__(567);
+	var NotificationContainer = __webpack_require__(568);
+	var Constants = __webpack_require__(570);
+	var Styles = __webpack_require__(572);
 
 	var NotificationSystem = React.createClass({displayName: "NotificationSystem",
 
@@ -68891,7 +67683,7 @@
 
 
 /***/ },
-/* 568 */
+/* 567 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -68980,12 +67772,12 @@
 
 
 /***/ },
-/* 569 */
+/* 568 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(2);
-	var NotificationItem = __webpack_require__(570);
-	var Constants = __webpack_require__(571);
+	var NotificationItem = __webpack_require__(569);
+	var Constants = __webpack_require__(570);
 
 	var NotificationContainer = React.createClass({displayName: "NotificationContainer",
 
@@ -69041,14 +67833,14 @@
 
 
 /***/ },
-/* 570 */
+/* 569 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(2);
 	var ReactDOM = __webpack_require__(39);
-	var Constants = __webpack_require__(571);
-	var Helpers = __webpack_require__(572);
-	var merge = __webpack_require__(568);
+	var Constants = __webpack_require__(570);
+	var Helpers = __webpack_require__(571);
+	var merge = __webpack_require__(567);
 
 	/* From Modernizr */
 	var whichTransitionEvent = function() {
@@ -69366,7 +68158,7 @@
 
 
 /***/ },
-/* 571 */
+/* 570 */
 /***/ function(module, exports) {
 
 	var CONSTANTS = {
@@ -69406,7 +68198,7 @@
 
 
 /***/ },
-/* 572 */
+/* 571 */
 /***/ function(module, exports) {
 
 	var Helpers = {
@@ -69438,7 +68230,7 @@
 
 
 /***/ },
-/* 573 */
+/* 572 */
 /***/ function(module, exports) {
 
 	// Used for calculations
@@ -69701,7 +68493,7 @@
 
 
 /***/ },
-/* 574 */
+/* 573 */
 /***/ function(module, exports) {
 
 	(function(self) {

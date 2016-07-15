@@ -1,16 +1,16 @@
 var React = require('react');
 import {Router, Route, Link, hashHistory} from 'react-router';
-var CreateAccountScreen = require('./CreateAccountScreen.js');
-var ThankYouScreen = require('./ThankYouScreen.js');
-var LoginScreen = require('./LoginScreen.js');
-var ResetPasswordScreen = require("./ResetPasswordScreen");
-var DashboardScreen = require("./DashboardScreen.js");
-var BookingScreen = require("./BookingScreen.js");
-var BookingDetailScreen = require("./BookingDetailScreen.js");
-var ProfileScreen = require("./ProfileScreen.js");
-var EditVariantScreen = require("./EditVariantScreen.js")
-var ListingScreen = require("./ListingScreen.js");
-var ListingDetailsScreen = require("./ListingDetailsScreen.js");
+var CreateAccountScreen = require('./Register/CreateAccountScreen.js');
+var ThankYouScreen = require('./Register/ThankYouScreen.js');
+var LoginScreen = require('./Register/LoginScreen.js');
+var ResetPasswordScreen = require("./Register/ResetPasswordScreen");
+var DashboardScreen = require("./Dashboard/DashboardScreen.js");
+var BookingScreen = require("./Bookings/BookingScreen.js");
+var BookingDetailScreen = require("./Bookings/BookingDetailScreen.js");
+var ProfileScreen = require("./Profile/ProfileScreen.js");
+var EditVariantScreen = require("./Listings/EditVariantScreen.js")
+var ListingScreen = require("./Listings/ListingScreen.js");
+var ListingDetailsScreen = require("./Listings/ListingDetailsScreen.js");
 var NotificationSystem = require('react-notification-system');
 var App = React.createClass({
   mixins: [ConfigMixin],
@@ -19,11 +19,15 @@ getInitialState: function () {
     return {
         headerFlag: "show",
         loginHeader: "hide",
+        registerFlag: "show",
+        loginFlag: "hide",
         profile_image: "",
         menu: {
         dashboardMenu : "",
         bookingsMenu: "",
-        listingMenu: ""
+        listingMenu: "",
+        actionText: "/#/register",
+        actionLink: "Register Now"
       }
       
     }
@@ -67,7 +71,11 @@ getInitialState: function () {
   },
 
   componentDidMount: function() {
+    
     this._notificationSystem = this.refs.notificationSystem;
+    $("#register").addClass("animated rotateInUpRight");
+    $("#login").addClass("animated rotateInUpRight");
+     $(".logo-text").addClass("animated rotateInUpRight");
     if(localStorage.getItem("clientInfo")){
 
        this.setState({
@@ -76,8 +84,24 @@ getInitialState: function () {
                     profile_image: JSON.parse(localStorage.getItem("clientInfo")).vendor.photo
                   });
       }
+      
   },
-
+  showLogin: function(){
+    this.setState({
+                    registerFlag: "hide",
+                    loginFlag: "show",
+                    
+                  });
+    window.location.href = "/#/register";
+  },
+  showRegister: function(){
+     this.setState({
+                    registerFlag: "show",
+                    loginFlag: "hide",
+                    
+                  });
+    window.location.href = "/#/";
+  },
   render: function() {
     return (
       <div>
@@ -88,12 +112,12 @@ getInitialState: function () {
               <div className="container">
                 <div className="navbar-header">
                   <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
-                  <a className="navbar-brand" href="#"><img src="images/logo.png" alt="logo" /></a> </div>
+                  <a className="navbar-brand logo-text" href="/#/"><img src="images/logo.png" alt="logo" /></a> </div>
                 <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                   
                   <ul className="nav navbar-nav navbar-right">
-                    <li><a href="#"><i className="fa fa-life-ring" aria-hidden="true"></i> Help</a></li>
-                    <li><a href="/#/register" className="btn btn-login">Register Now</a></li>
+                    <li className={this.state.registerFlag} id="register"><a href="javascript:void(0);" className="btn btn-secondary"  onClick={this.showLogin}>Register Now</a></li>
+                     <li className={this.state.loginFlag} id="login"><a href="javascript:void(0);" className="btn btn-secondary"   onClick={this.showRegister}>Login Now</a></li>
                  </ul>
                 </div>
               </div>
@@ -115,9 +139,7 @@ getInitialState: function () {
             
         </ul>
         <ul className="nav navbar-nav navbar-right">
-          <li><a href="#"><i className="fa fa-life-ring" aria-hidden="true"></i> Help</a></li>
-            <li className="notification"><a href="#"><span className="badge">3</span><img src="images/icon-notification1.png" /></a></li>
-            <li className="notification"><a href="#"><span className="badge">3</span> <img src="images/icon-notification2.png" /></a></li>
+            <li className="notification"><a href="#"><span className="badge">0</span> <img src="images/icon-notification2.png" /></a></li>
             <li className="profile-pic" onClick={this.showProfile}><img src={this.state.profile_image} /></li>
             <li>
                 <div className="dropdown">
@@ -140,7 +162,7 @@ getInitialState: function () {
 
          	<div>
          		<Router  history={hashHistory}>
-               		<Route path="register" component={CreateAccountScreen} notification={this} config={this}></Route>
+               		<Route path="register" component={CreateAccountScreen} notification={this} config={this.utils}></Route>
                		<Route path="thank-you" component={ThankYouScreen} ></Route>
                 	<Route path="/" component={LoginScreen} notification={this} config={this.utils}></Route>
                   <Route path="reset-password" component={ResetPasswordScreen} notification={this} config={this.utils}></Route>

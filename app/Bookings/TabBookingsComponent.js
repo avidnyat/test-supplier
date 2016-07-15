@@ -3,7 +3,7 @@ import React, { Component, PropTypes } from 'react'
 import ReactPaginate from 'react-paginate';
 var moment = require( 'moment' );
 import Calendar from 'react-input-calendar'
-class TabBookingsComponent extends Component {
+class TabComponent extends Component {
 
   render() {
     var self = this;
@@ -313,4 +313,4 @@ class TabBookingsComponent extends Component {
 
 
 
-module.exports = TabBookingsComponent;
+module.exports = TabComponent;

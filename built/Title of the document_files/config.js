@@ -32,14 +32,12 @@ var ConfigMixin = {
 		        "BOOKINGS_DETAILS": BASE_URL+"suppliers/bookings/",
 		        "PROFILE": BASE_URL+"suppliers/profile",
 		        "LISTING": BASE_URL+"suppliers/tours?",
-		        "LISTING_DETAILS": BASE_URL+"suppliers/tours/" ,
+		        "LISTING_DETAILS": "./../data/listingDetails.json?" ,
 		        "NOTIFICATIONS": BASE_URL+"suppliers/notifications?"  ,
 		        "PROFILE_SAVE": BASE_URL+ "suppliers/profile?",
 		        "COUNTRIES": BASE_URL+ "suppliers/countries?",
 		        "STATE": BASE_URL+"suppliers/states?",
-		        "CITIES": BASE_URL+"suppliers/cities?",
-		        "SEED": BASE_URL+"suppliers/seed?",
-		        "VARIANT": BASE_URL+"suppliers/tours/"
+		        "CITIES": BASE_URL+"suppliers/cities?" 
 
 			}
 
