@@ -356,7 +356,6 @@ var TabVariantEditComponent = React.createClass( {
   saveAndRedirectVariantEdit: function () {
     var self = this;
     var data = this.props.config().getClientInfo();
-    debugger;
     var array = {};
     $( '.price-edit input' ).each( function () {
       console.log( $( this ).data( 'id' ) );
@@ -367,7 +366,7 @@ var TabVariantEditComponent = React.createClass( {
     } );
 
     data[ 'fixed_pricings' ] = array;
-
+    data=JSON.stringify(data)
     var header = {
       'Content-Type': 'application/json'
     };
