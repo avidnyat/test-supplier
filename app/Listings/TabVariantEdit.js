@@ -181,9 +181,10 @@ var TabVariantEditComponent = React.createClass( {
                let checkSelection =`check_${key}`;
                self.setState({
                    weekdaysFlag : arrayDaysCount[ arrayDays.indexOf( key ) ],
-                   [checkSelection] : 'checked',
+                   [checkSelection] : true,
                    [key] : val.capacity
                })
+              $('#'+key ).addClass( 'active' );
             } else {
                 let weekdaysFlag=self.state.weekdaysFlag;
                 weekdaysFlag.push( arrayDaysCount[ arrayDays.indexOf( key ) ] );
@@ -240,7 +241,7 @@ var TabVariantEditComponent = React.createClass( {
       //         $(this).addClass("active");
       //       }
       //     }
-      // });  
+      // });
       } else {
         //   $(e.target).closest(".rc-calendar-table").find("td").each(function(i) {
         //     if(parseInt($(self).val()) == parseInt(moment($(this).prop("title")).isoWeekday())){
@@ -273,47 +274,45 @@ var TabVariantEditComponent = React.createClass( {
         } );
       }
     } );
-    $( '.patterns' ).on( 'click', function ( e ) {
+
+    $( '.patterns input[type="radio"]' ).on( 'click', function ( e ) {
       var repeat = ':first';
-      self.state.check_all_days = false;
-      self.state.check_all_weekdays = false;
-      self.state.check_all_weekends = false;
-      $( '.patterns' ).removeClass( 'active' );
-      $( '.patterns' ).find( 'input' ).prop( 'checked', false );
-      $( this ).find( 'input' ).prop( 'checked', 'checked' );
-      $( this ).addClass( 'active' );
+      self.setState({
+          check_all_days:false,
+      check_all_weekdays:false,
+      check_all_weekends:false
+    })
+      $('.patterns' ).removeClass( 'active' );
+      $(e.target).prop( 'checked', false );
+      $(e.target ).prop( 'checked', true );
+      $(e.target ).closest(".patterns").addClass( 'active' );
       // $(".rc-calendar-table"+repeat+" .rc-calendar-column-header input").each(function(i){
       //         if($(this).is(":checked")){
-      //             $(this).trigger("click"); 
+      //             $(this).trigger("click");
       //         }
 
       //     });
 
       //$(".rc-calendar-table"+repeat).find("td").removeClass("active");
-      if ( $( this ).data( 'pattern' ) == '1' ) {
+      if ( $(e.target ).closest(".patterns").data( 'pattern' ) == '1' ) {
         self.setState( {
-          patternFlag: 1
+          patternFlag: 1,
+          weekdaysFlag: [ 1, 2, 3, 4, 5, 6, 7 ],
+          check_all_days:true
         } );
-        self.setState( {
-          weekdaysFlag: [ 1, 2, 3, 4, 5, 6, 7 ]
-
-        } );
-        self.state.check_all_days = 'checked';
       // $(".rc-calendar-table"+repeat+" .rc-calendar-column-header input").each(function(i){
       //     if(!$(this).is(":checked")){
-      //         $(this).trigger("click"); 
+      //         $(this).trigger("click");
       //     }
 
       // });
-      } else if ( $( this ).data( 'pattern' ) == '2' ) {
+      } else if ( $(e.target ).closest(".patterns").data( 'pattern' ) == '2' ) {
         self.setState( {
-          patternFlag: 2
-        } );
-        self.setState( {
-          weekdaysFlag: [ 6, 7 ]
-
+          patternFlag: 2,
+          weekdaysFlag: [ 6, 7 ],
+          check_all_weekends:true
         } )
-        self.state.check_all_weekends = 'checked';
+
       // if(!$(".rc-calendar-table"+repeat+" .rc-calendar-column-header input[value='7']").is(":checked")){
       //     $(".rc-calendar-table"+repeat+" .rc-calendar-column-header input[value='7']").trigger("click");
       // }
@@ -322,13 +321,10 @@ var TabVariantEditComponent = React.createClass( {
       // }
       } else {
         self.setState( {
-          patternFlag: 3
-        } );
-        self.setState( {
-          weekdaysFlag: [ 1, 2, 3, 4, 5 ]
-
+          patternFlag: 3,
+          weekdaysFlag: [ 1, 2, 3, 4, 5 ],
+          check_all_weekdays:true
         } )
-        self.state.check_all_weekdays = 'checked';
         // if(!$(".rc-calendar-table"+repeat+" .rc-calendar-column-header input[value='1']").is(":checked")){
         //     $(".rc-calendar-table"+repeat+" .rc-calendar-column-header input[value='1']").trigger("click");
         // }
@@ -382,6 +378,12 @@ var TabVariantEditComponent = React.createClass( {
         self.props.route.notification._addNotification( window.event, 'error', message.message );
       } );
 
+  },
+  onChangeCapacityValue:function(type,e){
+    console.log(type,e.target.value)
+    this.setState({
+      [type] : e.target.value
+    })
   },
   render: function () {
     var self = this;
@@ -449,7 +451,7 @@ var TabVariantEditComponent = React.createClass( {
             <div className="tab-pane active">
               <h3>Customize Dates & Seats</h3>
               <div className="seat-options">
-                <div className="item patterns" data-pattern="1">
+                <div id="all_days" className="item patterns" data-pattern="1">
                   <input type="radio"
                          name="seat-option"
                          id="cb1"
@@ -459,9 +461,10 @@ var TabVariantEditComponent = React.createClass( {
                   </label>
                   <input type="text"
                          placeholder="Seats"
-                         value={ this.state.all_days } />
+                         value={ this.state.all_days}
+                         onChange={this.onChangeCapacityValue.bind(this,'all_days')} />
                 </div>
-                <div className="item patterns" data-pattern="2">
+                <div id="all_weekends" className="item patterns" data-pattern="2">
                   <input type="radio"
                          name="seat-option"
                          id="cb2"
@@ -471,9 +474,10 @@ var TabVariantEditComponent = React.createClass( {
                   </label>
                   <input type="text"
                          placeholder="Seats"
-                         value={ this.state.all_weekends } />
+                         value={ this.state.all_weekends }
+                         onChange={this.onChangeCapacityValue.bind(this,'all_weekends')} />
                 </div>
-                <div className="item patterns" data-pattern="3">
+                <div id="all_weekdays" className="item patterns" data-pattern="3">
                   <input type="radio"
                          name="seat-option"
                          id="cb3"
@@ -483,7 +487,8 @@ var TabVariantEditComponent = React.createClass( {
                   </label>
                   <input type="text"
                          placeholder="Seats"
-                         value={ this.state.all_weekdays } />
+                         value={ this.state.all_weekdays }
+                         onChange={this.onChangeCapacityValue.bind(this,'all_weekdays')} />
                 </div>
               </div>
               <div className="seat-options repeat-text">
