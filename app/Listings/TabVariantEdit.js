@@ -48,7 +48,9 @@ var TabVariantEditComponent = React.createClass( {
       all_weekends: '',
       seed: {
         inventories: []
-      }
+      },
+      fixed_pricings: {}
+
     }
   },
   getNextDate: function () {
@@ -354,7 +356,7 @@ var TabVariantEditComponent = React.createClass( {
   saveAndRedirectVariantEdit: function () {
     var self = this;
     var data = this.props.config().getClientInfo();
-
+    debugger;
     var array = {};
     $( '.price-edit input' ).each( function () {
       console.log( $( this ).data( 'id' ) );
@@ -363,7 +365,9 @@ var TabVariantEditComponent = React.createClass( {
       }
 
     } );
+
     data[ 'fixed_pricings' ] = array;
+
     var header = {
       'Content-Type': 'application/json'
     };
@@ -397,18 +401,16 @@ var TabVariantEditComponent = React.createClass( {
           var inventoryObj = _.where( self.state.seed.inventories, {
             id: val.inventory_id
           } );
+          //TODO check if val.price or val.mrp ??
           return (
 
           <p className="price-edit">
             <input type="text"
                    placeholder="Amount"
-                   value={ val.price }
+                   defaultValue={ val.price }
                    data-id={ val.id } />
             { '  ' + inventoryObj[ 0 ].name }
           </p>
-
-
-
           );
         } );
 
