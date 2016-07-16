@@ -175,13 +175,21 @@ var TabVariantEditComponent = React.createClass( {
           7
         ];
         $.each( result.variants[ self.props.listObj.getUrls().variantid ].pattern, function ( key, val ) {
+            console.log("variant",result)
           if ( val.enabled ) {
             if ( $.isArray( arrayDaysCount[ arrayDays.indexOf( key ) ] ) ) {
-              self.state.weekdaysFlag = arrayDaysCount[ arrayDays.indexOf( key ) ];
-              self.state[ 'check_' + key ] = 'checked';
-              self.state[ key ] = val.capacity;
+               let checkSelection =`check_${key}`;
+               self.setState({
+                   weekdaysFlag : arrayDaysCount[ arrayDays.indexOf( key ) ],
+                   [checkSelection] : 'checked',
+                   [key] : val.capacity
+               })
             } else {
-              self.state.weekdaysFlag.push( arrayDaysCount[ arrayDays.indexOf( key ) ] );
+                let weekdaysFlag=self.state.weekdaysFlag;
+                weekdaysFlag.push( arrayDaysCount[ arrayDays.indexOf( key ) ] );
+                self.setState({
+                    weekdaysFlag : weekdaysFlag
+                })
               $( '.weekday[value=\'' + arrayDaysCount[ arrayDays.indexOf( key ) ] + '\']' ).prop( 'checked', 'checked' );
               $( '.weekday[value=\'' + arrayDaysCount[ arrayDays.indexOf( key ) ] + '\']' ).next().next().val( val.capacity );
             }
@@ -446,7 +454,7 @@ var TabVariantEditComponent = React.createClass( {
                          name="seat-option"
                          id="cb1"
                          checked={ this.state.check_all_days } />
-                  <label for="cb1">
+                  <label htmlFor="cb1">
                     All Days
                   </label>
                   <input type="text"
@@ -458,7 +466,7 @@ var TabVariantEditComponent = React.createClass( {
                          name="seat-option"
                          id="cb2"
                          checked={ this.state.check_all_weekends } />
-                  <label for="cb2">
+                  <label htmlFor="cb2">
                     All Weekends
                   </label>
                   <input type="text"
@@ -470,7 +478,7 @@ var TabVariantEditComponent = React.createClass( {
                          name="seat-option"
                          id="cb3"
                          checked={ this.state.check_all_weekdays } />
-                  <label for="cb3">
+                  <label htmlFor="cb3">
                     All Weekdays
                   </label>
                   <input type="text"
