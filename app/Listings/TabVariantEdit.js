@@ -106,6 +106,7 @@ var TabVariantEditComponent = React.createClass( {
       };
 
       console.log( JSON.stringify( data ) );
+
       self.props.config().httpInterceptor( self.props.config().url().VARIANT + self.props.listObj.getUrls().listingid + '/add_update_date_capacity?', 'POST', JSON.stringify(data), header, self.props.config().getClientInfo() ).then(
         function ( result ) {
 
@@ -114,7 +115,17 @@ var TabVariantEditComponent = React.createClass( {
           $( e.target ).closest( 'td' ).find( '.gray-section2' ).hide();
           $( e.target ).addClass( 'hide' );
           $( e.target ).prev().removeClass( 'hide' );
-        }, function () {} );
+
+            let variantDates=self.state.variantDates;
+            variantDates[datesParams.date]={capacity:datesParams.seats,is_customized_date:true,sold_count:0}
+            self.setState({
+                variantDates:variantDates
+            })
+        }, function (result) {
+              let message = JSON.parse( result.responseText );
+              self.props.route.notification._addNotification( window.event, 'error', message.message );
+
+          } );
 
     } );
 
@@ -353,6 +364,7 @@ var TabVariantEditComponent = React.createClass( {
   redirectVariantEdit: function () {
     window.location.href = '/#/listingDetails/' + this.props.listObj.getUrls().listingid;
   },
+
   saveAndRedirectVariantEdit: function () {
     var self = this;
     var data = this.props.config().getClientInfo();
@@ -372,9 +384,7 @@ var TabVariantEditComponent = React.createClass( {
     };
     this.props.config().httpInterceptor( this.props.config().url().VARIANT + this.props.listObj.getUrls().listingid + '/update_fixed_pricings?', 'POST', data, header, this.props.config().getClientInfo() ).then(
       function ( result ) {
-        window.location.href = '/#/listingDetails/' + self.props.listObj.getUrls().listingid;
-
-
+          self.savePatternAndRedirect();
       },
       function ( result ) {
         let message = JSON.parse( result.responseText );
@@ -388,6 +398,7 @@ var TabVariantEditComponent = React.createClass( {
       [type] : e.target.value
     })
   },
+
   render: function () {
     var self = this;
 
@@ -518,7 +529,52 @@ var TabVariantEditComponent = React.createClass( {
       </Tabs>
     </div>
     )
-  }
+  },
+    savePatternAndRedirect : function(){
+        let self =this;
+        var data = self.props.config().getClientInfo();
+        data['variants_date_capacity'] = {};
+
+        var patternParams = {};
+        if(self.state.check_all_days){
+            patternParams["all_days"]=self.state.check_all_days;
+            patternParams["all_days_seats"]=parseInt(self.state.all_days);
+        }
+        if(self.state.check_all_weekends){
+            patternParams["all_weekends"]=self.state.check_all_weekends;
+            patternParams["all_weekends_seats"]=parseInt(self.state.all_weekends);
+        }
+        if(self.state.check_all_weekdays){
+            patternParams["all_weekdays"]=self.state.check_all_weekdays;
+            patternParams["all_weekdays_seats"]=parseInt(self.state.all_weekdays);
+        }
+        //TODO update weekdaysdata eg patternParams["all_sunday"]=true patternParams["all_sunday_seats"]=seats use jquery
+        _.map(self.state.weekdaysFlag, function(weekday){
+        console.log(weekday)
+        });
+
+        data['variants_date_capacity'][self.props.listObj.getUrls().variantid] = {
+            "pattern" : patternParams,
+            "dates": []
+        };
+        var header = {
+            'Content-Type': 'application/json'
+        };
+
+        console.log(JSON.stringify(data));
+
+        self.props.config().httpInterceptor(self.props.config().url().VARIANT + self.props.listObj.getUrls().listingid + '/add_update_date_capacity?', 'POST', JSON.stringify(data), header, self.props.config().getClientInfo()).then(
+            function (result) {
+                window.location.href = '/#/listingDetails/' + self.props.listObj.getUrls().listingid;
+
+            }, function (result) {
+                let message = JSON.parse(result.responseText);
+                self.props.route.notification._addNotification(window.event, 'error', message.message);
+
+            });
+    },
+
+
 } );
 
 

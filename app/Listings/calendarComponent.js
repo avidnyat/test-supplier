@@ -92,6 +92,15 @@ const CalendarComponent = React.createClass( {
       $( '.rc-calendar-table' ).first().find( 'td' ).each( function ( i ) {
         $( this ).removeClass( 'active' );
 
+        if ( self.props.variantDates[ moment( $( this ).prop( 'title' ) ).format( 'YYYY-MM-DD' ) ] ) {
+          $( this ).find( '.gray-section .total' ).html( self.props.variantDates[ moment( $( this ).prop( 'title' ) ).format( 'YYYY-MM-DD' ) ].sold_count + '/' + self.props.variantDates[ moment( $( this ).prop( 'title' ) ).format( 'YYYY-MM-DD' ) ].capacity );
+          $( this ).find( '.gray-section2 .total input' ).val( self.props.variantDates[ moment( $( this ).prop( 'title' ) ).format( 'YYYY-MM-DD' ) ].capacity );
+
+          if ( self.props.variantDates[ moment( $( this ).prop( 'title' ) ).format( 'YYYY-MM-DD' ) ].is_customized_date ) {
+            $( this ).addClass( 'active' );
+          }
+        }
+
         if ( self.props.weekdaysFlag.indexOf( parseInt( moment( $( this ).prop( 'title' ) ).isoWeekday() ) ) != -1 ) {
 
           if ( !$( this ).find( 'p' ).hasClass( 'grey' ) ) {
