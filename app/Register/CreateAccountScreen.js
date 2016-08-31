@@ -24,6 +24,7 @@ var CreateAccountScreen = React.createClass( {
     }
   },
   componentDidMount: function () {
+    $("#pageloader").fadeOut();
     $( 'body' ).addClass( 'before-login' );
     $( '.form-animate' ).addClass( 'animated bounceInLeft' );
     $( '.login-text' ).addClass( 'animated bounceInRight' );
@@ -31,6 +32,7 @@ var CreateAccountScreen = React.createClass( {
       actionText: '',
       action: 'Login Now'
     } );
+
   },
   handlePasswordInput: function ( event ) {
     this.setState( {
@@ -43,6 +45,7 @@ var CreateAccountScreen = React.createClass( {
   saveAndContinue: function ( e ) {
     e.preventDefault();
     this.props.route.notification.showLogin();
+    $(".pace").addClass("pace-inactive").removeClass("pace-active");
     var canProceed = this.validateEmail( this.state.email )
     && this.refs.password.isValid();
 
@@ -63,12 +66,14 @@ var CreateAccountScreen = React.createClass( {
       }
       this.props.route.config().httpInterceptor( this.props.route.config().url().CREATE_ACCOUNT, 'POST', data ).then(
         function ( result ) {
+          $(".pace").addClass("pace-active").removeClass("pace-inactive");
           self.props.route.notification._addNotification( e, 'success', 'Successfully registered !!!' );
           window.location.href = '/#/thank-you';
         },
         function ( result ) {
           let message = JSON.parse( result.responseText );
           self.props.route.notification._addNotification( e, 'error', message.message );
+          $(".pace").addClass("pace-active").removeClass("pace-inactive");
         }
       );
 
@@ -79,7 +84,7 @@ var CreateAccountScreen = React.createClass( {
       this.refs.email.isValid();
       this.refs.companyName.isValid();
       this.refs.password.isValid();
-
+      $(".pace").addClass("pace-active").removeClass("pace-inactive");
     }
   },
 
@@ -138,6 +143,11 @@ var CreateAccountScreen = React.createClass( {
 
 
     <div className="application_wrapper">
+     <div id="pageloader">
+        <div className="loader-inner">
+          <img src="images/preloader-color.gif" alt="" />
+        </div>
+      </div>
       <div className="page-body grey2">
         <div className="container text-center login-text">
           <h2>Secure your listing by <span className="secondary">creating an account!</span></h2>

@@ -75,7 +75,7 @@ a.btn-secondary{
 }
 /* ------------ Main  Banner ------------- */
 .navbar {
-  background: rgba(0, 0, 0, 0.7);
+  background: #323941;
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   -ms-border-radius: 0;
@@ -111,7 +111,7 @@ a.btn-secondary{
     .navbar .navbar-nav li.profile-pic {
       padding: 0;
       width: 40px;
-      height: 40px;
+      height: 38px;
       cursor: pointer;
       margin: 13px 0 0 10px;
       -webkit-border-radius: 50%;
@@ -162,7 +162,7 @@ a.btn-secondary{
 .breadcrumb {
   background: none;
   margin: 0 0 -1px;
-  padding: 7px 0 5px;
+  padding: 15px 0 15px;
   border-bottom: 1px solid #dfdddb; }
   .breadcrumb > li + li:before {
     font-family: "Glyphicons Halflings";
@@ -186,7 +186,8 @@ a.btn-secondary{
         color: #f36f22; }
 
 .highlights {
-  padding: 0; }
+  padding: 0;
+  padding-bottom:15px; }
   .highlights li {
     list-style-type: none;
     display: inline-block;
@@ -238,7 +239,7 @@ hr {
 
 /* ---------- page body -------------------- */
 .page-body {
-  padding: 30px 0;
+  padding: 30px 0px;
   font-size: 14px; }
   .page-body.grey2 {
     background: #f9f9f9;
@@ -280,6 +281,12 @@ hr {
     margin: 30px 0 0;
     padding: 0;
 }
+.edit-button-btn{
+  margin-left: 20px;
+}
+.react-tab:last-child{
+  margin: 0px;
+}
 .react-tabs .bookings-list{
     margin: 0 0 15px;
     border: none;
@@ -289,7 +296,7 @@ hr {
 }
 
 .tab-section .tab-pane {
-  padding: 30px 0; }
+  padding: 0px 0; }
 .tab-pane ul li {
     display: block;
     font-size: 14px;
@@ -354,7 +361,8 @@ hr {
         z-index: 1; }
   .tab-section .details p {
     position: relative;
-    margin-left: 20px; }
+    margin-left: 20px; 
+      padding: 0px 0px 10px;}
     .tab-section .details p:before {
       font-family: "FontAwesome";
       content: "\f061";
@@ -365,12 +373,12 @@ hr {
     .tab-section .details p + h4 {
       margin-top: 30px; }
 
-.arrow-list {
-  padding-left: 20px; }
-  .arrow-list li {
-    list-style-type: none;
-    position: relative;
-    padding-bottom: 5px; }
+.react-tabs ul.arrow-list {   
+  padding-left: 20px; }  
+  .react-tabs ul.arrow-list li {   
+    list-style-type: none;       
+    position: relative;    
+    padding-bottom: 5px; margin-bottom: 0; }
     .arrow-list li:before {
       font-family: 'Glyphicons Halflings';
       content: "\e258";
@@ -423,6 +431,7 @@ margin-right: 5px;
 }
   .seat-details .seat h2 {
     background: #f5f5f5;
+    min-width: 100px;
     color: #f36f22;
     margin: 0;
     font-size: 20px;
@@ -500,17 +509,26 @@ h4 {
     font-size: 20px;
     padding: 15px 0; }
     .review-item .rating i.fa {
-      color: #ececec; }
+      color: #ececec; 
+      font-size: 18px;    
+      margin: 2px;
+
+    }
       .review-item .rating i.fa.rate {
         color: #fecb19; }
   .review-item .album-thumb {
     padding: 0;
+    text-align: left;
     margin: 35px 0 0; }
     .review-item .album-thumb li {
+      height: 44px;
       display: inline-block;
       vertical-align: middle;
       list-style-type: none;
       margin-right: 5px; }
+      .review-item .album-thumb li img{   
+    height: 100%;   
+}
       .review-item .album-thumb li span.text {
         font-size: 18px;
         font-weight: 600;
@@ -625,7 +643,7 @@ input[type='radio']:checked + label:before {
     padding: 0 5px;
     font-size: 11px; }
   .seat-options .item input[type='text'], .rc-calendar-column-header .item input[type='text'] {
-    width: 50px;
+    width: 40px;
       font-size: 14px;
       margin-left: 5px;
     border: 1px solid #ced0d3;
@@ -760,7 +778,8 @@ input[type='radio']:checked + label:before {
       display: inline-block;
       vertical-align: middle;
       border: solid #e5e4e3;
-      border-width: 0 1px 0 0; }
+      border-width: 0 1px 0 0; 
+      cursor: pointer;}
       .booking-card .info .details h3 {
         margin: 20px 0 10px;
     font-size: 16px;
@@ -1097,7 +1116,17 @@ input[type='radio']:checked + label:before {
           top: 13px;
           font-size: 0.8em; }
       .tab-pane table tr td .dropdown .dropdown-menu li {
-        padding: 3px 10px; }
+        padding: 3px 10px; 
+        margin-bottom: 0px;
+       
+      }
+      .tab-pane table tr td .dropdown .dropdown-menu li:hover {
+        padding: 3px 10px; 
+        background-color: #ccc;
+        cursor: pointer;
+        width: 100%;
+        margin-bottom: 0px;
+      }
     .tab-pane table tr td input {
       width: 100%;
       border: none;
@@ -1145,10 +1174,12 @@ input[type='radio']:checked + label:before {
   -o-border-radius: 8px;
   border-radius: 8px;
   overflow: hidden;
-  border: 1px solid #f1f1f1;
-  box-shadow: 1px 1px 2px #999; }
+  box-shadow: 0px 1px 5px #999; }
   .listing-card > img {
-    width: 100%; }
+    width: 100%;
+    min-height: 225px;
+    background-color: #CCC; 
+     }
   .listing-card .text {
     padding: 15px; }
   .listing-card h3 {
@@ -1173,7 +1204,7 @@ input[type='radio']:checked + label:before {
         padding-right: 8px; }
   .listing-card h2 {
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 500;
     margin: 0; }
     .listing-card h2 span {
       font-size: 2em;
@@ -1364,6 +1395,7 @@ input[type='radio']:checked + label:before {
     text-align: center;
     border: solid #e5e5e5;
     border-width: 1px 0;
+    width: 81%;
     
 }
 .rc-calendar-full-header-month-select, .rc-calendar-full-header-year-select{
@@ -1383,7 +1415,7 @@ input[type='radio']:checked + label:before {
     padding: 0;
 }
 .rc-calendar-calendar-body .rc-calendar-table{
-    width: 100%;
+    width: 81%;
     table-layout: fixed;
 }
 .rc-calendar-table thead{
@@ -1412,7 +1444,7 @@ input[type='radio']:checked + label:before {
 }
 .rc-calendar-fullscreen .rc-calendar-cell p {
     color: #000;
-    line-height: 116px;
+    line-height: 79px;
 }
 .rc-calendar-date{
     margin: 3px;
@@ -1428,18 +1460,18 @@ input[type='radio']:checked + label:before {
 .rc-calendar-date .link{
    position: absolute;
     color: #fff;
-    font-size: 11px;
+    font-size: 7px;
     padding: 2px 5px;
     line-height: 1.2;
     text-transform: uppercase;
     background: #ed6f26;
     top:5px;
-    right: 5px;
+    right: 3px;
     border-radius: 3px;
     text-decoration: none;
 }
 .rc-calendar-date > p {
-    font-size: 40px;
+    font-size: 30px;
     font-weight: 600;
     margin: 0;
     color: #000;
@@ -1462,33 +1494,33 @@ input[type='radio']:checked + label:before {
     display: block;
 }
 .rc-calendar-cell.active p{
-    line-height: 66px;
+    line-height: 53px;
     font-size: 30px;
     color: #ed6f26;
 }
 .rc-calendar-cell.active .gray-section{
-    min-height: 50px;
+    min-height: 10px;
     background: #f7f7f7;
     display: table;
     width: 100%;
 }
 .gray-section2 {
     background: #f7f7f7;
-    font-size: 12px;
+    font-size: 10px;
     position: absolute;
     width: 100%;
     left: 0;
     bottom: 0;
     color: #ed6f26;
-    padding: 5px;
+    padding: 0px;
 }
 .gray-section2 .total input{
-    width: 40px;
+    width: 27px;
     border: 1px solid #ed6f26;
     font-weight: 600;
     margin-left: 6px;
     padding: 3px 6px;
-    height: 22px;
+    height: 17px;
     display: inline-block;
     vertical-align: middle;
 }
@@ -1497,7 +1529,7 @@ input[type='radio']:checked + label:before {
     vertical-align: middle;
     padding: 5px 5px 7px;
     color: #ed6f26;
-    font-size: 15px;
+    font-size: 12px;
     text-align: center;
     line-height: 1.3;
 }
@@ -1517,7 +1549,7 @@ input[type='radio']:checked + label:before {
 .scroll-bar{
   overflow-y: scroll;
 
-  max-height: 1010px;
+  max-height: 565px;
 }
 .grey {
   color: #ccc !important;
@@ -1528,6 +1560,7 @@ input[type='radio']:checked + label:before {
 .repeat-text{
   text-align: right;
   color: black;
+  width: 81%;
 
 }
 .seat-options .item-border{
@@ -1604,8 +1637,6 @@ a:focus,.btn:focus{
   }
 
   .image-booking-default{
-    margin-top: 10px;
-    margin-left: 10px;
     width: 204px;
   }
 .input-calendar .glyphicon-menu-down{
@@ -1622,5 +1653,50 @@ a:focus,.btn:focus{
 .details-profile table tr td, .contact-details,.contact-details-edit, .bank-details,.bank-details-edit{
   font-size: 14px;
     font-weight: normal;
+}
+
+.form-field .input_group input.input{
+      font-size: 14px;
+    font-weight: normal;
+        background: none;
+    outline: none;
+    border: none;
+    width: 100%;
+    margin: 0;
+    font-famliy: "'Source Sans Pro', sans-serif";
+    margin-top: 8px;
+    margin-bottom: -5px;
+    
+}
+.form-field .input_group .input_valid_icon , .form-field .input_group .input_error_icon{
+      top: -9px;
+    
+}
+.label-grey{
+  background-color:  #CCC;
+  color: black !important;
+}
+.itineraries-title h4{
+  padding: 0px 0px 15px 0px;
+}
+.tours-padding{
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+.page-body.grey2 .notification-list h3{ font-size: 19px; padding-bottom: 20px; border-bottom: 1px solid #e5e5e5;}
+    .notification-list p{ background: url(images/icon-notification3.png) no-repeat 0 23px; padding: 20px; border-bottom: 1px solid #e5e5e5;}
+    .notification-list p a{ color: #ed6f26; font-weight: bold;}
+    .notification-list p span.time{display: block; font-size: 0.8em; opacity: 0.6;}
+    
+    .navbar .navbar-nav li.notification .dropdown .btn{ background: none; padding: 0;}
+    .navbar .navbar-nav li.notification .dropdown .dropdown-menu{ width: 200px; left: -90px; padding: 10px 0;}
+    .navbar .navbar-nav li.notification .dropdown .dropdown-menu:before{content: ""; width: 12px; height: 12px; transform: rotate(45deg);  border: solid #e5e5e5; border-width: 1px 0 0 1px; background: #fff; position: absolute; left: 50%; top:-6px;}
+    .navbar .navbar-nav li.notification .dropdown .dropdown-menu li{font-size: 11px; border-bottom: 1px solid #e5e5e5;}
+    .navbar .navbar-nav li.notification .dropdown .dropdown-menu li:last-child{ border-bottom: none;}
+    .navbar .navbar-nav li.notification .dropdown .dropdown-menu li a{font-size: 11px; color: #ed6f26; font-weight: 600; display: inline; white-space: normal;}
+    .navbar .navbar-nav li.notification .dropdown .dropdown-menu li .all-notification-link{ color: #000; font-weight: 400; }
+    .all-notification-link i{ font-size: 0.8em;}
+.notification-message{
+  cursor: pointer;
 }
 /*# sourceMappingURL=style.css.map */

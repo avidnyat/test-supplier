@@ -45,7 +45,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(1);
-	module.exports = __webpack_require__(574);
+	module.exports = __webpack_require__(575);
 
 
 /***/ },
@@ -20349,6 +20349,7 @@
 	var ListingScreen = __webpack_require__(560);
 	var ListingDetailsScreen = __webpack_require__(561);
 	var NotificationSystem = __webpack_require__(567);
+	var NotificationScreen = __webpack_require__(574);
 	var App = React.createClass({
 	  displayName: 'App',
 
@@ -20366,7 +20367,9 @@
 	        bookingsMenu: "",
 	        listingMenu: "",
 	        actionText: "/#/register",
-	        actionLink: "Register Now"
+	        actionLink: "Register Now",
+	        notificationsMessage: [],
+	        notificationCount: 0
 	      }
 
 	    };
@@ -20423,6 +20426,34 @@
 	        profile_image: JSON.parse(localStorage.getItem("clientInfo")).vendor.photo
 	      });
 	    }
+	    $(document).off("click", ".notification-message").on("click", ".notification-message", function () {
+	      window.location.href = "/#/notifications";
+	    });
+	    var self = this;
+	    var data = {};
+	    var url_params = {
+	      page: 1,
+	      per_page: 50
+	    };
+	    var clientInfo = this.utils().getClientInfo();
+	    var headers = {
+	      'X-Thrill-Client-Id': clientInfo.client_id,
+	      'X-Thrill-Auth-Token': clientInfo.auth_token
+	    };
+	    this.utils().httpInterceptor(this.utils().url().NOTIFICATIONS, 'GET', data, headers, url_params).then(function (result) {
+
+	      console.log(result);
+	      self.setState({
+	        notificationsMessage: result.user_notifications,
+	        notificationCount: result.unread_count
+	      });
+	      $('.badge').html(result.unread_count);
+	    }, function (result) {
+	      if (result.responseText) {
+	        var message = result.responseText;
+	        self.notification._addNotification(window.event, 'error', message.message);
+	      }
+	    });
 	  },
 	  showLogin: function showLogin() {
 	    this.setState({
@@ -20440,7 +20471,30 @@
 	    });
 	    window.location.href = "/#/";
 	  },
+	  notificationMessage: function notificationMessage() {
+	    var messageObj = this.state.notificationsMessage;
+	    console.log(this.state.actionLink);
+	    return {
+	      "messageObj": messageObj
+	    };
+	  },
 	  render: function render() {
+
+	    var showNotificationPage = function showNotificationPage() {
+	      window.location.href = "/#/notifications";
+	    };
+	    var self = this;
+	    var notificationsList = $.map(this.state.notificationsMessage, function (val, i) {
+	      if (i <= 2) {
+	        return React.createElement(
+	          'li',
+	          { className: 'notification-message', onClick: self.showNotificationPage },
+	          val.message
+	        );
+	      }
+	    });
+	    console.log("0000");
+	    console.log(this.state.notificationsMessage);
 	    return React.createElement(
 	      'div',
 	      null,
@@ -20563,7 +20617,7 @@
 	                    { className: 'menu-option', id: 'dashboard_menu' },
 	                    React.createElement(
 	                      'a',
-	                      { href: '/#/dashboard' },
+	                      { href: '/#/supplier/dashboard' },
 	                      'Dashboard'
 	                    )
 	                  ),
@@ -20572,7 +20626,7 @@
 	                    { className: 'menu-option', id: 'bookings_menu' },
 	                    React.createElement(
 	                      'a',
-	                      { href: '/#/bookings' },
+	                      { href: '/#/supplier/bookings' },
 	                      'Bookings'
 	                    )
 	                  ),
@@ -20581,7 +20635,7 @@
 	                    { className: 'menu-option', id: 'listing_menu' },
 	                    React.createElement(
 	                      'a',
-	                      { href: '/#/listings' },
+	                      { href: '/#/supplier/listings' },
 	                      'Listing'
 	                    )
 	                  )
@@ -20593,15 +20647,35 @@
 	                    'li',
 	                    { className: 'notification' },
 	                    React.createElement(
-	                      'a',
-	                      { href: '#' },
+	                      'div',
+	                      { className: 'dropdown' },
 	                      React.createElement(
-	                        'span',
-	                        { className: 'badge' },
-	                        '0'
+	                        'button',
+	                        { className: 'btn dropdown-toggle', type: 'button', 'data-toggle': 'dropdown' },
+	                        React.createElement(
+	                          'span',
+	                          { className: 'badge' },
+	                          '0'
+	                        ),
+	                        ' ',
+	                        React.createElement('img', { src: 'images/icon-notification2.png' })
 	                      ),
-	                      ' ',
-	                      React.createElement('img', { src: 'images/icon-notification2.png' })
+	                      React.createElement(
+	                        'ul',
+	                        { className: 'dropdown-menu' },
+	                        notificationsList,
+	                        React.createElement(
+	                          'li',
+	                          { className: 'notification-message' },
+	                          React.createElement(
+	                            'a',
+	                            { className: 'all-notification-link', href: 'javascript:void(0);', onClick: this.showNotificationPage },
+	                            ' ',
+	                            React.createElement('i', { className: 'glyphicon glyphicon-menu-right' }),
+	                            ' See all Notifications '
+	                          )
+	                        )
+	                      )
 	                    )
 	                  ),
 	                  React.createElement(
@@ -20649,12 +20723,13 @@
 	          { history: _reactRouter.hashHistory },
 	          React.createElement(_reactRouter.Route, { path: 'register', component: CreateAccountScreen, notification: this, config: this.utils }),
 	          React.createElement(_reactRouter.Route, { path: 'thank-you', component: ThankYouScreen }),
+	          React.createElement(_reactRouter.Route, { path: 'notifications', component: NotificationScreen, notifications: this.notificationMessage }),
 	          React.createElement(_reactRouter.Route, { path: '/', component: LoginScreen, notification: this, config: this.utils }),
 	          React.createElement(_reactRouter.Route, { path: 'reset-password', component: ResetPasswordScreen, notification: this, config: this.utils }),
-	          React.createElement(_reactRouter.Route, { path: 'dashboard', component: DashboardScreen, notification: this, config: this.utils, menu: this.state.menu }),
-	          React.createElement(_reactRouter.Route, { path: 'bookings', component: BookingScreen, notification: this, config: this.utils }),
+	          React.createElement(_reactRouter.Route, { path: 'supplier/dashboard', component: DashboardScreen, notification: this, config: this.utils, menu: this.state.menu }),
+	          React.createElement(_reactRouter.Route, { path: 'supplier/bookings', component: BookingScreen, notification: this, config: this.utils }),
 	          React.createElement(_reactRouter.Route, { path: 'profile', component: ProfileScreen, notification: this, config: this.utils }),
-	          React.createElement(_reactRouter.Route, { path: 'listings', component: ListingScreen, notification: this, config: this.utils }),
+	          React.createElement(_reactRouter.Route, { path: 'supplier/listings', component: ListingScreen, notification: this, config: this.utils }),
 	          React.createElement(_reactRouter.Route, { path: 'edit-variant/:listingid/:variantid', component: EditVariantScreen, notification: this, config: this.utils }),
 	          React.createElement(_reactRouter.Route, { path: 'listingDetails/:listingid', component: ListingDetailsScreen, notification: this, config: this.utils }),
 	          React.createElement(_reactRouter.Route, { path: 'bookingDetails/:bookingid', component: BookingDetailScreen, notification: this, config: this.utils })
@@ -26213,6 +26288,7 @@
 	    };
 	  },
 	  componentDidMount: function componentDidMount() {
+	    $("#pageloader").fadeOut();
 	    $('body').addClass('before-login');
 	    $('.form-animate').addClass('animated bounceInLeft');
 	    $('.login-text').addClass('animated bounceInRight');
@@ -26230,6 +26306,7 @@
 	  saveAndContinue: function saveAndContinue(e) {
 	    e.preventDefault();
 	    this.props.route.notification.showLogin();
+	    $(".pace").addClass("pace-inactive").removeClass("pace-active");
 	    var canProceed = this.validateEmail(this.state.email) && this.refs.password.isValid();
 
 	    if (canProceed) {
@@ -26248,11 +26325,13 @@
 	        }
 	      };
 	      this.props.route.config().httpInterceptor(this.props.route.config().url().CREATE_ACCOUNT, 'POST', data).then(function (result) {
+	        $(".pace").addClass("pace-active").removeClass("pace-inactive");
 	        self.props.route.notification._addNotification(e, 'success', 'Successfully registered !!!');
 	        window.location.href = '/#/thank-you';
 	      }, function (result) {
 	        var message = JSON.parse(result.responseText);
 	        self.props.route.notification._addNotification(e, 'error', message.message);
+	        $(".pace").addClass("pace-active").removeClass("pace-inactive");
 	      });
 	    } else {
 	      this.refs.yourName.isValid();
@@ -26260,6 +26339,7 @@
 	      this.refs.email.isValid();
 	      this.refs.companyName.isValid();
 	      this.refs.password.isValid();
+	      $(".pace").addClass("pace-active").removeClass("pace-inactive");
 	    }
 	  },
 
@@ -26314,6 +26394,15 @@
 	    return React.createElement(
 	      'div',
 	      { className: 'application_wrapper' },
+	      React.createElement(
+	        'div',
+	        { id: 'pageloader' },
+	        React.createElement(
+	          'div',
+	          { className: 'loader-inner' },
+	          React.createElement('img', { src: 'images/preloader-color.gif', alt: '' })
+	        )
+	      ),
 	      React.createElement(
 	        'div',
 	        { className: 'page-body grey2' },
@@ -26506,6 +26595,7 @@
 	    return {
 	      valid: valid,
 	      empty: _.isEmpty(this.props.value),
+	      maxlength: this.props.maxlength,
 	      focus: false,
 	      value: null,
 	      iconsVisible: !this.props.validator,
@@ -29602,7 +29692,7 @@
 	  },
 	  componentDidMount: function componentDidMount() {
 	    if (localStorage.getItem('clientInfo')) {
-	      window.location.href = '/#/dashboard';
+	      window.location.href = '/#/supplier/dashboard';
 	    }
 	    $('#pageloader').fadeOut();
 	    $('body').addClass('before-login');
@@ -29634,7 +29724,7 @@
 	        localStorage.setItem('clientInfo', JSON.stringify(result));
 	        self.props.route.notification.login();
 	        console.log(JSON.parse(localStorage.getItem('clientInfo')));
-	        window.location.href = '/#/dashboard';
+	        window.location.href = '/#/supplier/dashboard';
 	      }, function (result) {
 	        var message = JSON.parse(result.responseText);
 	        self.props.route.notification._addNotification(e, 'error', message.message);
@@ -29648,7 +29738,7 @@
 
 	  sendResetMail: function sendResetMail(e) {
 	    e.preventDefault();
-
+	    $(".pace").addClass("pace-inactive").removeClass("pace-active");
 	    var canProceed = this.validateEmail(this.state.resetEmail);
 
 	    if (canProceed) {
@@ -29662,14 +29752,16 @@
 	      this.props.route.config().httpInterceptor(this.props.route.config().url().SEND_RESET_PASSWORD_EMAIL, 'POST', data).then(function (result) {
 	        self.props.route.notification._addNotification(e, 'success', 'Successfully Email Sent !!!');
 	        $('#forgotPwModal').modal('hide');
-	        //window.location.href="/#/thank-you";
+	        $(".pace").addClass("pace-active").removeClass("pace-inactive");
 	      }, function (result) {
 	        var message = JSON.parse(result.responseText);
 	        self.props.route.notification._addNotification(e, 'error', message.message);
+	        $(".pace").addClass("pace-active").removeClass("pace-inactive");
 	      });
 	    } else {
 
 	      this.refs.resetEmail.isValid();
+	      $(".pace").addClass("pace-active").removeClass("pace-inactive");
 	    }
 	  },
 	  handleEmailInput: function handleEmailInput(event) {
@@ -30016,6 +30108,15 @@
 	      null,
 	      React.createElement(
 	        'div',
+	        { id: 'pageloader' },
+	        React.createElement(
+	          'div',
+	          { className: 'loader-inner' },
+	          React.createElement('img', { src: 'images/preloader-color.gif', alt: '' })
+	        )
+	      ),
+	      React.createElement(
+	        'div',
 	        { className: 'page-body grey2' },
 	        React.createElement(
 	          'div',
@@ -30107,12 +30208,12 @@
 
 	  getInitialState: function getInitialState() {
 	    return {
-	      bookingCount: null,
-	      enquiryCount: null,
+	      bookingCount: 0,
+	      enquiryCount: 0,
 	      pastRevenue: 'password',
-	      revenue: null,
-	      reviewsCount: null,
-	      viewsCount: null,
+	      revenue: 0,
+	      reviewsCount: 0,
+	      viewsCount: 0,
 	      photo: JSON.parse(localStorage.getItem('clientInfo')).vendor.photo,
 	      name: JSON.parse(localStorage.getItem('clientInfo')).vendor.name,
 	      notifications: null,
@@ -30120,6 +30221,7 @@
 	    };
 	  },
 	  getDashboardData: function getDashboardData(from, to, section) {
+	    $('#pageloader').show();
 	    var data = {};
 	    var urlParams = this.props.route.config().getClientInfo();
 	    if (from != -1) {
@@ -30142,10 +30244,17 @@
 	        });
 	      }
 	      if (section == 'views') {
-	        self.setState({
+	        if (from == -1) {
+	          self.setState({
 
-	          viewsCount: result.views_count
-	        });
+	            viewsCount: result.views_count
+	          });
+	        } else {
+	          self.setState({
+
+	            viewsCount: "N/A"
+	          });
+	        }
 	      }
 	      if (section == 'bookings') {
 	        self.setState({
@@ -30160,10 +30269,17 @@
 	        });
 	      }
 	      if (section == 'revenue') {
-	        self.setState({
+	        if (from == -1) {
+	          self.setState({
 
-	          revenue: result.revenue
-	        });
+	            revenue: result.revenue + result.past_revenue
+	          });
+	        } else {
+	          self.setState({
+
+	            revenue: result.revenue
+	          });
+	        }
 	      }
 	      if (section == 'reviews') {
 	        self.setState({
@@ -30181,14 +30297,14 @@
 	    var from = -1;
 	    var to = -1;
 	    if (dataTime == 'Today') {
-	      from = moment().format('X');
-	      to = moment().format('X');
+	      from = moment().subtract(24, 'H').format('X') * 1000;
+	      to = moment().format('X') * 1000;
 	    } else if (dataTime == 'LastSeven') {
-	      from = moment().subtract(7, 'd').format('X');
-	      to = moment().format('X');
+	      from = moment().subtract(7, 'd').format('X') * 1000;
+	      to = moment().format('X') * 1000;
 	    } else if (dataTime == 'ThisMonth') {
-	      from = moment(moment().year() + '-' + moment().month() + '-01').format('X');
-	      to = moment().format('X');
+	      from = moment(moment().year() + '-' + (moment().month() + 1) + '-01').format('X') * 1000;
+	      to = moment().format('X') * 1000;
 	    }
 	    this.getDashboardData(from, to, section);
 	  },
@@ -30219,7 +30335,7 @@
 	        bookingCount: result.bookings_count,
 	        enquiryCount: result.enquiry_count,
 	        pastRevenue: result.past_revenue,
-	        revenue: result.revenue,
+	        revenue: result.revenue + result.past_revenue,
 	        reviewsCount: result.reviews_count,
 	        viewsCount: result.views_count
 	      });
@@ -30229,40 +30345,9 @@
 	      var message = JSON.parse(result.responseText);
 	      self.props.route.notification._addNotification(window.event, 'error', message.message);
 	    });
-	    var data = {};
-	    var url_params = {
-	      page: 1,
-	      per_page: 5
-	    };
-	    var clientInfo = this.props.route.config().getClientInfo();
-	    var headers = {
-	      'X-Thrill-Client-Id': clientInfo.client_id,
-	      'X-Thrill-Auth-Token': clientInfo.auth_token
-	    };
-	    this.props.route.config().httpInterceptor(this.props.route.config().url().NOTIFICATIONS, 'GET', data, headers, url_params).then(function (result) {
-
-	      console.log(result);
-	      self.setState({
-	        notifications: result.user_notifications,
-	        notificationCount: result.unread_count
-	      });
-	      $('.badge').html(result.unread_count);
-	    }, function (result) {
-	      var message = JSON.parse(result.responseText);
-	      self.props.route.notification._addNotification(window.event, 'error', message.message);
-	    });
 	  },
 	  render: function render() {
 	    var _this = this;
-
-	    var notificationsList = $.map(this.state.notifications, function (val, i) {
-
-	      return React.createElement(
-	        'p',
-	        null,
-	        val.message
-	      );
-	    });
 
 	    return React.createElement(
 	      'div',
@@ -30356,7 +30441,7 @@
 	                        null,
 	                        React.createElement(
 	                          'a',
-	                          { href: 'javascript:(0);', onClick: function onClick() {
+	                          { href: 'javascript:void(0);', onClick: function onClick() {
 	                              return _this.getData('Today', 'views');
 	                            } },
 	                          'Today'
@@ -30367,7 +30452,7 @@
 	                        null,
 	                        React.createElement(
 	                          'a',
-	                          { href: 'javascript:(0);', onClick: function onClick() {
+	                          { href: 'javascript:void(0);', onClick: function onClick() {
 	                              return _this.getData('LastSeven', 'views');
 	                            } },
 	                          'Last Seven Days'
@@ -30378,7 +30463,7 @@
 	                        null,
 	                        React.createElement(
 	                          'a',
-	                          { href: 'javascript:(0);', onClick: function onClick() {
+	                          { href: 'javascript:void(0);', onClick: function onClick() {
 	                              return _this.getData('ThisMonth', 'views');
 	                            } },
 	                          'This Month'
@@ -30389,7 +30474,7 @@
 	                        null,
 	                        React.createElement(
 	                          'a',
-	                          { href: 'javascript:(0);', onClick: function onClick() {
+	                          { href: 'javascript:void(0);', onClick: function onClick() {
 	                              return _this.getData('Lifetime', 'views');
 	                            } },
 	                          'Lifetime'
@@ -30445,7 +30530,7 @@
 	                        null,
 	                        React.createElement(
 	                          'a',
-	                          { href: 'javascript:(0);', onClick: function onClick() {
+	                          { href: 'javascript:void(0);', onClick: function onClick() {
 	                              return _this.getData('Today', 'bookings');
 	                            } },
 	                          'Today'
@@ -30456,7 +30541,7 @@
 	                        null,
 	                        React.createElement(
 	                          'a',
-	                          { href: 'javascript:(0);', onClick: function onClick() {
+	                          { href: 'javascript:void(0);', onClick: function onClick() {
 	                              return _this.getData('LastSeven', 'bookings');
 	                            } },
 	                          'Last Seven Days'
@@ -30467,7 +30552,7 @@
 	                        null,
 	                        React.createElement(
 	                          'a',
-	                          { href: 'javascript:(0);', onClick: function onClick() {
+	                          { href: 'javascript:void(0);', onClick: function onClick() {
 	                              return _this.getData('ThisMonth', 'bookings');
 	                            } },
 	                          'This Month'
@@ -30478,7 +30563,7 @@
 	                        null,
 	                        React.createElement(
 	                          'a',
-	                          { href: 'javascript:(0);', onClick: function onClick() {
+	                          { href: 'javascript:void(0);', onClick: function onClick() {
 	                              return _this.getData('Lifetime', 'bookings');
 	                            } },
 	                          'Lifetime'
@@ -30490,7 +30575,7 @@
 	                React.createElement(
 	                  'div',
 	                  { className: 'number' },
-	                  this.state.bookingCount
+	                  this.state.bookingCount.toFixed(0)
 	                )
 	              )
 	            )
@@ -30538,7 +30623,7 @@
 	                        null,
 	                        React.createElement(
 	                          'a',
-	                          { href: 'javascript:(0);', onClick: function onClick() {
+	                          { href: 'javascript:void(0);', onClick: function onClick() {
 	                              return _this.getData('Today', 'enquries');
 	                            } },
 	                          'Today'
@@ -30549,7 +30634,7 @@
 	                        null,
 	                        React.createElement(
 	                          'a',
-	                          { href: 'javascript:(0);', onClick: function onClick() {
+	                          { href: 'javascript:void(0);', onClick: function onClick() {
 	                              return _this.getData('LastSeven', 'enquries');
 	                            } },
 	                          'Last Seven Days'
@@ -30560,7 +30645,7 @@
 	                        null,
 	                        React.createElement(
 	                          'a',
-	                          { href: 'javascript:(0);', onClick: function onClick() {
+	                          { href: 'javascript:void(0);', onClick: function onClick() {
 	                              return _this.getData('ThisMonth', 'enquries');
 	                            } },
 	                          'This Month'
@@ -30571,7 +30656,7 @@
 	                        null,
 	                        React.createElement(
 	                          'a',
-	                          { href: 'javascript:(0);', onClick: function onClick() {
+	                          { href: 'javascript:void(0);', onClick: function onClick() {
 	                              return _this.getData('Lifetime', 'enquries');
 	                            } },
 	                          'Lifetime'
@@ -30583,7 +30668,7 @@
 	                React.createElement(
 	                  'div',
 	                  { className: 'number' },
-	                  this.state.enquiryCount
+	                  this.state.enquiryCount.toFixed(0)
 	                )
 	              )
 	            ),
@@ -30627,7 +30712,7 @@
 	                        null,
 	                        React.createElement(
 	                          'a',
-	                          { href: 'javascript:(0);', onClick: function onClick() {
+	                          { href: 'javascript:void(0);', onClick: function onClick() {
 	                              return _this.getData('Today', 'reviews');
 	                            } },
 	                          'Today'
@@ -30638,7 +30723,7 @@
 	                        null,
 	                        React.createElement(
 	                          'a',
-	                          { href: 'javascript:(0);', onClick: function onClick() {
+	                          { href: 'javascript:void(0);', onClick: function onClick() {
 	                              return _this.getData('LastSeven', 'reviews');
 	                            } },
 	                          'Last Seven Days'
@@ -30649,7 +30734,7 @@
 	                        null,
 	                        React.createElement(
 	                          'a',
-	                          { href: 'javascript:(0);', onClick: function onClick() {
+	                          { href: 'javascript:void(0);', onClick: function onClick() {
 	                              return _this.getData('ThisMonth', 'reviews');
 	                            } },
 	                          'This Month'
@@ -30660,7 +30745,7 @@
 	                        null,
 	                        React.createElement(
 	                          'a',
-	                          { href: 'javascript:(0);', onClick: function onClick() {
+	                          { href: 'javascript:void(0);', onClick: function onClick() {
 	                              return _this.getData('Lifetime', 'reviews');
 	                            } },
 	                          'Lifetime'
@@ -30672,7 +30757,7 @@
 	                React.createElement(
 	                  'div',
 	                  { className: 'number' },
-	                  this.state.reviewsCount
+	                  this.state.reviewsCount.toFixed(0)
 	                )
 	              )
 	            ),
@@ -30716,7 +30801,7 @@
 	                        null,
 	                        React.createElement(
 	                          'a',
-	                          { href: 'javascript:(0);', onClick: function onClick() {
+	                          { href: 'javascript:void(0);', onClick: function onClick() {
 	                              return _this.getData('Today', 'revenue');
 	                            } },
 	                          'Today'
@@ -30727,7 +30812,7 @@
 	                        null,
 	                        React.createElement(
 	                          'a',
-	                          { href: 'javascript:(0);', onClick: function onClick() {
+	                          { href: 'javascript:void(0);', onClick: function onClick() {
 	                              return _this.getData('LastSeven', 'revenue');
 	                            } },
 	                          'Last Seven Days'
@@ -30738,7 +30823,7 @@
 	                        null,
 	                        React.createElement(
 	                          'a',
-	                          { href: 'javascript:(0);', onClick: function onClick() {
+	                          { href: 'javascript:void(0);', onClick: function onClick() {
 	                              return _this.getData('ThisMonth', 'revenue');
 	                            } },
 	                          'This Month'
@@ -30749,7 +30834,7 @@
 	                        null,
 	                        React.createElement(
 	                          'a',
-	                          { href: 'javascript:(0);', onClick: function onClick() {
+	                          { href: 'javascript:void(0);', onClick: function onClick() {
 	                              return _this.getData('Lifetime', 'revenue');
 	                            } },
 	                          'Lifetime'
@@ -30761,23 +30846,23 @@
 	                React.createElement(
 	                  'div',
 	                  { className: 'number' },
-	                  this.state.revenue
+	                  this.state.revenue.toFixed(2)
 	                )
 	              )
 	            )
 	          ),
-	          React.createElement(
-	            'div',
-	            { className: 'notify' },
-	            React.createElement(
-	              'h3',
-	              null,
-	              'Notifications(',
-	              this.state.notificationCount,
-	              ')'
-	            ),
-	            notificationsList
-	          )
+	          React.createElement('br', null),
+	          React.createElement('br', null),
+	          React.createElement('br', null),
+	          React.createElement('br', null),
+	          React.createElement('br', null),
+	          React.createElement('br', null),
+	          React.createElement('br', null),
+	          React.createElement('br', null),
+	          React.createElement('br', null),
+	          React.createElement('br', null),
+	          React.createElement('br', null),
+	          React.createElement('br', null)
 	        )
 	      )
 	    );
@@ -44618,10 +44703,12 @@
 	      pageSelectedHistory: 1,
 	      contactNumber: '',
 	      modalName: '',
-	      tour: []
+	      tour: [],
+	      dateData: ""
 	    };
 	  },
 	  getData: function getData(from, to, tourId, tabSection) {
+	    var dateFlag = arguments.length <= 4 || arguments[4] === undefined ? null : arguments[4];
 
 	    if (tabSection == 'history') {
 	      var urlparams = {
@@ -44632,8 +44719,7 @@
 	    } else {
 	      var urlparams = {
 	        'page': 1,
-	        'per_page': 10,
-	        'history': 1
+	        'per_page': 10
 	      };
 	    }
 	    if (from != -1) {
@@ -44687,6 +44773,10 @@
 	      //let message = JSON.parse(result.responseText);
 	      //self.props.route.notification._addNotification(window.event, "error", message.message);
 	    });
+	    self.state.dateData = dateFlag;
+	    if (dateFlag != null) {
+	      $("label").removeClass("label-grey");
+	    }
 	  },
 	  componentDidMount: function componentDidMount() {
 	    $('.no-message-history').hide();
@@ -44698,11 +44788,14 @@
 	    $('#bookings_menu').addClass('active');
 	    this.loadfromServer(1, 'bookings');
 	    this.loadfromServer(1, 'history');
-	    $(document).on('click', '.dropdown-menu li', function (e) {
-
-	      $(e.target).parents('.dropdown').find('.selection').text($(this).text());
-	      $(e.target).parents('.dropdown').find('.selection').val($(this).text());
-	      $(e.target).parents('.dropdown').find('.selection').data('id', $(this).data('id'));
+	    $(document).off("click", '.sort-dropdown .dropdown-menu li').on('click', '.sort-dropdown .dropdown-menu li', function (e) {
+	      console.log("asdfasdfafasdfadsf");
+	      $(e.target).closest('.dropdown').find('.selection').text($(this).text());
+	      $(e.target).closest('.dropdown').find('.selection').val($(this).text());
+	      $(e.target).closest('.dropdown').find('.selection').data('id', $(this).data('id'));
+	      $(e.target).closest('.dropdown').find('.selectionHistory').text($(this).text());
+	      $(e.target).closest('.dropdown').find('.selectionHistory').val($(this).text());
+	      $(e.target).closest('.dropdown').find('.selectionHistory').data('id', $(this).data('id'));
 	    });
 	    var urlparams = {
 	      'page': 1,
@@ -44717,6 +44810,7 @@
 	    };
 	    var self = this;
 	    this.props.route.config().httpInterceptor(this.props.route.config().url().LISTING, 'GET', data, header, urlparams).then(function (result) {
+	      result.tours.push({ 'id': 'All', 'name': 'All' });
 	      self.setState({
 	        tour: result.tours
 	      });
@@ -44724,6 +44818,12 @@
 	      console.log(result);
 	      //let message = JSON.parse(result.responseText);
 	      //self.props.route.notification._addNotification(window.event, "error", message.message);
+	    });
+	    $("#listing_menu").find("a").on("click", function () {
+	      window.location.href = "/#/supplier/listings";
+	    });
+	    $("#dashboard_menu").find("a").on("click", function () {
+	      window.location.href = "/#/supplier/dashboard";
 	    });
 	  },
 	  loadfromServer: function loadfromServer(pageNo, tabSection) {
@@ -44734,8 +44834,7 @@
 	      //console.log(JSON.parse(localStorage.getItem("clientInfo")).client.client_id);
 	      var urlparams = {
 	        'page': pageNo,
-	        'per_page': 10,
-	        'history': 1
+	        'per_page': 10
 
 	      };
 	      var data = {};
@@ -44829,7 +44928,7 @@
 	              _react2.default.createElement('img', { src: 'images/icon-home.png' }),
 	              _react2.default.createElement(
 	                'a',
-	                { href: '/#/dashboard' },
+	                { href: '/#/supplier/dashboard' },
 	                'Dashboard'
 	              )
 	            ),
@@ -44856,6 +44955,7 @@
 	            contact: this.state.contactNumber,
 	            pagenum: this.state.pageNum,
 	            pagenumHistory: this.state.pageNumHistory,
+	            dateData: this.state.dateData,
 	            tours: this.state.tour })
 	        )
 	      ),
@@ -44879,6 +44979,7 @@
 	                { type: 'button',
 	                  className: 'close',
 	                  'data-dismiss': 'modal',
+
 	                  'aria-label': 'Close' },
 	                _react2.default.createElement(
 	                  'span',
@@ -45723,7 +45824,9 @@
 	            { className: 'info' },
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'details' },
+	              { className: 'details', onClick: function onClick() {
+	                  return showDetails(item.id);
+	                } },
 	              _react2.default.createElement(
 	                'h3',
 	                { onClick: function onClick() {
@@ -45734,24 +45837,25 @@
 	              _react2.default.createElement(
 	                'p',
 	                null,
-	                'Booked by:',
+	                'Booked by: ',
 	                item.first_name,
+	                ' ',
 	                item.last_name,
-	                ' | Booking Date:',
+	                ' | Booking Date: ',
 	                moment(item.created_at).format('D MMMM')
 	              ),
 	              _react2.default.createElement(
 	                'p',
 	                null,
 	                _react2.default.createElement('img', { src: 'images/icon-date.png' }),
-	                'Trip Date:',
+	                'Trip Date: ',
 	                moment(item.date_of_travel).format('D MMMM YYYY')
 	              ),
 	              _react2.default.createElement(
 	                'p',
 	                null,
 	                _react2.default.createElement('img', { src: 'images/icon-travellar.png' }),
-	                'Travelers:',
+	                'Travelers: ',
 	                item.no_of_people
 	              )
 	            ),
@@ -45804,11 +45908,9 @@
 	                return showDetails(item.id);
 	              } },
 	            _react2.default.createElement(
-	              'object',
-	              { data: 'images/notFound.png',
-	                type: 'image/png',
-	                className: 'image-booking-default' },
-	              _react2.default.createElement('img', { src: item.tour.thumbnail_image ? item.tour.thumbnail_image.size_tiny : 'images/src.jpg', onerror: 'this.src=\'images/notFound.png\'' })
+	              'div',
+	              { className: 'image-booking-default' },
+	              _react2.default.createElement('img', { src: item.tour.thumbnail_image ? item.tour.thumbnail_image.size_tiny : 'images/src.jpg' })
 	            )
 	          ),
 	          _react2.default.createElement(
@@ -45816,35 +45918,36 @@
 	            { className: 'info' },
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'details' },
+	              { className: 'details', onClick: function onClick() {
+	                  return showDetails(item.id);
+	                } },
 	              _react2.default.createElement(
 	                'h3',
-	                { onClick: function onClick() {
-	                    return showDetails(item.id);
-	                  } },
+	                null,
 	                item.tour.name
 	              ),
 	              _react2.default.createElement(
 	                'p',
 	                null,
-	                'Booked by:',
+	                'Booked by: ',
 	                item.first_name,
+	                ' ',
 	                item.last_name,
-	                ' | Booking Date:',
+	                ' | Booking Date: ',
 	                moment(item.created_at).format('D MMMM')
 	              ),
 	              _react2.default.createElement(
 	                'p',
 	                null,
 	                _react2.default.createElement('img', { src: 'images/icon-date.png' }),
-	                'Trip Date:',
+	                'Trip Date: ',
 	                moment(item.date_of_travel).format('D MMMM YYYY')
 	              ),
 	              _react2.default.createElement(
 	                'p',
 	                null,
 	                _react2.default.createElement('img', { src: 'images/icon-travellar.png' }),
-	                'Travelers:',
+	                'Travelers: ',
 	                item.no_of_people
 	              )
 	            ),
@@ -45870,11 +45973,39 @@
 	          )
 	        );
 	      });
+	      var self = this;
+	      function callAjaxRequest(tourId, tabsection) {
+	        if (tabsection == "bookings") {
+	          if (self.props.dateData) {
+	            getDateBookings(self.props.dateData);
+	          } else {
+	            callGetData("", "bookings");
+	          }
+	        } else {
+	          if (self.props.dateData) {
+	            getDateHistory(self.props.dateData);
+	          } else {
+	            callGetData("", "history");
+	          }
+	        }
+	      }
 	      var tours = this.props.tours.map(function (item) {
 
 	        return _react2.default.createElement(
 	          'li',
-	          { 'data-id': item.id },
+	          { 'data-id': item.id, onClick: function onClick() {
+	              return callAjaxRequest(item.id, 'bookings');
+	            } },
+	          item.name
+	        );
+	      });
+	      var toursHistory = this.props.tours.map(function (item) {
+
+	        return _react2.default.createElement(
+	          'li',
+	          { 'data-id': item.id, onClick: function onClick() {
+	              return callAjaxRequest(item.id, 'history');
+	            } },
 	          item.name
 	        );
 	      });
@@ -45882,6 +46013,8 @@
 	      function callGetData(timeDate, tabSection) {
 	        var from = -1;
 	        var to = -1;
+	        var labelDayArray = ["Today", "Tomorrow", "Weekend"];
+	        var labelIdArray = ["sortcb1", "sortcb2", "sortcb3"];
 
 	        if (timeDate == 'Today') {
 	          from = moment().format('YYYY-MM-DD');
@@ -45893,16 +46026,33 @@
 	          from = moment().day(6).format('YYYY-MM-DD');
 	          to = moment().day(7).format('YYYY-MM-DD');
 	        }
-	        if ($('.selection:last').text() != ' All') {
-	          var tourId = $('.selection:last').data('id');
+	        if (tabSection == "bookings") {
+	          if ($('.selection:first').text() != 'All') {
+	            var tourId = $('.selection:first').data('id');
+	          } else {
+	            var tourId = -1;
+	          }
 	        } else {
-	          var tourId = -1;
+	          if ($('.selectionHistory:first').text() != 'All') {
+	            var tourId = $('.selectionHistory:first').data('id');
+	          } else {
+	            var tourId = -1;
+	          }
 	        }
+
+	        if ($("#" + labelIdArray[labelDayArray.indexOf(timeDate)]).next().hasClass("label-grey")) {
+	          $(".label-grey").removeClass("label-grey");
+	          from = -1;
+	          to = -1;
+	        } else {
+	          $(".label-grey").removeClass("label-grey");
+	          $("#" + labelIdArray[labelDayArray.indexOf(timeDate)]).next().addClass("label-grey");
+	        }
+
 	        self.props.bookingscreen.getData(from, to, tourId, tabSection);
 	      }
 	      function getDate(dateTime) {
-	        console.log(dateTime);
-	        if ($('.selection:last').text() != ' All') {
+	        if ($('.selection:last').text() != 'All') {
 	          var tourId = $('.selection:last').data('id');
 	        } else {
 	          var tourId = -1;
@@ -45912,17 +46062,37 @@
 	        self.props.bookingscreen.getData(from, to, tourId, 'history');
 	      }
 	      function getDateBookings(dateTime) {
-	        console.log(dateTime);
-	        if ($('.selection:first').text() != ' All') {
+	        if ($('.selection:first').text() != 'All') {
 	          var tourId = $('.selection:first').data('id');
 	        } else {
 	          var tourId = -1;
 	        }
-	        var from = moment(dateTime).format('YYYY-MM-DD');
-	        var to = moment(dateTime).format('YYYY-MM-DD');
-	        self.props.bookingscreen.getData(from, to, tourId, 'bookings');
+	        if (dateTime) {
+	          var from = moment(dateTime).format('YYYY-MM-DD');
+	          var to = moment(dateTime).format('YYYY-MM-DD');
+	        } else {
+	          var from = -1;
+	          var to = -1;
+	        }self.props.bookingscreen.getData(from, to, tourId, 'bookings', dateTime);
+	        //this.props.dateData(dateTime);
 	      }
+	      function getDateHistory(dateTime) {
+	        if ($('.selectionHistory:first').text() != 'All') {
+	          var tourId = $('.selectionHistory:first').data('id');
+	        } else {
+	          var tourId = -1;
+	        }
+	        if (dateTime) {
+	          var from = moment(dateTime).format('YYYY-MM-DD');
+	          var to = moment(dateTime).format('YYYY-MM-DD');
+	        } else {
+	          var from = -1;
+	          var to = -1;
+	        }
 
+	        self.props.bookingscreen.getData(from, to, tourId, 'history', dateTime);
+	        //this.props.dateData(dateTime);
+	      }
 	      return _react2.default.createElement(
 	        'div',
 	        null,
@@ -45980,6 +46150,7 @@
 	                'div',
 	                { className: 'sort-dropdown' },
 	                _react2.default.createElement(_reactInputCalendar2.default, { format: 'DD/MM/YYYY',
+	                  date: this.props.dateData,
 	                  placeholder: 'Trip Date',
 	                  customIcon: 'glyphicon glyphicon-menu-down',
 	                  onChange: getDateBookings })
@@ -46050,47 +46221,12 @@
 	              ),
 	              _react2.default.createElement(
 	                'div',
-	                { className: 'checkbox' },
-	                _react2.default.createElement('input', { type: 'checkbox', id: 'sortcb1' }),
-	                _react2.default.createElement(
-	                  'label',
-	                  { 'for': 'sortcb1', onClick: function onClick() {
-	                      return callGetData('Today', 'history');
-	                    } },
-	                  'Today'
-	                )
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'checkbox' },
-	                _react2.default.createElement('input', { type: 'checkbox', id: 'sortcb2' }),
-	                _react2.default.createElement(
-	                  'label',
-	                  { 'for': 'sortcb2', onClick: function onClick() {
-	                      return callGetData('Tomorrow', 'history');
-	                    } },
-	                  'Tomorrow'
-	                )
-	              ),
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'checkbox' },
-	                _react2.default.createElement('input', { type: 'checkbox', id: 'sortcb3' }),
-	                _react2.default.createElement(
-	                  'label',
-	                  { 'for': 'sortcb3', onClick: function onClick() {
-	                      return callGetData('Weekend', 'history');
-	                    } },
-	                  'This Weekend'
-	                )
-	              ),
-	              _react2.default.createElement(
-	                'div',
 	                { className: 'sort-dropdown' },
 	                _react2.default.createElement(_reactInputCalendar2.default, { format: 'DD/MM/YYYY',
+	                  date: this.props.dateData,
 	                  placeholder: 'Trip Date',
 	                  customIcon: 'glyphicon glyphicon-menu-down',
-	                  onChange: getDate })
+	                  onChange: getDateHistory })
 	              ),
 	              _react2.default.createElement(
 	                'div',
@@ -46103,7 +46239,7 @@
 	                    { className: 'btn dropdown-toggle', 'data-toggle': 'dropdown' },
 	                    _react2.default.createElement(
 	                      'span',
-	                      { className: 'selection' },
+	                      { className: 'selectionHistory' },
 	                      'All'
 	                    ),
 	                    _react2.default.createElement('span', { className: 'glyphicon glyphicon-menu-down' })
@@ -46111,7 +46247,7 @@
 	                  _react2.default.createElement(
 	                    'ul',
 	                    { className: 'dropdown-menu tour-dropdown' },
-	                    tours
+	                    toursHistory
 	                  )
 	                )
 	              )
@@ -49355,7 +49491,7 @@
 	              _react2.default.createElement('img', { src: 'images/icon-home.png' }),
 	              _react2.default.createElement(
 	                'a',
-	                { href: '/#/dashboard' },
+	                { href: '/#/supplier/dashboard' },
 	                'Dashboard'
 	              )
 	            ),
@@ -50152,6 +50288,7 @@
 
 	var STATES = __webpack_require__(239);
 
+	var _ = __webpack_require__(233);
 	var ProfileScreen = _react2.default.createClass({
 	  displayName: 'ProfileScreen',
 
@@ -50179,7 +50316,10 @@
 	        }]
 	      },
 	      Tabsheader: ['Vendor Profile', 'Details', 'Contact Info', 'Bank Details'],
-	      country: []
+	      country: [],
+	      states: [],
+	      cities: [],
+	      countries: {}
 
 	    };
 	  },
@@ -50187,19 +50327,6 @@
 	  componentDidMount: function componentDidMount() {
 	    this.props.route.config().redirectWithoutSession();
 	    this.loadfromServer(1);
-	    var data = {};
-	    var header = {};
-	    var clientInfo = this.props.route.config().getClientInfo();
-	    var self = this;
-	    this.props.route.config().httpInterceptor(this.props.route.config().url().COUNTRIES, 'GET', data, header, clientInfo).then(function (result) {
-	      self.setState({
-	        country: result.countries
-	      });
-	    }, function (result) {
-	      var message = JSON.parse(result.responseText);
-	      console.log(message);
-	      // self.props.config.notification._addNotification(window.event, "error", message.message);
-	    });
 	  },
 	  loadfromServer: function loadfromServer(pageNo) {
 
@@ -50218,7 +50345,59 @@
 	      self.setState({
 	        profile: result
 	      });
-	      console.log(result);
+	      var data = {};
+	      var header = {};
+	      var clientInfo = self.props.route.config().getClientInfo();
+	      self.props.route.config().httpInterceptor(self.props.route.config().url().COUNTRIES, 'GET', data, header, clientInfo).then(function (result) {
+	        self.setState({
+	          country: result.countries
+	        });
+	        console.log("=-=-=-=");
+	        console.log(result.countries);
+	        console.log(self.state.profile.country);
+	        var countryObj = _.where(result.countries, { name: self.state.profile.country });
+	        console.log(countryObj[0].id);
+	        if (countryObj.length > 0) {
+	          var data = {};
+	          var header = {};
+	          var clientInfo = self.props.route.config().getClientInfo();
+	          clientInfo['country_id'] = countryObj[0].id;
+
+	          self.props.route.config().httpInterceptor(self.props.route.config().url().STATE, 'GET', data, header, clientInfo).then(function (result) {
+	            self.setState({
+	              states: result.states
+	            });
+	            console.log(result.states);
+	            console.log(self.state.profile.state);
+	            var stateObj = _.where(result.states, { name: self.state.profile.state });
+	            console.log(stateObj[0].id);
+	            if (stateObj.length > 0) {
+	              var data = {};
+	              var header = {};
+	              var clientInfo = self.props.route.config().getClientInfo();
+	              clientInfo['state_id'] = stateObj[0].id;
+
+	              self.props.route.config().httpInterceptor(self.props.route.config().url().CITIES, 'GET', data, header, clientInfo).then(function (result) {
+	                self.setState({
+	                  cities: result.cities
+	                });
+	              }, function (result) {
+	                var message = JSON.parse(result.responseText);
+	                console.log(message);
+	                // self.props.config.notification._addNotification(window.event, "error", message.message);
+	              });
+	            }
+	          }, function (result) {
+	            var message = JSON.parse(result.responseText);
+	            console.log(message);
+	            // self.props.config.notification._addNotification(window.event, "error", message.message);
+	          });
+	        }
+	      }, function (result) {
+	        var message = JSON.parse(result.responseText);
+	        console.log(message);
+	        // self.props.config.notification._addNotification(window.event, "error", message.message);
+	      });
 	    }, function (result) {
 	      var message = JSON.parse(result.responseText);
 	      self.props.route.notification._addNotification(window.event, 'error', message.message);
@@ -50240,7 +50419,9 @@
 	      _react2.default.createElement(TabProfileComponent, { headers: this.state.Tabsheader,
 	        profile: this.state.profile,
 	        config: this.props.route,
-	        countries: this.state.country })
+	        countries: this.state.country,
+	        states: this.state.states,
+	        cities: this.state.cities })
 	    );
 	  }
 
@@ -50291,24 +50472,26 @@
 	        _react2.default.createElement(
 	          _reactTabView.Tab,
 	          null,
-	          _react2.default.createElement(VendorProfile, { data: this.props.profile })
+	          _react2.default.createElement(VendorProfile, { data: this.props.profile, config: this.props.config })
 	        ),
 	        _react2.default.createElement(
 	          _reactTabView.Tab,
 	          null,
-	          _react2.default.createElement(DetailsProfile, { profile: this.props.profile })
+	          _react2.default.createElement(DetailsProfile, { profile: this.props.profile, config: this.props.config })
 	        ),
 	        _react2.default.createElement(
 	          _reactTabView.Tab,
 	          null,
 	          _react2.default.createElement(ContactInfoProfile, { profile: this.props.profile,
 	            countries: this.props.countries,
-	            bank_details: this.props.profile.bank_detail })
+	            bank_details: this.props.profile.bank_detail,
+	            states: this.props.states,
+	            cities: this.props.cities })
 	        ),
 	        _react2.default.createElement(
 	          _reactTabView.Tab,
 	          null,
-	          _react2.default.createElement(BankDetailsProfile, { profile: this.props.profile })
+	          _react2.default.createElement(BankDetailsProfile, { profile: this.props.profile, config: this.props.config })
 	        )
 	      )
 	    );
@@ -50327,6 +50510,11 @@
 
 	var React = __webpack_require__(2);
 
+	var Input = __webpack_require__(232);
+	var _ = __webpack_require__(233);
+	var Select = __webpack_require__(238);
+	var STATES = __webpack_require__(239);
+	var Icon = __webpack_require__(234);
 	var VendorProfile = React.createClass({
 	  displayName: 'VendorProfile',
 
@@ -50341,6 +50529,19 @@
 	      email: '',
 	      description: ''
 	    };
+	  },
+	  validateEmail: function validateEmail(event) {
+	    // regex from http://stackoverflow.com/questions/46155/validate-email-address-in-javascript
+	    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	    return re.test(event);
+	  },
+	  validatePhone: function validatePhone(event) {
+	    // regex from http://stackoverflow.com/questions/46155/validate-email-address-in-javascript
+	    var re = /^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s\./0-9]*$/g;
+	    return re.test(event);
+	  },
+	  isEmpty: function isEmpty(value) {
+	    return !_.isEmpty(value);
 	  },
 	  showEdit: function showEdit() {
 
@@ -50391,29 +50592,40 @@
 	    $('.vendor-profile.edit').addClass('hide');
 	  },
 	  save: function save() {
-	    var data = {
-	      profile: {
-	        name: this.state.name,
-	        phone1: this.state.phone,
-	        email: this.state.email,
-	        description: this.state.description
-	      }
-	    };
-	    var header = {};
-	    var clientInfo = this.utils().getClientInfo();
-	    var self = this;
-	    this.utils().httpInterceptor(this.utils().url().PROFILE_SAVE, 'PUT', data, header, clientInfo).then(function (result) {
-	      $('#name').html(self.state.name);
-	      $('#email').html(self.state.email);
-	      $('#phone').html(self.state.phone);
-	      $('#description').html(self.state.description);
-	      $('.vendor-profile.actual').removeClass('hide');
-	      $('.vendor-profile.edit').addClass('hide');
-	    }, function (result) {
-	      var message = JSON.parse(result.responseText);
-	      console.log(message);
-	      // self.props.config.notification._addNotification(window.event, "error", message.message);
-	    });
+
+	    var canProceed = this.validateEmail(this.state.email) && this.isEmpty(this.state.name) && this.validatePhone(this.state.phone);
+
+	    if (canProceed) {
+	      var data = {
+	        profile: {
+	          name: this.state.name,
+	          phone1: this.state.phone,
+	          email: this.state.email,
+	          description: this.state.description
+	        }
+	      };
+	      var header = {};
+	      var clientInfo = this.utils().getClientInfo();
+	      var self = this;
+	      this.utils().httpInterceptor(this.utils().url().PROFILE_SAVE, 'PUT', data, header, clientInfo).then(function (result) {
+	        $('#name').html(self.state.name);
+	        $('#email').html(self.state.email);
+	        $('#phone').html(self.state.phone);
+	        $('#description').html(self.state.description);
+	        $('.vendor-profile.actual').removeClass('hide');
+	        $('.vendor-profile.edit').addClass('hide');
+	        self.props.config.notification._addNotification(window.event, "success", "Updated details successfully!!!");
+	      }, function (result) {
+	        var message = JSON.parse(result.responseText);
+	        console.log(message);
+	        self.props.config.notification._addNotification(window.event, "error", "Unable to save!!!");
+	      });
+	    } else {
+
+	      this.refs.email.isValid();
+	      this.refs.phone.isValid();
+	      this.refs.name.isValid();
+	    }
 	  },
 	  render: function render() {
 	    return React.createElement(
@@ -50457,7 +50669,7 @@
 	            React.createElement(
 	              'strong',
 	              null,
-	              'Email:'
+	              'Email: '
 	            ),
 	            React.createElement(
 	              'a',
@@ -50511,10 +50723,17 @@
 	                  { className: 'field-name' },
 	                  'Vendor Name'
 	                ),
-	                React.createElement('input', { type: 'text',
+	                React.createElement(Input, { text: '',
+	                  ref: 'name',
+	                  type: 'text',
+	                  maxLength: '20',
+	                  fieldName: 'name',
+	                  validate: this.isEmpty,
+	                  defaultValue: this.state.name,
 	                  value: this.state.name,
 	                  onChange: this.updateName,
-	                  fieldName: 'name' })
+	                  emptyMessage: 'Name can\'t be empty',
+	                  errorVisible: this.state.showEmailError })
 	              )
 	            )
 	          ),
@@ -50532,9 +50751,19 @@
 	                  { className: 'field-name' },
 	                  'Email'
 	                ),
-	                React.createElement('input', { type: 'text',
+	                React.createElement(Input, { text: '',
+	                  ref: 'email',
+	                  type: 'text',
+	                  tabIndex: '1',
+	                  maxLength: '100',
+	                  'class': 'profile-email',
+	                  defaultValue: this.state.email,
+	                  validate: this.validateEmail,
 	                  value: this.state.email,
-	                  onChange: this.updateEmail })
+	                  onChange: this.updateEmail,
+	                  errorMessage: 'Email is invalid',
+	                  emptyMessage: 'Email can\'t be empty',
+	                  errorVisible: this.state.showEmailError })
 	              )
 	            ),
 	            React.createElement(
@@ -50548,9 +50777,19 @@
 	                  { className: 'field-name' },
 	                  'Phone'
 	                ),
-	                React.createElement('input', { type: 'text',
+	                React.createElement(Input, { text: '',
+	                  ref: 'phone',
+	                  type: 'text',
+	                  tabIndex: '1',
+	                  'class': 'profile-email',
+	                  maxLength: '20',
+	                  defaultValue: this.state.phone,
+	                  validate: this.validatePhone,
 	                  value: this.state.phone,
-	                  onChange: this.updatePhone })
+	                  onChange: this.updatePhone,
+	                  errorMessage: 'Phone number is invalid',
+	                  emptyMessage: 'Phone number can\'t be empty',
+	                  errorVisible: this.state.showEmailError })
 	              )
 	            )
 	          ),
@@ -50562,7 +50801,7 @@
 	              { className: 'field-name' },
 	              'Basic Info'
 	            ),
-	            React.createElement('textarea', { value: this.state.description, onChange: this.updateDescription })
+	            React.createElement('textarea', { value: this.state.description, onChange: this.updateDescription, maxLength: '200' })
 	          ),
 	          React.createElement(
 	            'button',
@@ -50660,10 +50899,10 @@
 
 	      $('.details-section').removeClass('hide');
 	      $('.details-section-edit').addClass('hide');
+	      self.props.config.notification._addNotification(window.event, "success", "Updated details successfully!!!");
 	    }, function (result) {
 	      var message = JSON.parse(result.responseText);
-	      console.log(message);
-	      // self.props.config.notification._addNotification(window.event, "error", message.message);
+	      self.props.config.notification._addNotification(window.event, "error", "Unable to save details!!!");
 	    });
 	  },
 	  render: function render() {
@@ -50848,7 +51087,7 @@
 	                null,
 	                React.createElement('input', { type: 'text',
 	                  value: this.state.companyName,
-	                  onChange: this.updateCompanyName })
+	                  onChange: this.updateCompanyName, maxLength: '30' })
 	              )
 	            ),
 	            React.createElement(
@@ -50864,7 +51103,7 @@
 	                null,
 	                React.createElement('input', { type: 'text',
 	                  value: this.state.companyWebsite,
-	                  onChange: this.updateCompanyWebsite })
+	                  onChange: this.updateCompanyWebsite, maxLength: '150' })
 	              )
 	            )
 	          ),
@@ -50897,6 +51136,7 @@
 
 	var React = __webpack_require__(2);
 
+	var _ = __webpack_require__(233);
 	var ContactInfoProfile = React.createClass({
 	  displayName: 'ContactInfoProfile',
 
@@ -50905,6 +51145,7 @@
 	    return {
 	      country: {},
 	      city: {},
+
 	      states: [],
 	      cities: [],
 	      countryId: '',
@@ -50929,16 +51170,32 @@
 	    $('#zipcodeTxt').val($('#zipcode').text());
 	    $('.contact-details').addClass('hide');
 	    $('.contact-details-edit').removeClass('hide');
+	    console.log(this.props.states);
+	    this.state.states = this.props.states;
+	    this.state.cities = this.props.cities;
+	    for (var obj in this.props.states) {
+	      $("#dropdownstates").append("<li data-id='" + this.props.states[obj].id + "'>" + this.props.states[obj].name + "</li>");
+	    }
+	    for (var obj in this.props.cities) {
+	      $("#dropdowncities").append("<li data-id='" + this.props.cities[obj].id + "'>" + this.props.cities[obj].name + "</li>");
+	    }
 	  },
 	  componentDidMount: function componentDidMount() {
 	    $('.contact-details').addClass('animated bounceInRight');
 	    var self = this;
+	    console.log(this.props.states);
+
+	    console.log(this.props.profile);
 
 	    $(document).on('click', '.country-dropdown .dropdown-menu li', function (e) {
 
 	      $(e.target).closest('.dropdown').find('.selection-country').text($(e.target).text());
 	      $(e.target).closest('.dropdown').find('.selection-country').val($(e.target).text());
 	      $(e.target).closest('.dropdown').find('.selection-country').prop('data-id', $(e.target).data('id'));
+	      for (var obj in self.props.states) {
+	        $("#dropdownstates li[data-id='" + self.props.states[obj].id + "']").remove();
+	      }
+	      $(".selection-state").html("Choose");
 	      self.setState({
 	        countryId: $(e.target).data('id')
 	      });
@@ -50948,6 +51205,7 @@
 	      clientInfo['country_id'] = parseInt($(e.target).data('id'));
 
 	      self.utils().httpInterceptor(self.utils().url().STATE, 'GET', data, header, clientInfo).then(function (result) {
+
 	        self.setState({
 	          states: result.states
 	        });
@@ -50961,19 +51219,32 @@
 	      $(e.target).closest('.dropdown').find('.selection-state').text($(e.target).text());
 	      $(e.target).closest('.dropdown').find('.selection-state').val($(e.target).text());
 	      $(e.target).closest('.dropdown').find('.selection-state').prop('data-id', $(e.target).data('id'));
+	      for (var obj in self.props.cities) {
+	        $("#dropdowncities li[data-id='" + self.props.cities[obj].id + "']").remove();
+	      }
+	      $(".selection-city").html("Choose");
 	      self.setState({
 	        stateId: $(e.target).data('id')
 	      });
+
 	      var data = {};
 	      var header = {};
 	      var clientInfo = self.utils().getClientInfo();
-	      clientInfo['country_id'] = parseInt($('.selection-country').prop('data-id'));
+	      var countryObj = _.where(self.props.countries, { name: $('.selection-country').html() });
+	      clientInfo['country_id'] = countryObj[0].id;
 	      clientInfo['state_id'] = parseInt($(e.target).data('id'));
 
 	      self.utils().httpInterceptor(self.utils().url().CITIES, 'GET', data, header, clientInfo).then(function (result) {
-	        self.setState({
-	          cities: result.cities
-	        });
+
+	        if (!$.isEmptyObject(result)) {
+	          self.setState({
+	            cities: result.cities
+	          });
+	        } else {
+	          self.setState({
+	            cities: []
+	          });
+	        }
 	      }, function (result) {
 	        var message = JSON.parse(result.responseText);
 	        console.log(message);
@@ -50988,6 +51259,8 @@
 	      $(e.target).closest('.dropdown').find('.selection-city').val($(e.target).text());
 	      $(e.target).closest('.dropdown').find('.selection-city').prop('data-id', $(e.target).data('id'));
 	    });
+	    this.state.states = this.props.states;
+	    this.state.cities = this.props.cities;
 	  },
 	  save: function save() {
 	    var data = {
@@ -51011,12 +51284,23 @@
 	    var clientInfo = this.utils().getClientInfo();
 	    var self = this;
 	    this.utils().httpInterceptor(this.utils().url().PROFILE_SAVE, 'PUT', data, header, clientInfo).then(function (result) {
+	      $("#sEmail").html($("sEmailTxt").val());
+	      $("#sPhone").html($("#sPhoneTxt").val());
+	      $("#address1").html($("#address1Txt").val());
+	      $("#address2").html($("#address2Txt").val());
+	      $("#zipcode").html($("#zipcodeTxt").val());
+	      $("#assistName").html($("#assistNameTxt").val());
+	      $("#assistPhone").html($("#assistPhoneTxt").val());
+	      $("#assistEmail").html($("#assistEmailTxt").val());
+	      $("#sCountry").html($(".selection-country").html());
+	      $("#sState").html($(".selection-state").html());
+	      $("#sCity").html($(".selection-city").html());
 	      $('.contact-details').removeClass('hide');
 	      $('.contact-details-edit').addClass('hide');
 	    }, function (result) {
 	      var message = JSON.parse(result.responseText);
 	      console.log(message);
-	      // self.props.config.notification._addNotification(window.event, "error", message.message);
+	      self.props.config.notification._addNotification(window.event, "error", JSON.stringify(result));
 	    });
 	  },
 	  render: function render() {
@@ -51169,7 +51453,7 @@
 	            ),
 	            React.createElement(
 	              'td',
-	              null,
+	              { id: 'sCity' },
 	              this.props.profile.city
 	            )
 	          ),
@@ -51183,7 +51467,7 @@
 	            ),
 	            React.createElement(
 	              'td',
-	              null,
+	              { id: 'sState' },
 	              this.props.profile.state
 	            )
 	          ),
@@ -51211,7 +51495,7 @@
 	            ),
 	            React.createElement(
 	              'td',
-	              null,
+	              { id: 'sCountry' },
 	              this.props.profile.country
 	            )
 	          ),
@@ -51281,7 +51565,7 @@
 	            React.createElement(
 	              'td',
 	              null,
-	              'email@gmail.com'
+	              this.props.profile.email
 	            )
 	          ),
 	          React.createElement(
@@ -51416,7 +51700,7 @@
 	                ),
 	                React.createElement(
 	                  'ul',
-	                  { className: 'dropdown-menu' },
+	                  { className: 'dropdown-menu', id: 'dropdownstates' },
 	                  listStateItems
 	                )
 	              )
@@ -51450,7 +51734,7 @@
 	                ),
 	                React.createElement(
 	                  'ul',
-	                  { className: 'dropdown-menu' },
+	                  { className: 'dropdown-menu', id: 'dropdowncities' },
 	                  listCitiesItems
 	                )
 	              )
@@ -51630,10 +51914,9 @@
 	      });
 	      $('.bank-details').removeClass('hide');
 	      $('.bank-details-edit').addClass('hide');
+	      self.props.config.notification._addNotification(window.event, "success", "Updated details successfully!!!");
 	    }, function (result) {
-	      var message = JSON.parse(result.responseText);
-	      console.log(message);
-	      // self.props.config.notification._addNotification(window.event, "error", message.message);
+	      self.props.config.notification._addNotification(window.event, "error", JSON.stringify(result));
 	    });
 	  },
 	  showEdit: function showEdit() {
@@ -51977,7 +52260,7 @@
 	              React.createElement('img', { src: 'images/icon-home.png' }),
 	              React.createElement(
 	                'a',
-	                { href: '/#/dashboard' },
+	                { href: '/#/supplier/dashboard' },
 	                'Dashboard'
 	              )
 	            ),
@@ -51986,7 +52269,7 @@
 	              null,
 	              React.createElement(
 	                'a',
-	                { href: '/#/listings' },
+	                { href: '/#/supplier/listings' },
 	                'Listing'
 	              )
 	            ),
@@ -52085,6 +52368,7 @@
 	          { className: 'container' },
 	          React.createElement(TabVariantEditComponent, { variantDates: this.state.variantDates,
 	            config: this.props.route.config,
+	            notification: this.props.route.notification,
 	            listObj: this,
 	            listing: this.state.listing })
 	        )
@@ -52109,6 +52393,8 @@
 	var _react2 = _interopRequireDefault(_react);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 	var CalendarComponent = __webpack_require__(464);
 	var GregorianCalendar = __webpack_require__(556);
@@ -52160,29 +52446,48 @@
 	      all_weekends: '',
 	      seed: {
 	        inventories: []
-	      }
+	      },
+	      fixed_pricings: {}
+
 	    };
 	  },
 	  getNextDate: function getNextDate() {
 	    var date = new GregorianCalendar(); // defaults to en_US
 	    var now = new Date();
-	    var current = new Date(now.getFullYear(), now.getMonth() + this.state.calendarDates.length + 1, 1);
+	    console.log(now.getTimezoneOffset());
+	    var current = new Date(Date.UTC(now.getFullYear(), now.getMonth() + this.state.calendarDates.length + 1, 1, 0, 0, 0));
 	    date.setTime(current);
 	    var arrayDates = this.state.calendarDates;
 	    arrayDates.push(date);
+	    var date1 = new GregorianCalendar(); // defaults to en_US
+	    console.log(now.getMonth() + ">>>>>=====" + this.state.calendarDates.length + ">>>>>>>");
+	    var current = new Date(now.getFullYear(), now.getMonth() + this.state.calendarDates.length + 1, 1);
+	    date1.setTime(current);
+	    arrayDates.push(date1);
+	    var date2 = new GregorianCalendar(); // defaults to en_US
+
+	    var current = new Date(now.getFullYear(), now.getMonth() + this.state.calendarDates.length + 1, 1);
+	    date2.setTime(current);
+	    arrayDates.push(date2);
+	    for (var i = 3; i < 12; i++) {
+	      var date3 = new GregorianCalendar(); // defaults to en_US
+
+	      var current = new Date(now.getFullYear(), now.getMonth() + this.state.calendarDates.length + 1, 1);
+	      date3.setTime(current);
+	      arrayDates.push(date3);
+	    }
 	    this.setState({
 	      calendarDates: arrayDates
 	    });
 	  },
 	  componentDidMount: function componentDidMount() {
 	    this.getNextDate();
-	    this.getNextDate();
-	    var self = this;
-	    $('.scroll-bar').bind('scroll', function () {
-	      if ($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight) {
-	        self.getNextDate();
-	      }
+	    $('#container1').mCustomScrollbar({
+	      theme: "dark-3",
+	      alwaysShowScrollbar: 2
 	    });
+	    var self = this;
+
 	    $(document).on('click', '.edit-link', function (e) {
 	      $(e.target).closest('td').find('.gray-section').hide();
 	      $(e.target).closest('td').find('.gray-section2').show();
@@ -52213,27 +52518,44 @@
 	      };
 
 	      console.log(JSON.stringify(data));
+
 	      self.props.config().httpInterceptor(self.props.config().url().VARIANT + self.props.listObj.getUrls().listingid + '/add_update_date_capacity?', 'POST', JSON.stringify(data), header, self.props.config().getClientInfo()).then(function (result) {
+	        var response = result;
+	        if (response.success) {
+	          $(e.target).closest('td').find('.gray-section').show();
 
-	        $(e.target).closest('td').find('.gray-section').show();
+	          $(e.target).closest('td').find('.gray-section2').hide();
+	          $(e.target).addClass('hide');
+	          $(e.target).prev().removeClass('hide');
 
-	        $(e.target).closest('td').find('.gray-section2').hide();
-	        $(e.target).addClass('hide');
-	        $(e.target).prev().removeClass('hide');
-	      }, function () {});
+	          var variantDates = self.state.variantDates;
+	          variantDates[datesParams.date] = { capacity: datesParams.seats, is_customized_date: true, sold_count: 0 };
+	          self.setState({
+	            variantDates: variantDates
+	          });
+	          self.props.notification._addNotification(window.event, 'success', "Updated successfully!!!");
+	        } else {
+	          self.props.notification._addNotification(window.event, 'error', response.message);
+	        }
+	      }, function (result) {
+	        var message = JSON.parse(result.responseText);
+	        self.props.notification._addNotification(window.event, 'error', message.message);
+	      });
 	    });
 
 	    $('.rc-calendar-table').first().find('td').each(function (i) {
 	      console.log('step' + i);
 	      if (parseInt($(this).find('div').html()) < parseInt($('.rc-calendar-today').find('div').html())) {
-	        $(this).html('<div class="rc-calendar-date"><a class="link" href="#">Edit</a><p class=" grey">' + $(this).find('div').html() + '</p></div>');
+	        $(this).html('<div class="rc-calendar-date"><a class="link" href="#">Edit</a><p class=" grey">' + new moment($(this).prop("title")).format("D") + '</p></div>');
 	      } else {
-	        $(this).html('<div class="rc-calendar-date"><a class="link" href="#">Edit</a><p>' + $(this).find('div').html() + '</p><div class="gray-section"><div class="total">0/0</div></div><div class="gray-section2"><div class="total">Total seats <input type="text" ></div></div></div>');
+	        $(this).html('<div class="rc-calendar-date"><a class="link" href="#">Edit</a><p>' + new moment($(this).prop("title")).format("D") + '</p><div class="gray-section"><div class="total">0/0</div></div><div class="gray-section2"><div class="total">Total seats <input type="text" ></div></div></div>');
 	      }
 	    });
 	    $('.rc-calendar-table:not(:first)').find('td').each(function (i) {
 
-	      $(this).html('<div class="rc-calendar-date"><a class="link" href="#">Edit</a><p>' + $(this).find('div').html() + '</p><div class="gray-section"><div class="total">0/0</div></div><div class="gray-section2"><div class="total">Total seats <input type="text" ></div></div></div>');
+	      console.log("9-9-");
+	      console.log(new moment($(this).prop("title")).format("D"));
+	      $(this).html('<div class="rc-calendar-date"><a class="link" href="#">Edit</a><p>' + new moment($(this).prop("title")).format("D") + '</p><div class="gray-section"><div class="total">0/0</div></div><div class="gray-section2"><div class="total">Total seats <input type="text" ></div></div></div>');
 	    });
 	    console.log(this.props.listObj.getUrls());
 	    var urlparams = {};
@@ -52247,14 +52569,42 @@
 
 	      var arrayDays = ['all_days', 'all_weekdays', 'all_weekends', 'all_mondays', 'all_tuesdays', 'all_wednesdays', 'all_thursdays', 'all_fridays', 'all_saturdays', 'all_sundays'];
 	      var arrayDaysCount = [[1, 2, 3, 4, 5, 6, 7], [1, 2, 3, 4, 5], [6, 7], 1, 2, 3, 4, 5, 6, 7];
+	      var flagAllDays = false;
 	      $.each(result.variants[self.props.listObj.getUrls().variantid].pattern, function (key, val) {
+	        console.log("variant", result);
 	        if (val.enabled) {
 	          if ($.isArray(arrayDaysCount[arrayDays.indexOf(key)])) {
-	            self.state.weekdaysFlag = arrayDaysCount[arrayDays.indexOf(key)];
-	            self.state['check_' + key] = 'checked';
-	            self.state[key] = val.capacity;
+	            var _self$setState;
+
+	            if (key == "all_days") {
+	              $('.weekday').prop('checked', 'checked');
+	              flagAllDays = true;
+	            } else if (key == "all_weekdays") {
+	              $('.weekday[value=1]').prop('checked', 'checked');
+	              $('.weekday[value=2]').prop('checked', 'checked');
+	              $('.weekday[value=3]').prop('checked', 'checked');
+	              $('.weekday[value=4]').prop('checked', 'checked');
+	              $('.weekday[value=5]').prop('checked', 'checked');
+	            } else {
+	              $('.weekday[value=6]').prop('checked', 'checked');
+	              $('.weekday[value=7]').prop('checked', 'checked');
+	            }
+	            var checkSelection = 'check_' + key;
+	            self.setState((_self$setState = {
+	              weekdaysFlag: arrayDaysCount[arrayDays.indexOf(key)]
+	            }, _defineProperty(_self$setState, checkSelection, true), _defineProperty(_self$setState, key, val.capacity), _self$setState));
+	            $('#' + key).addClass('active');
+
+	            $('.weekday').next().next().val(val.capacity);
 	          } else {
-	            self.state.weekdaysFlag.push(arrayDaysCount[arrayDays.indexOf(key)]);
+	            if (!flagAllDays) {
+
+	              var weekdaysFlag = self.state.weekdaysFlag;
+	              weekdaysFlag.push(arrayDaysCount[arrayDays.indexOf(key)]);
+	              self.setState({
+	                weekdaysFlag: weekdaysFlag
+	              });
+	            }
 	            $('.weekday[value=\'' + arrayDaysCount[arrayDays.indexOf(key)] + '\']').prop('checked', 'checked');
 	            $('.weekday[value=\'' + arrayDaysCount[arrayDays.indexOf(key)] + '\']').next().next().val(val.capacity);
 	          }
@@ -52270,10 +52620,9 @@
 	      });
 	    }, function (result) {
 	      var message = JSON.parse(result.responseText);
-	      self.props.route.notification._addNotification(window.event, 'error', message.message);
+	      self.props.notification._addNotification(window.event, 'error', message.message);
 	    });
 
-	    console.log('======================');
 	    var self1 = this;
 
 	    $(document).on('click', '.weekday', function (e) {
@@ -52286,10 +52635,11 @@
 	          var weeks = self.state.weekdaysFlag;
 	          weeks.push(parseInt($(e.target).val()));
 	        }
-
+	        $('.patterns').removeClass('active');
 	        self.setState({
 	          weekdaysFlag: weeks
 	        });
+
 	        //   $(e.target).closest(".rc-calendar-table").find("td").each(function(i) {
 	        //     if(parseInt($(self).val()) == parseInt(moment($(this).prop("title")).isoWeekday())){
 	        //       console.log($(this).find("div").html());
@@ -52309,17 +52659,49 @@
 	          // });
 
 	          if (self.state.weekdaysFlag.indexOf(parseInt($(e.target).val())) != -1) {
-	            var weeks = self.state.weekdaysFlag;
-	            weeks.splice(weeks.indexOf(parseInt($(e.target).val())), 1);
+	            self.state.weekdaysFlag.splice(self.state.weekdaysFlag.indexOf(parseInt($(e.target).val())), 1);;
+	            console.log(self.state.weekdaysFlag);
 	          }
-
-	          self.setState({
-	            weekdaysFlag: weeks
-	          });
+	          if (parseInt($(e.target).val()) > 0 && parseInt($(e.target).val()) < 6) {
+	            self.state.check_all_weekdays = false;
+	            self.state.check_all_days = false;
+	          } else if (parseInt($(e.target).val()) == 6 || parseInt($(e.target).val()) == 7) {
+	            self.state.check_all_weekends = false;
+	            self.state.check_all_days = false;
+	          }
+	          $('.patterns').removeClass('active');
+	          $('.patterns input[type="radio"]').prop("checked", false);
 	        }
+	      if (self.state.weekdaysFlag.length == 7) {
+	        $(".patterns[data-pattern='1']").addClass("active");
+	        $(".patterns[data-pattern='1'] input[type='radio']").prop("checked", true);
+	      }
+	      if (self.state.weekdaysFlag.length == 5 && $.inArray(6, self.state.weekdaysFlag) == -1 && $.inArray(7, self.state.weekdaysFlag) == -1) {
+	        $(".patterns[data-pattern='3']").addClass("active");
+	        $(".patterns[data-pattern='3'] input[type='radio']").prop("checked", true);
+	      }
+	      if (self.state.weekdaysFlag.length == 2 && $.inArray(6, self.state.weekdaysFlag) != -1 && $.inArray(7, self.state.weekdaysFlag) != -1) {
+	        $(".patterns[data-pattern='2']").addClass("active");
+	        $(".patterns[data-pattern='2'] input[type='radio']").prop("checked", true);
+	      }
+	      $('.rc-calendar-table').first().find('td').each(function (i) {
+	        if (self.state.variantDates[moment($(this).prop('title')).format('YYYY-MM-DD')] != undefined && !self.state.variantDates[moment($(this).prop('title')).format('YYYY-MM-DD')].is_customized_date) {
+	          $(this).removeClass('active');
+	        }
+
+	        if (self.state.weekdaysFlag.indexOf(parseInt(moment($(this).prop('title')).isoWeekday())) != -1) {
+
+	          if (!$(this).find('p').hasClass('grey')) {
+
+	            $(this).addClass('active');
+	          }
+	        }
+	      });
 	    });
 	    var self = this;
 	    $('#repeat_action').on('click', function (e) {
+	      $(".pace").addClass("pace-inactive").removeClass("pace-active");
+	      $(e.target).css("disabled", true);
 	      if ($('#repeat_action').is(':checked')) {
 
 	        self.setState({
@@ -52331,15 +52713,18 @@
 	        });
 	      }
 	    });
-	    $('.patterns').on('click', function (e) {
+
+	    $('.patterns input[type="radio"]').on('click', function (e) {
 	      var repeat = ':first';
-	      self.state.check_all_days = false;
-	      self.state.check_all_weekdays = false;
-	      self.state.check_all_weekends = false;
+	      self.setState({
+	        check_all_days: false,
+	        check_all_weekdays: false,
+	        check_all_weekends: false
+	      });
 	      $('.patterns').removeClass('active');
-	      $('.patterns').find('input').prop('checked', false);
-	      $(this).find('input').prop('checked', 'checked');
-	      $(this).addClass('active');
+	      $(e.target).prop('checked', false);
+	      $(e.target).prop('checked', true);
+	      $(e.target).closest(".patterns").addClass('active');
 	      // $(".rc-calendar-table"+repeat+" .rc-calendar-column-header input").each(function(i){
 	      //         if($(this).is(":checked")){
 	      //             $(this).trigger("click");
@@ -52348,30 +52733,25 @@
 	      //     });
 
 	      //$(".rc-calendar-table"+repeat).find("td").removeClass("active");
-	      if ($(this).data('pattern') == '1') {
+	      if ($(e.target).closest(".patterns").data('pattern') == '1') {
 	        self.setState({
-	          patternFlag: 1
+	          patternFlag: 1,
+	          weekdaysFlag: [1, 2, 3, 4, 5, 6, 7],
+	          check_all_days: true
 	        });
-	        self.setState({
-	          weekdaysFlag: [1, 2, 3, 4, 5, 6, 7]
-
-	        });
-	        self.state.check_all_days = 'checked';
 	        // $(".rc-calendar-table"+repeat+" .rc-calendar-column-header input").each(function(i){
 	        //     if(!$(this).is(":checked")){
 	        //         $(this).trigger("click");
 	        //     }
 
 	        // });
-	      } else if ($(this).data('pattern') == '2') {
+	      } else if ($(e.target).closest(".patterns").data('pattern') == '2') {
 	          self.setState({
-	            patternFlag: 2
+	            patternFlag: 2,
+	            weekdaysFlag: [6, 7],
+	            check_all_weekends: true
 	          });
-	          self.setState({
-	            weekdaysFlag: [6, 7]
 
-	          });
-	          self.state.check_all_weekends = 'checked';
 	          // if(!$(".rc-calendar-table"+repeat+" .rc-calendar-column-header input[value='7']").is(":checked")){
 	          //     $(".rc-calendar-table"+repeat+" .rc-calendar-column-header input[value='7']").trigger("click");
 	          // }
@@ -52380,13 +52760,10 @@
 	          // }
 	        } else {
 	            self.setState({
-	              patternFlag: 3
+	              patternFlag: 3,
+	              weekdaysFlag: [1, 2, 3, 4, 5],
+	              check_all_weekdays: true
 	            });
-	            self.setState({
-	              weekdaysFlag: [1, 2, 3, 4, 5]
-
-	            });
-	            self.state.check_all_weekdays = 'checked';
 	            // if(!$(".rc-calendar-table"+repeat+" .rc-calendar-column-header input[value='1']").is(":checked")){
 	            //     $(".rc-calendar-table"+repeat+" .rc-calendar-column-header input[value='1']").trigger("click");
 	            // }
@@ -52412,10 +52789,10 @@
 	  redirectVariantEdit: function redirectVariantEdit() {
 	    window.location.href = '/#/listingDetails/' + this.props.listObj.getUrls().listingid;
 	  },
+
 	  saveAndRedirectVariantEdit: function saveAndRedirectVariantEdit() {
 	    var self = this;
 	    var data = this.props.config().getClientInfo();
-
 	    var array = {};
 	    $('.price-edit input').each(function () {
 	      console.log($(this).data('id'));
@@ -52423,17 +52800,27 @@
 	        mrp: $(this).val()
 	      };
 	    });
+
 	    data['fixed_pricings'] = array;
+	    data = JSON.stringify(data);
 	    var header = {
 	      'Content-Type': 'application/json'
 	    };
 	    this.props.config().httpInterceptor(this.props.config().url().VARIANT + this.props.listObj.getUrls().listingid + '/update_fixed_pricings?', 'POST', data, header, this.props.config().getClientInfo()).then(function (result) {
-	      window.location.href = '/#/listingDetails/' + self.props.listObj.getUrls().listingid;
+	      self.savePatternAndRedirect();
 	    }, function (result) {
 	      var message = JSON.parse(result.responseText);
-	      self.props.route.notification._addNotification(window.event, 'error', message.message);
+	      self.props.notification._addNotification(window.event, 'error', message.message);
 	    });
 	  },
+	  componentDidUpdate: function componentDidUpdate() {
+	    $(".pace").addClass("pace-active").removeClass("pace-inactive");
+	  },
+	  onChangeCapacityValue: function onChangeCapacityValue(type, e) {
+	    console.log(type, e.target.value);
+	    this.setState(_defineProperty({}, type, e.target.value));
+	  },
+
 	  render: function render() {
 	    var self = this;
 
@@ -52446,12 +52833,13 @@
 	          var inventoryObj = _.where(self.state.seed.inventories, {
 	            id: val.inventory_id
 	          });
+	          //TODO check if val.price or val.mrp ??
 	          return _react2.default.createElement(
 	            'p',
 	            { className: 'price-edit' },
 	            _react2.default.createElement('input', { type: 'text',
 	              placeholder: 'Amount',
-	              value: val.price,
+	              defaultValue: val.mrp,
 	              'data-id': val.id }),
 	            '  ' + inventoryObj[0].name
 	          );
@@ -52474,7 +52862,7 @@
 	    }
 
 	    var calendarItems = $.map(this.state.calendarDates, function (item) {
-
+	      console.log(item);
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'calendar' },
@@ -52511,51 +52899,54 @@
 	                { className: 'seat-options' },
 	                _react2.default.createElement(
 	                  'div',
-	                  { className: 'item patterns', 'data-pattern': '1' },
+	                  { id: 'all_days', className: 'item patterns', 'data-pattern': '1' },
 	                  _react2.default.createElement('input', { type: 'radio',
 	                    name: 'seat-option',
 	                    id: 'cb1',
 	                    checked: this.state.check_all_days }),
 	                  _react2.default.createElement(
 	                    'label',
-	                    { 'for': 'cb1' },
+	                    { htmlFor: 'cb1' },
 	                    'All Days'
 	                  ),
 	                  _react2.default.createElement('input', { type: 'text',
 	                    placeholder: 'Seats',
-	                    value: this.state.all_days })
+	                    value: this.state.all_days,
+	                    onChange: this.onChangeCapacityValue.bind(this, 'all_days') })
 	                ),
 	                _react2.default.createElement(
 	                  'div',
-	                  { className: 'item patterns', 'data-pattern': '2' },
+	                  { id: 'all_weekends', className: 'item patterns', 'data-pattern': '2' },
 	                  _react2.default.createElement('input', { type: 'radio',
 	                    name: 'seat-option',
 	                    id: 'cb2',
 	                    checked: this.state.check_all_weekends }),
 	                  _react2.default.createElement(
 	                    'label',
-	                    { 'for': 'cb2' },
+	                    { htmlFor: 'cb2' },
 	                    'All Weekends'
 	                  ),
 	                  _react2.default.createElement('input', { type: 'text',
 	                    placeholder: 'Seats',
-	                    value: this.state.all_weekends })
+	                    value: this.state.all_weekends,
+	                    onChange: this.onChangeCapacityValue.bind(this, 'all_weekends') })
 	                ),
 	                _react2.default.createElement(
 	                  'div',
-	                  { className: 'item patterns', 'data-pattern': '3' },
+	                  { id: 'all_weekdays', className: 'item patterns', 'data-pattern': '3' },
 	                  _react2.default.createElement('input', { type: 'radio',
 	                    name: 'seat-option',
 	                    id: 'cb3',
 	                    checked: this.state.check_all_weekdays }),
 	                  _react2.default.createElement(
 	                    'label',
-	                    { 'for': 'cb3' },
+	                    { htmlFor: 'cb3' },
 	                    'All Weekdays'
 	                  ),
 	                  _react2.default.createElement('input', { type: 'text',
 	                    placeholder: 'Seats',
-	                    value: this.state.all_weekdays })
+	                    value: this.state.all_weekdays,
+	                    onChange: this.onChangeCapacityValue.bind(this, 'all_weekdays') })
 	                )
 	              ),
 	              _react2.default.createElement(
@@ -52568,13 +52959,13 @@
 	                  _react2.default.createElement(
 	                    'label',
 	                    { htmlFor: 'repeat_action' },
-	                    'Repeat for upcoming months'
+	                    'Repeat for next 12 months'
 	                  )
 	                )
 	              ),
 	              _react2.default.createElement(
 	                'div',
-	                { className: 'scroll-bar' },
+	                { className: 'scroll-bar', id: 'container1' },
 	                calendarItems
 	              ),
 	              _react2.default.createElement('hr', null),
@@ -52595,7 +52986,56 @@
 	        )
 	      )
 	    );
+	  },
+	  savePatternAndRedirect: function savePatternAndRedirect() {
+	    var self = this;
+	    var data = self.props.config().getClientInfo();
+	    data['variants_date_capacity'] = {};
+	    var patternFlagTemp = false;
+	    var patternParams = {};
+	    if (self.state.check_all_days) {
+	      patternParams["all_days"] = self.state.check_all_days;
+	      patternParams["all_days_seats"] = parseInt(self.state.all_days) || 0;
+	      patternFlagTemp = true;
+	    }
+	    if (self.state.check_all_weekends) {
+	      patternParams["all_weekends"] = self.state.check_all_weekends;
+	      patternParams["all_weekends_seats"] = parseInt(self.state.all_weekends) || 0;
+	      patternFlagTemp = true;
+	    }
+	    if (self.state.check_all_weekdays) {
+	      patternParams["all_weekdays"] = self.state.check_all_weekdays;
+	      patternParams["all_weekdays_seats"] = parseInt(self.state.all_weekdays) || 0;
+	      patternFlagTemp = true;
+	    }
+	    var weekdays = [1, 2, 3, 4, 5, 6, 7];
+	    var weekdaysInWords = ['all_mondays', 'all_tuesdays', 'all_wednesdays', 'all_thursdays', 'all_fridays', 'all_saturdays', 'all_sundays'];
+	    var weekdaysInWordsSeats = ['all_mondays_seats', 'all_tuesdays_seats', 'all_wednesdays_seats', 'all_thursdays_seats', 'all_fridays_seats', 'all_saturdays_seats', 'all_sundays_seats'];
+	    if (!patternFlagTemp) {
+	      for (var keyDay in self.state.weekdaysFlag) {
+	        patternParams[weekdaysInWords[weekdays.indexOf(self.state.weekdaysFlag[keyDay])]] = true;
+	        patternParams[weekdaysInWordsSeats[weekdays.indexOf(self.state.weekdaysFlag[keyDay])]] = $(".weekday[value='" + self.state.weekdaysFlag[keyDay] + "']").next().next().val() || 0;
+	      }
+	    }
+
+	    data['variants_date_capacity'][self.props.listObj.getUrls().variantid] = {
+	      "pattern": patternParams,
+	      "dates": []
+	    };
+	    var header = {
+	      'Content-Type': 'application/json'
+	    };
+
+	    console.log(JSON.stringify(data));
+
+	    self.props.config().httpInterceptor(self.props.config().url().VARIANT + self.props.listObj.getUrls().listingid + '/add_update_date_capacity?', 'POST', JSON.stringify(data), header, self.props.config().getClientInfo()).then(function (result) {
+	      self.props.notification._addNotification(window.event, 'success', "Updated Successfully !!!");
+	    }, function (result) {
+	      var message = JSON.parse(result.responseText);
+	      self.props.notification._addNotification(window.event, 'error', message.message);
+	    });
 	  }
+
 	});
 
 	module.exports = TabVariantEditComponent;
@@ -52647,12 +53087,129 @@
 	  componentDidMount: function componentDidMount() {
 	    $('.rc-calendar-next-month-btn-day').hide();
 	    $('.rc-calendar-full-header-switcher').hide();
-	    if ($('.rc-calendar-table').length == 2) {
+	    if ($('.rc-calendar-table').length == 3) {
 	      $('.rc-calendar-table').first().find('th').each(function (i) {
 	        var weekday = i == 0 ? 7 : i;
-	        $(this).html('<span class=\'rc-calendar-column-header item\'><input type=\'checkbox\' value=\'' + weekday + '\' class=\'weekday\' id=\'week1_' + i + '\'><label for=\'week1_' + i + '\'> ' + moment().day($(this).prop('title')).format('ddd') + '</label><input type=\'text\' placeholder=\'Seats\'></span>');
+	        var objHTML = _react2.default.createElement(
+	          'span',
+	          { className: 'rc-calendar-column-header item' },
+	          _react2.default.createElement('input', { type: 'checkbox', value: weekday, className: 'weekday', id: 'week1_' + i }),
+	          _react2.default.createElement(
+	            'label',
+	            { htmlFor: 'week1_' + i },
+	            ' ',
+	            moment().day($(this).prop('title')).format('ddd')
+	          ),
+	          _react2.default.createElement('input', { type: 'text', placeholder: 'Seats' })
+	        );
+	        _reactDom2.default.render(objHTML, this);
 	      });
 	    }
+
+	    $('.rc-calendar-table:first').find('td').each(function (i) {
+	      var DateDay = parseInt(new moment($(this).prop("title"), "YYYY-MM-D", false).format("D"));
+	      var today = parseInt(new moment($('.rc-calendar-today').prop("title"), "YYYY-MM-D", false).format("D"));
+	      if (DateDay < today) {
+	        var objHTML = _react2.default.createElement(
+	          'div',
+	          { className: 'rc-calendar-date' },
+	          _react2.default.createElement(
+	            'a',
+	            { className: 'link', href: '#' },
+	            'Edit'
+	          ),
+	          _react2.default.createElement(
+	            'p',
+	            { className: ' grey' },
+	            DateDay
+	          )
+	        );
+	        _reactDom2.default.render(objHTML, this);
+	      } else {
+	        var objHTML = _react2.default.createElement(
+	          'div',
+	          { className: 'rc-calendar-date' },
+	          _react2.default.createElement(
+	            'a',
+	            { className: 'link edit-link', href: 'javascript:void(0)' },
+	            'Edit'
+	          ),
+	          _react2.default.createElement(
+	            'a',
+	            { className: 'link save-link hide', href: 'javascript:void(0)' },
+	            'Save'
+	          ),
+	          _react2.default.createElement(
+	            'p',
+	            null,
+	            DateDay
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'gray-section' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'total' },
+	              '0/0'
+	            )
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'gray-section2' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'total' },
+	              'Total seats ',
+	              _react2.default.createElement('input', { type: 'text' })
+	            )
+	          )
+	        );
+	        _reactDom2.default.render(objHTML, this);
+	      }
+	    });
+
+	    $('.rc-calendar-table:not(:first)').find('td').each(function (i) {
+	      var DateDay = new moment($(this).prop("title"), "YYYY-MM-D", false).format("D");
+	      var objHTML = _react2.default.createElement(
+	        'div',
+	        { className: 'rc-calendar-date' },
+	        _react2.default.createElement(
+	          'a',
+	          { className: 'link edit-link', href: 'javascript:void(0)' },
+	          'Edit'
+	        ),
+	        _react2.default.createElement(
+	          'a',
+	          { className: 'link save-link hide', href: 'javascript:void(0)' },
+	          'Save'
+	        ),
+	        _react2.default.createElement(
+	          'p',
+	          null,
+	          DateDay
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'gray-section' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'total' },
+	            '0/0'
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'gray-section2' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'total' },
+	            'Total seats ',
+	            _react2.default.createElement('input', { type: 'text' })
+	          )
+	        )
+	      );
+	      _reactDom2.default.render(objHTML, this);
+	    });
 
 	    $(document).off('click', 'td').on('click', 'td', function (e) {
 	      if (moment($(this).prop('title')).unix() >= moment($('.rc-calendar-today').prop('title')).unix()) {
@@ -52664,16 +53221,8 @@
 	    });
 	  },
 	  render: function render() {
-	    console.log(this.props.weekdaysFlag);
 	    var self = this;
-	    $('.rc-calendar-table').find('td').each(function (i) {
 
-	      if (parseInt($(this).find('div').html()) < parseInt($('.rc-calendar-today').find('div').html())) {
-	        $(this).html('<div class="rc-calendar-date"><a class="link" href="#">Edit</a><p class=" grey">' + $(this).find('div').html() + '</p></div>');
-	      } else {
-	        $(this).html('<div class="rc-calendar-date"><a class="link edit-link" href="javascript:void(0)">Edit</a><a class="link save-link hide" href="javascript:void(0)">Save</a><p>' + $(this).find('div').html() + '</p><div class="gray-section"><div class="total">0/0</div></div><div class="gray-section2"><div class="total">Total seats <input type="text" ></div></div></div>');
-	      }
-	    });
 	    console.log('step5');
 	    $('.rc-calendar-table').find('td').each(function (i) {
 	      $(this).removeClass('active');
@@ -52683,19 +53232,18 @@
 	      $('.rc-calendar-table').find('td').each(function (i) {
 	        console.log(self.props.weekdaysFlag.indexOf(parseInt(moment($(this).prop('title')).isoWeekday())));
 	        $(this).removeClass('active');
-	        if (self.props.variantDates[moment($(this).prop('title')).format('YYYY-MM-DD')]) {
-	          $(this).find('.gray-section .total').html(self.props.variantDates[moment($(this).prop('title')).format('YYYY-MM-DD')].sold_count + '/' + self.props.variantDates[moment($(this).prop('title')).format('YYYY-MM-DD')].capacity);
-	          $(this).find('.gray-section2 .total input').val(self.props.variantDates[moment($(this).prop('title')).format('YYYY-MM-DD')].capacity);
+	        if (self.props.variantDates[moment($(this).prop('title'), "YYYY-MM-D").format('YYYY-MM-DD', false)]) {
+	          $(this).find('.gray-section .total').html(self.props.variantDates[moment($(this).prop('title'), "YYYY-MM-D").format('YYYY-MM-DD')].sold_count + '/' + self.props.variantDates[moment($(this).prop('title'), "YYYY-MM-D").format('YYYY-MM-DD')].capacity);
+	          $(this).find('.gray-section2 .total input').val(self.props.variantDates[moment($(this).prop('title'), "YYYY-MM-D").format('YYYY-MM-DD')].capacity);
 
-	          if (self.props.variantDates[moment($(this).prop('title')).format('YYYY-MM-DD')].is_customized_date) {
+	          if (self.props.variantDates[moment($(this).prop('title'), "YYYY-MM-D").format('YYYY-MM-DD', false)].is_customized_date) {
 	            $(this).addClass('active');
 	          }
 	        }
 
-	        if (self.props.weekdaysFlag.indexOf(parseInt(moment($(this).prop('title')).isoWeekday())) != -1) {
+	        if (self.props.weekdaysFlag.indexOf(parseInt(moment($(this).prop('title'), "YYYY-MM-D").isoWeekday())) != -1) {
 	          console.log('step2');
 	          if (!$(this).find('p').hasClass('grey')) {
-	            console.log(self.props.weekdaysFlag.indexOf(parseInt(moment($(this).prop('title')).isoWeekday())));
 	            $(this).addClass('active');
 	          }
 	        }
@@ -52705,7 +53253,16 @@
 	      $('.rc-calendar-table').first().find('td').each(function (i) {
 	        $(this).removeClass('active');
 
-	        if (self.props.weekdaysFlag.indexOf(parseInt(moment($(this).prop('title')).isoWeekday())) != -1) {
+	        if (self.props.variantDates[moment($(this).prop('title'), "YYYY-MM-D").format('YYYY-MM-DD', false)]) {
+	          $(this).find('.gray-section .total').html(self.props.variantDates[moment($(this).prop('title'), "YYYY-MM-D").format('YYYY-MM-DD')].sold_count + '/' + self.props.variantDates[moment($(this).prop('title'), "YYYY-MM-D").format('YYYY-MM-DD')].capacity);
+	          $(this).find('.gray-section2 .total input').val(self.props.variantDates[moment($(this).prop('title'), "YYYY-MM-D").format('YYYY-MM-DD')].capacity);
+
+	          if (self.props.variantDates[moment($(this).prop('title'), "YYYY-MM-D").format('YYYY-MM-DD', false)].is_customized_date) {
+	            $(this).addClass('active');
+	          }
+	        }
+	        console.log(self.props.weekdaysFlag);
+	        if (self.props.weekdaysFlag.indexOf(parseInt(moment($(this).prop('title'), "YYYY-MM-D").isoWeekday())) != -1) {
 
 	          if (!$(this).find('p').hasClass('grey')) {
 
@@ -67693,13 +68250,13 @@
 	    var detailsItems = this.state.listing.tours.map(function (items) {
 	      return React.createElement(
 	        'div',
-	        { className: 'col-sm-4 pointer', onClick: function onClick() {
+	        { className: 'col-sm-4 pointer tours-padding', onClick: function onClick() {
 	            return self.showDetails(items.id);
 	          } },
 	        React.createElement(
 	          'div',
 	          { className: 'listing-card' },
-	          React.createElement('img', { src: items.nearest_metro_city.thumbnail_image.size_large }),
+	          React.createElement('img', { src: items.thumbnail_image ? items.thumbnail_image.size_large : "" }),
 	          React.createElement(
 	            'div',
 	            { className: 'text' },
@@ -67761,7 +68318,7 @@
 	                null,
 	                React.createElement('i', { className: 'fa fa-inr', 'aria-hidden': 'true' }),
 	                ' ',
-	                items.price
+	                items.total_bookings_amount.toFixed(2)
 	              )
 	            )
 	          )
@@ -67787,7 +68344,7 @@
 	              React.createElement('img', { src: 'images/icon-home.png' }),
 	              React.createElement(
 	                'a',
-	                { href: '/#/dashboard' },
+	                { href: '/#/supplier/dashboard' },
 	                'Dashboard'
 	              )
 	            ),
@@ -67796,7 +68353,7 @@
 	              null,
 	              React.createElement(
 	                'a',
-	                { href: '/#/listings' },
+	                { href: '/#/supplier/listings' },
 	                'Listing'
 	              )
 	            )
@@ -67856,9 +68413,11 @@
 	      listing: {
 	        description_details: {},
 	        reviews: [],
+	        average_rating: 0,
 	        variants: [],
 	        feature_ids: [],
-	        sub_category_ids: []
+	        sub_category_ids: [],
+	        itineraries: {}
 	      },
 	      variantDates: [{}],
 	      Tabsheader: ['Overview', 'Details', 'Variants', 'Reviews'],
@@ -67961,7 +68520,7 @@
 	              _react2.default.createElement('img', { src: 'images/icon-home.png' }),
 	              _react2.default.createElement(
 	                'a',
-	                { href: '/#/dashboard' },
+	                { href: '/#/supplier/dashboard' },
 	                'Dashboard'
 	              )
 	            ),
@@ -67970,7 +68529,7 @@
 	              null,
 	              _react2.default.createElement(
 	                'a',
-	                { href: '/#/listings' },
+	                { href: '/#/supplier/listings' },
 	                'Listing'
 	              )
 	            ),
@@ -68005,7 +68564,7 @@
 	                    _react2.default.createElement(
 	                      'span',
 	                      null,
-	                      this.state.listing.average_rating
+	                      this.state.listing.average_rating.toFixed(1)
 	                    ),
 	                    this.state.listing.reviews_count,
 	                    ' Reviews'
@@ -68053,7 +68612,7 @@
 	                    'p',
 	                    { className: 'price' },
 	                    _react2.default.createElement('i', { className: 'fa fa-inr', 'aria-hidden': 'true' }),
-	                    this.state.listing.price
+	                    this.state.listing.mrp
 	                  )
 	                )
 	              )
@@ -68229,7 +68788,12 @@
 	        'div',
 	        { className: 'item2' },
 	        subCategories
-	      )
+	      ),
+	      React.createElement('br', null),
+	      React.createElement('br', null),
+	      React.createElement('br', null),
+	      React.createElement('br', null),
+	      React.createElement('br', null)
 	    );
 	  }
 
@@ -68254,7 +68818,38 @@
 	  render: function render() {
 	    console.log(this.props.listing);
 	    var self = this;
-	    var details = Object.keys(this.props.listing.description_details).map(function (item) {
+
+	    var dayItenary = Object.keys(this.props.listing.itineraries).map(function (item) {
+	      var details = Object.keys(self.props.listing.itineraries[item].data).map(function (dataItem) {
+	        return React.createElement(
+	          'p',
+	          null,
+	          self.props.listing.itineraries[item].data[dataItem]
+	        );
+	      });
+	      return React.createElement(
+	        'div',
+	        null,
+	        React.createElement(
+	          'h4',
+	          { className: '' },
+	          React.createElement('span', null),
+	          self.props.listing.itineraries[item].short_itinerary || self.props.listing.itineraries[item].long_itinerary
+	        ),
+	        details
+	      );
+	    });
+	    console.log("333---");
+	    console.log(Object.keys(this.props.listing.itineraries).length);
+	    if (Object.keys(this.props.listing.itineraries).length == 0) {
+	      $(".itinerary-label").hide();
+	      $(".itineraries-title").hide();
+	    } else {
+	      $(".itinerary-label").show();
+	      $(".itineraries-title").show();
+	    }
+	    var details = Object.keys(this.props.listing.description_details).map(function (item, index) {
+
 	      var detailsItems = self.props.listing.description_details[item].map(function (items) {
 	        return React.createElement(
 	          'li',
@@ -68262,21 +68857,39 @@
 	          items
 	        );
 	      });
-	      return React.createElement(
-	        'div',
-	        null,
-	        React.createElement('hr', null),
-	        React.createElement(
-	          'h3',
+	      console.log("0900-=-=" + item);
+	      if (index != 0) {
+	        return React.createElement(
+	          'div',
 	          null,
-	          item
-	        ),
-	        React.createElement(
-	          'ul',
-	          { className: 'arrow-list' },
-	          detailsItems
-	        )
-	      );
+	          React.createElement('hr', null),
+	          React.createElement(
+	            'h3',
+	            null,
+	            item
+	          ),
+	          React.createElement(
+	            'ul',
+	            { className: 'arrow-list' },
+	            detailsItems
+	          )
+	        );
+	      } else {
+	        return React.createElement(
+	          'div',
+	          null,
+	          React.createElement(
+	            'h3',
+	            null,
+	            item
+	          ),
+	          React.createElement(
+	            'ul',
+	            { className: 'arrow-list' },
+	            detailsItems
+	          )
+	        );
+	      }
 	    });
 	    return React.createElement(
 	      'div',
@@ -68285,85 +68898,13 @@
 	        id: 'tabDetails' },
 	      React.createElement(
 	        'h3',
-	        null,
+	        { className: 'itinerary-label' },
 	        'Itenary'
 	      ),
 	      React.createElement(
 	        'div',
-	        { className: 'details' },
-	        React.createElement(
-	          'h4',
-	          null,
-	          React.createElement('span', null),
-	          'Arrive Livingstone'
-	        ),
-	        React.createElement(
-	          'p',
-	          null,
-	          'Upon arrival at Livingstone Airport, you will be transferred to the hotel where you will spend that day as you wish to.'
-	        ),
-	        React.createElement(
-	          'p',
-	          null,
-	          'Overnight stay at hotel.'
-	        ),
-	        React.createElement(
-	          'h4',
-	          null,
-	          React.createElement('span', null),
-	          'At Livingstone (Day 2 and Day 3)'
-	        ),
-	        React.createElement(
-	          'p',
-	          null,
-	          'You can use two full days to rest, relax, and take in the sights, sounds and smells of the African adventure.'
-	        ),
-	        React.createElement(
-	          'p',
-	          null,
-	          'Go visit the Devils Pool at the edge of Victoria Falls, walk with the lions, do the Vic Falls tour, abseil, leap off God’s Swing, try out the zip line, or jump off 111 meters from a bridge over the mighty Zambezi.'
-	        ),
-	        React.createElement(
-	          'p',
-	          null,
-	          'Later in the evening, you could go for a sunset cruise on the Zambezi with drinks, and snacks served on board.'
-	        ),
-	        React.createElement(
-	          'p',
-	          null,
-	          'Later, the river trip leader will pop into the hotel and pass out your dry bags and equipment and give you a rundown of your trip, what to pack, what to expect and introduce the guides.'
-	        ),
-	        React.createElement(
-	          'p',
-	          null,
-	          'Overnight stay at hotel in Livingstone.'
-	        ),
-	        React.createElement(
-	          'h4',
-	          null,
-	          React.createElement('span', null),
-	          'Livingstone – White River Rafting on the Zambezi River from Boiling Pot to Rapid 10'
-	        ),
-	        React.createElement(
-	          'p',
-	          null,
-	          'You will have breakfast at the hotel following which the river team will be around to collect you and transport you to the top of the gorge where they will give you your high float jackets, helmets and paddles.'
-	        ),
-	        React.createElement(
-	          'p',
-	          null,
-	          'After lunch on the way, drive to mesmerizing moon landscapes and the Lamayuru monastery, overnight stay in Sham.'
-	        ),
-	        React.createElement(
-	          'p',
-	          null,
-	          'From here you walk down into the gorge through stunning rain-forest to the water’s edge.'
-	        ),
-	        React.createElement(
-	          'p',
-	          null,
-	          'On arrival at the river you will be given a thorough safety briefing and outline safety procedures'
-	        )
+	        { className: 'details itineraries-title' },
+	        dayItenary
 	      ),
 	      details
 	    );
@@ -68468,7 +69009,7 @@
 	        React.createElement(
 	          'p',
 	          null,
-	          'Do you believe in adventure and water sports? Then you need to head on for an exciting trekking and white water rafting experience to the Nishani Motte peak. Nishani is one of the unknown mountain ranges of Coorg, in the Western Ghats.'
+	          item.content
 	        ),
 	        React.createElement(
 	          'ul',
@@ -68504,174 +69045,270 @@
 	var moment = __webpack_require__(244);
 	var _ = __webpack_require__(233);
 	var VariantListing = React.createClass({
-	  displayName: 'VariantListing',
+	    displayName: 'VariantListing',
 
-	  showEditPage: function showEditPage(listingid, variantid) {
-	    window.location.href = '/#/edit-variant/' + listingid + '/' + variantid;
-	  },
+	    showEditPage: function showEditPage(listingid, variantid) {
+	        window.location.href = '/#/edit-variant/' + listingid + '/' + variantid;
+	    },
 
-	  render: function render() {
-	    console.log(this.props.listing);
-
-	    var self = this;
-	    var numberCount = 1;
-	    var details = this.props.listing.variants.map(function (item) {
-
-	      var subVariants = item.sub_variants.map(function (items) {
-	        var subVariantsPrice = $.map(items.fixed_pricings, function (val) {
-	          var inventoryObj = _.where(self.props.seed.inventories, {
-	            id: val.inventory_id
-	          });
-	          console.log(inventoryObj);
-	          return React.createElement(
-	            'div',
-	            null,
-	            React.createElement(
-	              'span',
-	              { className: 'price' },
-	              React.createElement('i', { className: 'fa fa-inr', 'aria-hidden': 'true' }),
-	              val.price
-	            ),
-	            '  ' + inventoryObj[0].name
-	          );
-	        });
-
-	        return React.createElement(
-	          'div',
-	          null,
-	          React.createElement(
-	            'h4',
-	            null,
-	            items.name
-	          ),
-	          React.createElement(
-	            'p',
-	            null,
-	            subVariantsPrice
-	          ),
-	          React.createElement('hr', null)
-	        );
-	      });
-	      console.log('===>>>>>');
-	      console.log(self.props.variantDates);
-	      var datesBlock = $.map(Object.keys(self.props.variantDates), function (item2) {
-	        console.log(self.props.variantDates[item2]);
-	        var id = Object.keys(self.props.variantDates[item2]);
-	        console.log(id[0] + '-' + item.id);
-	        if (id[0] == item.id) {
-	          var datesItems = $.map(Object.keys(self.props.variantDates[item2][item.id].pattern), function (items) {
-	            console.log(items);
-	            if (self.props.variantDates[item2][item.id].pattern[items].enabled) {
-	              return React.createElement(
-	                'div',
-	                { className: 'seat' },
-	                React.createElement(
-	                  'h2',
-	                  null,
-	                  items
-	                ),
-	                React.createElement(
-	                  'p',
-	                  null,
-	                  self.props.variantDates[item2][item.id].pattern[items].sold_count || 'NA',
-	                  React.createElement(
-	                    'span',
-	                    null,
-	                    'Occupied'
-	                  )
-	                ),
-	                React.createElement(
-	                  'p',
-	                  null,
-	                  self.props.variantDates[item2][item.id].pattern[items].capacity || 'NA',
-	                  React.createElement(
-	                    'span',
-	                    null,
-	                    'Total Seats'
-	                  )
-	                )
-	              );
-	            }
-	          });
+	    capitalise: function capitalise(str) {
+	        if (!str || str.length === 0) {
+	            return '';
 	        }
-	        //   if(!$.isEmptyObject(value)){
-	        //     if(value.enabled){
-	        //       return (
-	        //      <div className="seat">
-	        //                     <h2>{key}</h2>
-	        //                     <p>{value.sold_count||"NA"}<span>Occupied</span></p>
-	        //                     <p>{value.capacity ||  "NA"}<span>Total Seats</span></p>
-	        //                 </div>
+	        return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+	    },
+	    humanify: function humanify(str) {
+	        return this.capitalise(str).replace(/_/g, " ");
+	    },
+	    formatDate: function formatDate(date) {
+	        var check = moment(date, 'YYYY/MM/DD');
+	        var days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+	        var dayOfWeek = days[check.isoWeekday()];
+	        var date1 = check.format('D');
+	        var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+	        var month = monthNames[check.format('M')];
+	        return date1 + " " + dayOfWeek + "," + month;
+	    },
+	    render: function render() {
+	        console.log(this.props.listing);
 
-	        //        );
+	        var self = this;
+	        var numberCount = 1;
+	        var details = this.props.listing.variants.map(function (item, index) {
 
-	        //     }
-	        // }
+	            var subVariants = item.sub_variants.map(function (items) {
+	                var subVariantsPrice = $.map(items.fixed_pricings, function (val) {
+	                    var inventoryObj = _.where(self.props.seed.inventories, {
+	                        id: val.inventory_id
+	                    });
+	                    console.log(inventoryObj);
+	                    return React.createElement(
+	                        'div',
+	                        null,
+	                        React.createElement(
+	                            'span',
+	                            { className: 'price' },
+	                            React.createElement('i', { className: 'fa fa-inr', 'aria-hidden': 'true' }),
+	                            val.mrp
+	                        ),
+	                        '  ' + inventoryObj[0].name
+	                    );
+	                });
 
+	                return React.createElement(
+	                    'div',
+	                    null,
+	                    React.createElement(
+	                        'h4',
+	                        null,
+	                        items.name
+	                    ),
+	                    React.createElement(
+	                        'p',
+	                        null,
+	                        subVariantsPrice
+	                    ),
+	                    React.createElement('hr', null)
+	                );
+	            });
+	            console.log('===>>>>>');
+	            console.log(self.props.variantDates);
+
+	            var datesBlock = $.map(Object.keys(self.props.variantDates), function (item2) {
+	                console.log(self.props.variantDates[item2]);
+	                var id = Object.keys(self.props.variantDates[item2]);
+	                console.log(id[0] + '-' + item.id);
+	                if (id[0] == item.id) {
+
+	                    var showPatterns = _.some(self.props.variantDates[item2][item.id].pattern, function (patternData) {
+	                        return patternData.enabled === true;
+	                    });
+
+	                    var datesItems = showPatterns ? $.map(Object.keys(self.props.variantDates[item2][item.id].pattern), function (items) {
+	                        console.log(items);
+	                        if (self.props.variantDates[item2][item.id].pattern[items].enabled) {
+	                            return React.createElement(
+	                                'div',
+	                                { className: 'seat' },
+	                                React.createElement(
+	                                    'h2',
+	                                    null,
+	                                    self.humanify(items)
+	                                ),
+	                                React.createElement(
+	                                    'p',
+	                                    null,
+	                                    self.props.variantDates[item2][item.id].pattern[items].sold_count || 'NA',
+	                                    React.createElement(
+	                                        'span',
+	                                        null,
+	                                        'Occupied'
+	                                    )
+	                                ),
+	                                React.createElement(
+	                                    'p',
+	                                    null,
+	                                    self.props.variantDates[item2][item.id].pattern[items].capacity || 'NA',
+	                                    React.createElement(
+	                                        'span',
+	                                        null,
+	                                        'Total Seats'
+	                                    )
+	                                )
+	                            );
+	                        }
+	                    }) : $.map(Object.keys(self.props.variantDates[item2][item.id].dates), function (items) {
+	                        console.log(items);
+	                        return React.createElement(
+	                            'div',
+	                            { className: 'seat' },
+	                            React.createElement(
+	                                'h2',
+	                                null,
+	                                self.formatDate(items)
+	                            ),
+	                            React.createElement(
+	                                'p',
+	                                null,
+	                                self.props.variantDates[item2][item.id].dates[items].sold_count || 'NA',
+	                                React.createElement(
+	                                    'span',
+	                                    null,
+	                                    'Occupied'
+	                                )
+	                            ),
+	                            React.createElement(
+	                                'p',
+	                                null,
+	                                self.props.variantDates[item2][item.id].dates[items].capacity || 'NA',
+	                                React.createElement(
+	                                    'span',
+	                                    null,
+	                                    'Total Seats'
+	                                )
+	                            )
+	                        );
+	                    });
+	                }
+	                //   if(!$.isEmptyObject(value)){
+	                //     if(value.enabled){
+	                //       return (
+	                //      <div className="seat">
+	                //                     <h2>{key}</h2>
+	                //                     <p>{value.sold_count||"NA"}<span>Occupied</span></p>
+	                //                     <p>{value.capacity ||  "NA"}<span>Total Seats</span></p>
+	                //                 </div>
+
+	                //        );
+
+	                //     }
+	                // }
+
+	                return React.createElement(
+	                    'div',
+	                    { className: 'seat-details' },
+	                    datesItems
+	                );
+	            });
+
+	            // var detailsItems = $.map( item.this_month_bookable_dates, function( items, i ){
+	            //     var seatDate = moment(items.date).format('ddd, MMMM');
+	            //     var seatDay = moment(items.date).format('D');
+	            //      return (
+	            //      <div className="seat">
+	            //                     <h2>{seatDay} <span>{seatDate}</span></h2>
+	            //                     <p>{value.sold_count||"NA"}<span>Occupied</span></p>
+	            //                     <p>{value.capacity ||  "NA"}<span>Total Seats</span></p>
+	            //                 </div>
+
+	            //   );
+	            // });
+	            if (index != 0) {
+	                return React.createElement(
+	                    'div',
+	                    null,
+	                    React.createElement('hr', null),
+	                    React.createElement(
+	                        'h3',
+	                        null,
+	                        '0',
+	                        index + 1,
+	                        '. ',
+	                        item.name,
+	                        React.createElement(
+	                            'button',
+	                            { className: 'btn btn-line btn-secondary edit-button-btn',
+	                                onClick: function onClick() {
+	                                    return self.showEditPage(self.props.listing.id, item.id);
+	                                } },
+	                            ' Edit'
+	                        )
+	                    ),
+	                    React.createElement(
+	                        'p',
+	                        null,
+	                        item.description
+	                    ),
+	                    React.createElement(
+	                        'h4',
+	                        null,
+	                        'Dates & Seats :'
+	                    ),
+	                    datesBlock,
+	                    React.createElement(
+	                        'div',
+	                        { className: 'p-30' },
+	                        subVariants
+	                    )
+	                );
+	            } else {
+	                return React.createElement(
+	                    'div',
+	                    null,
+	                    React.createElement(
+	                        'h3',
+	                        null,
+	                        '0',
+	                        index + 1,
+	                        '. ',
+	                        item.name,
+	                        React.createElement(
+	                            'button',
+	                            { className: 'btn btn-line btn-secondary edit-button-btn',
+	                                onClick: function onClick() {
+	                                    return self.showEditPage(self.props.listing.id, item.id);
+	                                } },
+	                            ' Edit'
+	                        )
+	                    ),
+	                    React.createElement(
+	                        'p',
+	                        null,
+	                        item.description
+	                    ),
+	                    React.createElement(
+	                        'h4',
+	                        null,
+	                        'Dates & Seats :'
+	                    ),
+	                    datesBlock,
+	                    React.createElement(
+	                        'div',
+	                        { className: 'p-30' },
+	                        subVariants
+	                    )
+	                );
+	            }
+	            numberCount++;
+	        });
 	        return React.createElement(
-	          'div',
-	          { className: 'seat-details' },
-	          datesItems
+	            'div',
+	            { role: 'tabpanel',
+	                className: 'tab-pane',
+	                id: 'tabVariants' },
+	            details
 	        );
-	      });
-
-	      // var detailsItems = $.map( item.this_month_bookable_dates, function( items, i ){
-	      //     var seatDate = moment(items.date).format('ddd, MMMM');
-	      //     var seatDay = moment(items.date).format('D');
-	      //      return (
-	      //      <div className="seat">
-	      //                     <h2>{seatDay} <span>{seatDate}</span></h2>
-	      //                     <p>{value.sold_count||"NA"}<span>Occupied</span></p>
-	      //                     <p>{value.capacity ||  "NA"}<span>Total Seats</span></p>
-	      //                 </div>
-
-	      //   );
-	      // });
-	      return React.createElement(
-	        'div',
-	        null,
-	        React.createElement('hr', null),
-	        React.createElement(
-	          'h3',
-	          null,
-	          '0',
-	          numberCount,
-	          '. ',
-	          item.name,
-	          React.createElement(
-	            'button',
-	            { className: 'btn btn-line btn-secondary', onClick: function onClick() {
-	                return self.showEditPage(self.props.listing.id, item.id);
-	              } },
-	            ' Edit '
-	          )
-	        ),
-	        React.createElement(
-	          'p',
-	          null,
-	          item.description
-	        ),
-	        React.createElement(
-	          'h4',
-	          null,
-	          'Dates & Seats :'
-	        ),
-	        datesBlock,
-	        React.createElement(
-	          'div',
-	          { className: 'p-30' },
-	          subVariants
-	        )
-	      );
-	    });
-	    return React.createElement(
-	      'div',
-	      { role: 'tabpanel',
-	        className: 'tab-pane',
-	        id: 'tabVariants' },
-	      details
-	    );
-	  }
+	    }
 
 	});
 
@@ -69702,6 +70339,62 @@
 
 /***/ },
 /* 574 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _reactRouter = __webpack_require__(170);
+
+	var React = __webpack_require__(2);
+
+	var moment = __webpack_require__(244);
+	var NotificationScreen = React.createClass({
+	  displayName: 'NotificationScreen',
+
+	  componentDidMount: function componentDidMount() {},
+
+	  render: function render() {
+	    console.log("-0-0-0-0-");
+	    console.log(this.props.route.notifications().messageObj);
+	    var notificationsList = $.map(this.props.route.notifications().messageObj, function (val, i) {
+	      var created_day = moment(val.created_at).fromNow();
+	      return React.createElement(
+	        'p',
+	        null,
+	        val.message,
+	        React.createElement(
+	          'span',
+	          { className: 'time' },
+	          created_day
+	        )
+	      );
+	    });
+	    return React.createElement(
+	      'div',
+	      { className: 'page-body grey2' },
+	      React.createElement(
+	        'div',
+	        { className: 'container' },
+	        React.createElement(
+	          'div',
+	          { className: 'notification-list' },
+	          React.createElement(
+	            'h3',
+	            null,
+	            'Notifications'
+	          ),
+	          notificationsList
+	        )
+	      )
+	    );
+	  }
+
+	});
+
+	module.exports = NotificationScreen;
+
+/***/ },
+/* 575 */
 /***/ function(module, exports) {
 
 	(function(self) {

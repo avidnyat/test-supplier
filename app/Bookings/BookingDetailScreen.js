@@ -98,7 +98,7 @@ var BookingDetailsScreen = React.createClass( {
         <div className="container">
           <ol className="breadcrumb">
             <li>
-              <img src="images/icon-home.png" /><a href="/#/dashboard">Dashboard</a>
+              <img src="images/icon-home.png" /><a href="/#/supplier/dashboard">Dashboard</a>
             </li>
             <li className="active">
               Bookings

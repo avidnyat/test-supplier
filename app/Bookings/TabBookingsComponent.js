@@ -33,21 +33,16 @@ class TabComponent extends Component {
           <img src={ item.tour.thumbnail_image ? item.tour.thumbnail_image.size_tiny : 'images/src.jpg' } onerror="this.src='images/notFound.png'" />
         </div>
         <div className="info">
-          <div className="details">
+          <div className="details" onClick={ () => showDetails( item.id ) }>
             <h3 onClick={ () => showDetails( item.id ) }>{ item.tour.name }</h3>
             <p>
-              Booked by:
-              { item.first_name }
-              { item.last_name } | Booking Date:
-              { moment( item.created_at ).format( 'D MMMM' ) }
+              Booked by: { item.first_name } { item.last_name } | Booking Date: { moment( item.created_at ).format( 'D MMMM' ) }
             </p>
             <p>
-              <img src="images/icon-date.png" />Trip Date:
-              { moment( item.date_of_travel ).format( 'D MMMM YYYY' ) }
+              <img src="images/icon-date.png" />Trip Date: { moment( item.date_of_travel ).format( 'D MMMM YYYY' ) }
             </p>
             <p>
-              <img src="images/icon-travellar.png" />Travelers:
-              { item.no_of_people }
+              <img src="images/icon-travellar.png" />Travelers: { item.no_of_people }
             </p>
           </div>
           <div className="contact">
@@ -84,30 +79,23 @@ class TabComponent extends Component {
       }
       return (
 
-      <div className={ classname + ' booking-card' }>
+      <div className={ classname + ' booking-card' } >
         <div className="img" onClick={ () => showDetails( item.id ) }>
-          <object data="images/notFound.png"
-                  type="image/png"
-                  className="image-booking-default">
-            <img src={ item.tour.thumbnail_image ? item.tour.thumbnail_image.size_tiny : 'images/src.jpg' } onerror="this.src='images/notFound.png'" />
-          </object>
+          <div  className="image-booking-default">
+            <img src={ item.tour.thumbnail_image ? item.tour.thumbnail_image.size_tiny : 'images/src.jpg' }/>
+          </div>
         </div>
         <div className="info">
-          <div className="details">
-            <h3 onClick={ () => showDetails( item.id ) }>{ item.tour.name }</h3>
+          <div className="details" onClick={ () => showDetails( item.id ) }>
+            <h3 >{ item.tour.name }</h3>
             <p>
-              Booked by:
-              { item.first_name }
-              { item.last_name } | Booking Date:
-              { moment( item.created_at ).format( 'D MMMM' ) }
+              Booked by: { item.first_name } { item.last_name } | Booking Date: { moment( item.created_at ).format( 'D MMMM' ) }
             </p>
             <p>
-              <img src="images/icon-date.png" />Trip Date:
-              { moment( item.date_of_travel ).format( 'D MMMM YYYY' ) }
+              <img src="images/icon-date.png" />Trip Date: { moment( item.date_of_travel ).format( 'D MMMM YYYY' ) }
             </p>
             <p>
-              <img src="images/icon-travellar.png" />Travelers:
-              { item.no_of_people }
+              <img src="images/icon-travellar.png" />Travelers: { item.no_of_people }
             </p>
           </div>
           <div className="contact">
@@ -123,13 +111,44 @@ class TabComponent extends Component {
 
       );
     } );
+     var self = this;
+    function callAjaxRequest(tourId, tabsection){
+      if(tabsection == "bookings"){
+        if(self.props.dateData){
+          getDateBookings(self.props.dateData);
+        }else{
+          callGetData("", "bookings");
+        }
+      }else{
+        if(self.props.dateData){
+          getDateHistory(self.props.dateData);
+        }else{
+          callGetData("", "history");
+        }
+      }
+      
+    }
     var tours = this.props.tours.map( function ( item ) {
 
 
       return (
 
 
-      <li data-id={ item.id }>
+      <li data-id={ item.id } onClick={()=> callAjaxRequest(item.id, 'bookings')}>
+        { item.name }
+      </li>
+
+
+
+      );
+    } );
+    var toursHistory = this.props.tours.map( function ( item ) {
+
+
+      return (
+
+
+      <li data-id={ item.id } onClick={()=> callAjaxRequest(item.id, 'history')}>
         { item.name }
       </li>
 
@@ -141,6 +160,8 @@ class TabComponent extends Component {
     function callGetData( timeDate, tabSection ) {
       var from = -1;
       var to = -1;
+      var labelDayArray = ["Today", "Tomorrow", "Weekend"];
+      var labelIdArray = ["sortcb1", "sortcb2", "sortcb3"];
 
       if ( timeDate == 'Today' ) {
         from = moment().format( 'YYYY-MM-DD' );
@@ -152,16 +173,35 @@ class TabComponent extends Component {
         from = moment().day( 6 ).format( 'YYYY-MM-DD' );
         to = moment().day( 7 ).format( 'YYYY-MM-DD' );
       }
-      if ( $( '.selection:last' ).text() != ' All' ) {
-        var tourId = $( '.selection:last' ).data( 'id' );
-      } else {
-        var tourId = -1;
+      if(tabSection == "bookings"){
+        if ( $( '.selection:first' ).text() != 'All' ) {
+          var tourId = $( '.selection:first' ).data( 'id' );
+        } else {
+          var tourId = -1;
+        }
+      }else{
+        if ( $( '.selectionHistory:first' ).text() != 'All' ) {
+          var tourId = $( '.selectionHistory:first' ).data( 'id' );
+        } else {
+          var tourId = -1;
+        }
       }
+      
+
+      if($("#"+labelIdArray[labelDayArray.indexOf(timeDate)]).next().hasClass("label-grey")){
+        $(".label-grey").removeClass("label-grey");
+        from = -1;
+        to = -1;
+      }else{
+         $(".label-grey").removeClass("label-grey");
+         $("#"+labelIdArray[labelDayArray.indexOf(timeDate)]).next().addClass("label-grey");
+      }
+      
+     
       self.props.bookingscreen.getData( from, to, tourId, tabSection );
     }
     function getDate( dateTime ) {
-      console.log( dateTime );
-      if ( $( '.selection:last' ).text() != ' All' ) {
+      if ( $( '.selection:last' ).text() != 'All' ) {
         var tourId = $( '.selection:last' ).data( 'id' );
       } else {
         var tourId = -1;
@@ -171,17 +211,38 @@ class TabComponent extends Component {
       self.props.bookingscreen.getData( from, to, tourId, 'history' );
     }
     function getDateBookings( dateTime ) {
-      console.log( dateTime );
-      if ( $( '.selection:first' ).text() != ' All' ) {
+      if ( $( '.selection:first' ).text() != 'All' ) {
         var tourId = $( '.selection:first' ).data( 'id' );
       } else {
         var tourId = -1;
       }
-      var from = moment( dateTime ).format( 'YYYY-MM-DD' );
-      var to = moment( dateTime ).format( 'YYYY-MM-DD' );
-      self.props.bookingscreen.getData( from, to, tourId, 'bookings' );
+      if(dateTime){
+        var from = moment( dateTime ).format( 'YYYY-MM-DD' );
+        var to = moment( dateTime ).format( 'YYYY-MM-DD' );
+      }else{
+        var from = -1;
+        var to = -1;
+      }self.props.bookingscreen.getData( from, to, tourId, 'bookings' , dateTime);
+      //this.props.dateData(dateTime);
+      
     }
-
+    function getDateHistory( dateTime ) {
+      if ( $( '.selectionHistory:first' ).text() != 'All' ) {
+        var tourId = $( '.selectionHistory:first' ).data( 'id' );
+      } else {
+        var tourId = -1;
+      }
+      if(dateTime){
+        var from = moment( dateTime ).format( 'YYYY-MM-DD' );
+        var to = moment( dateTime ).format( 'YYYY-MM-DD' );
+      }else{
+        var from = -1;
+        var to = -1;
+      }
+     
+      self.props.bookingscreen.getData( from, to, tourId, 'history' , dateTime);
+      //this.props.dateData(dateTime);
+    }
     return (
     <div>
       <Tabs headers={ this.props.headers }>
@@ -210,6 +271,7 @@ class TabComponent extends Component {
             </div>
             <div className="sort-dropdown">
               <Calendar format='DD/MM/YYYY'
+                        date={this.props.dateData}
                         placeholder="Trip Date"
                         customIcon="glyphicon glyphicon-menu-down"
                         onChange={ getDateBookings } />
@@ -250,42 +312,26 @@ class TabComponent extends Component {
             <p>
               Sort By:
             </p>
-            <div className="checkbox">
-              <input type="checkbox" id="sortcb1" />
-              <label for="sortcb1" onClick={ () => callGetData( 'Today', 'history' ) }>
-                Today
-              </label>
-            </div>
-            <div className="checkbox">
-              <input type="checkbox" id="sortcb2" />
-              <label for="sortcb2" onClick={ () => callGetData( 'Tomorrow', 'history' ) }>
-                Tomorrow
-              </label>
-            </div>
-            <div className="checkbox">
-              <input type="checkbox" id="sortcb3" />
-              <label for="sortcb3" onClick={ () => callGetData( 'Weekend', 'history' ) }>
-                This Weekend
-              </label>
-            </div>
             <div className="sort-dropdown">
               <Calendar format='DD/MM/YYYY'
+                        date={this.props.dateData}
                         placeholder="Trip Date"
                         customIcon="glyphicon glyphicon-menu-down"
-                        onChange={ getDate } />
+                        onChange={ getDateHistory } />
             </div>
             <div className="sort-dropdown">
               <div className="dropdown">
                 <button className="btn dropdown-toggle" data-toggle="dropdown">
-                  <span className="selection">All</span>
+                  <span className="selectionHistory">All</span>
                   <span className="glyphicon glyphicon-menu-down"></span>
                 </button>
                 <ul className="dropdown-menu tour-dropdown">
-                  { tours }
+                  { toursHistory }
                 </ul>
               </div>
             </div>
           </div>
+          
           <div className="tab-pane active " id="tabNewBookings">
             { listItemsHistory }
           </div>

@@ -69,7 +69,7 @@ var ReviewsListing = React.createClass( {
           { ratingList }
         </div>
         <p>
-          Do you believe in adventure and water sports? Then you need to head on for an exciting trekking and white water rafting experience to the Nishani Motte peak. Nishani is one of the unknown mountain ranges of Coorg, in the Western Ghats.
+          {item.content}
         </p>
         <ul className="album-thumb">
           { imageList }

@@ -1,5 +1,10 @@
 var React = require( 'react' );
 import { Router, Route, Link, hashHistory } from 'react-router';
+var Input = require( '../components/Input.js' );
+var _ = require( 'underscore' );
+var Select = require( '../components/Select' );
+var STATES = require( '../components/data/states' );
+var Icon = require( '../components/Icon.js' );
 var VendorProfile = React.createClass( {
   mixins: [ ConfigMixin ],
   getInitialState: function () {
@@ -12,6 +17,19 @@ var VendorProfile = React.createClass( {
       email: '',
       description: ''
     }
+  },
+   validateEmail: function ( event ) {
+    // regex from http://stackoverflow.com/questions/46155/validate-email-address-in-javascript
+    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test( event );
+  },
+  validatePhone: function ( event ) {
+    // regex from http://stackoverflow.com/questions/46155/validate-email-address-in-javascript
+    var re = /^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s\./0-9]*$/g;
+    return re.test( event );
+  },
+  isEmpty: function (value) {
+    return !_.isEmpty(value);
   },
   showEdit: function () {
 
@@ -69,7 +87,13 @@ var VendorProfile = React.createClass( {
     $( '.vendor-profile.edit' ).addClass( 'hide' );
   },
   save: function () {
-    var data = {
+
+
+var canProceed = this.validateEmail( this.state.email ) && this.isEmpty(this.state.name)
+    && this.validatePhone(this.state.phone);
+
+    if ( canProceed ) {
+       var data = {
       profile: {
         name: this.state.name,
         phone1: this.state.phone,
@@ -89,13 +113,27 @@ var VendorProfile = React.createClass( {
         $( '#description' ).html( self.state.description );
         $( '.vendor-profile.actual' ).removeClass( 'hide' );
         $( '.vendor-profile.edit' ).addClass( 'hide' );
-
+        self.props.config.notification._addNotification(window.event, "success", "Updated details successfully!!!");
       },
       function ( result ) {
         let message = JSON.parse( result.responseText );
         console.log( message );
-        // self.props.config.notification._addNotification(window.event, "error", message.message);
+        self.props.config.notification._addNotification(window.event, "error", "Unable to save!!!");
       } );
+
+    } else {
+
+      this.refs.email.isValid();
+      this.refs.phone.isValid();
+      this.refs.name.isValid();
+
+    }
+
+
+
+
+
+   
 
   },
   render: function () {
@@ -110,7 +148,7 @@ var VendorProfile = React.createClass( {
         <div className="profile-details">
           <h4 id="name">{ this.props.data.name }</h4>
           <p>
-            <strong>Phone:</strong> <span id="phone">{ this.props.data.phone1 }</span> &nbsp;&nbsp;&nbsp; <strong>Email:</strong>
+            <strong>Phone:</strong> <span id="phone">{ this.props.data.phone1 }</span> &nbsp;&nbsp;&nbsp; <strong>Email: </strong>
             <a href={ 'mailto:' + this.props.data.email } id="email">
               { this.props.data.email }
             </a>
@@ -137,10 +175,18 @@ var VendorProfile = React.createClass( {
                 <div className="field-name">
                   Vendor Name
                 </div>
-                <input type="text"
-                       value={ this.state.name }
-                       onChange={ this.updateName }
-                       fieldName="name" />
+                
+                       <Input text=""
+                         ref="name"
+                         type="text"
+                         maxLength="20"
+                         fieldName="name"
+                         validate={ this.isEmpty}
+                         defaultValue={ this.state.name }
+                         value={ this.state.name }
+                         onChange={ this.updateName }
+                         emptyMessage="Name can't be empty"
+                         errorVisible={ this.state.showEmailError } />
               </div>
             </div>
           </div>
@@ -150,9 +196,20 @@ var VendorProfile = React.createClass( {
                 <div className="field-name">
                   Email
                 </div>
-                <input type="text"
-                       value={ this.state.email }
-                       onChange={ this.updateEmail } />
+                 <Input text=""
+                         ref="email"
+                         type="text"
+                         tabIndex="1"
+                         maxLength="100"
+                         class="profile-email"
+                         defaultValue={ this.state.email }
+                         validate={ this.validateEmail }
+                         value={ this.state.email }
+                         onChange={ this.updateEmail }
+                         errorMessage="Email is invalid"
+                         emptyMessage="Email can't be empty"
+                         errorVisible={ this.state.showEmailError } />
+                
               </div>
             </div>
             <div className="col-sm-6">
@@ -160,9 +217,20 @@ var VendorProfile = React.createClass( {
                 <div className="field-name">
                   Phone
                 </div>
-                <input type="text"
-                       value={ this.state.phone }
-                       onChange={ this.updatePhone } />
+                
+                       <Input text=""
+                         ref="phone"
+                         type="text"
+                         tabIndex="1"
+                         class="profile-email"
+                         maxLength="20"
+                         defaultValue={ this.state.phone }
+                         validate={ this.validatePhone}
+                         value={ this.state.phone }
+                         onChange={ this.updatePhone }
+                         errorMessage="Phone number is invalid"
+                         emptyMessage="Phone number can't be empty"
+                         errorVisible={ this.state.showEmailError } />
               </div>
             </div>
           </div>
@@ -170,7 +238,7 @@ var VendorProfile = React.createClass( {
             <div className="field-name">
               Basic Info
             </div>
-            <textarea value={ this.state.description } onChange={ this.updateDescription }></textarea>
+            <textarea value={ this.state.description } onChange={ this.updateDescription } maxLength="200"></textarea>
           </div>
           <button className="btn btn-secondary" onClick={ this.save }>
             Update

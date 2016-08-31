@@ -87,6 +87,11 @@ var ResetPasswordScreen = React.createClass( {
   render: function () {
     return (
     <div>
+      <div id="pageloader">
+        <div className="loader-inner">
+          <img src="images/preloader-color.gif" alt="" />
+        </div>
+      </div>
       <div className="page-body grey2">
         <div className="container text-center">
           <h2>Secure your <span className="secondary">listing by Login</span></h2>

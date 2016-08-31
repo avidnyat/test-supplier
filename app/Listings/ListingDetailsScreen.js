@@ -14,9 +14,11 @@ var ListingDetailsScreen = React.createClass( {
 
         },
         reviews: [],
+        average_rating: 0,
         variants: [],
         feature_ids: [],
-        sub_category_ids: []
+        sub_category_ids: [],
+        itineraries: {}
       },
       variantDates: [ {
 
@@ -137,10 +139,10 @@ var ListingDetailsScreen = React.createClass( {
         <div className="container">
           <ol className="breadcrumb">
             <li>
-              <img src="images/icon-home.png" /><a href="/#/dashboard">Dashboard</a>
+              <img src="images/icon-home.png" /><a href="/#/supplier/dashboard">Dashboard</a>
             </li>
             <li>
-              <a href="/#/listings">Listing</a>
+              <a href="/#/supplier/listings">Listing</a>
             </li>
             <li className="active">
               { this.state.listing.name }
@@ -152,7 +154,7 @@ var ListingDetailsScreen = React.createClass( {
               <ul className="highlights">
                 <li>
                   <div className="rating">
-                    <span>{ this.state.listing.average_rating }</span>
+                    <span>{ this.state.listing.average_rating.toFixed(1) }</span>
                     { this.state.listing.reviews_count } Reviews
                   </div>
                 </li>
@@ -179,7 +181,7 @@ var ListingDetailsScreen = React.createClass( {
                 <div className="">
                   <p className="price">
                     <i className="fa fa-inr" aria-hidden="true"></i>
-                    { this.state.listing.price }
+                    { this.state.listing.mrp }
                   </p>
                 </div>
               </div>

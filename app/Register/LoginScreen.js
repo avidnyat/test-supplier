@@ -19,7 +19,7 @@ var LoginScreen = React.createClass( {
   },
   componentDidMount: function () {
     if ( localStorage.getItem( 'clientInfo' ) ) {
-      window.location.href = '/#/dashboard';
+      window.location.href = '/#/supplier/dashboard';
     }
     $( '#pageloader' ).fadeOut();
     $( 'body' ).addClass( 'before-login' );
@@ -54,7 +54,7 @@ var LoginScreen = React.createClass( {
           localStorage.setItem( 'clientInfo', JSON.stringify( result ) );
           self.props.route.notification.login();
           console.log( JSON.parse( localStorage.getItem( 'clientInfo' ) ) );
-          window.location.href = '/#/dashboard';
+          window.location.href = '/#/supplier/dashboard';
         },
         function ( result ) {
           let message = JSON.parse( result.responseText );
@@ -73,7 +73,7 @@ var LoginScreen = React.createClass( {
 
   sendResetMail: function ( e ) {
     e.preventDefault();
-
+    $(".pace").addClass("pace-inactive").removeClass("pace-active");
     var canProceed = this.validateEmail( this.state.resetEmail );
 
     if ( canProceed ) {
@@ -88,11 +88,12 @@ var LoginScreen = React.createClass( {
         function ( result ) {
           self.props.route.notification._addNotification( e, 'success', 'Successfully Email Sent !!!' );
           $( '#forgotPwModal' ).modal( 'hide' );
-          //window.location.href="/#/thank-you";
+           $(".pace").addClass("pace-active").removeClass("pace-inactive");
         },
         function ( result ) {
           let message = JSON.parse( result.responseText );
           self.props.route.notification._addNotification( e, 'error', message.message );
+          $(".pace").addClass("pace-active").removeClass("pace-inactive");
         }
       );
 
@@ -100,7 +101,7 @@ var LoginScreen = React.createClass( {
     } else {
 
       this.refs.resetEmail.isValid();
-
+       $(".pace").addClass("pace-active").removeClass("pace-inactive");
 
     }
   },

@@ -55,6 +55,11 @@ var OverviewListing = React.createClass( {
       <div className="item2">
         { subCategories }
       </div>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
     </div>
     );
   }

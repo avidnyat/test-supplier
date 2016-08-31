@@ -5,12 +5,12 @@ var moment = require( 'moment' );
 var DashboardScreen = React.createClass( {
   getInitialState: function () {
     return {
-      bookingCount: null,
-      enquiryCount: null,
+      bookingCount: 0,
+      enquiryCount: 0,
       pastRevenue: 'password',
-      revenue: null,
-      reviewsCount: null,
-      viewsCount: null,
+      revenue: 0,
+      reviewsCount: 0,
+      viewsCount: 0,
       photo: JSON.parse( localStorage.getItem( 'clientInfo' ) ).vendor.photo,
       name: JSON.parse( localStorage.getItem( 'clientInfo' ) ).vendor.name,
       notifications: null,
@@ -18,6 +18,7 @@ var DashboardScreen = React.createClass( {
     }
   },
   getDashboardData: function ( from, to, section ) {
+    $( '#pageloader' ).show();
     var data = {
 
     }
@@ -43,10 +44,18 @@ var DashboardScreen = React.createClass( {
           } );
         }
         if ( section == 'views' ) {
-          self.setState( {
+          if(from ==-1){
+             self.setState( {
 
-            viewsCount: result.views_count
-          } );
+              viewsCount: result.views_count
+            } );
+           }else{
+             self.setState( {
+
+              viewsCount: "N/A"
+            } );
+           }
+         
         }
         if ( section == 'bookings' ) {
           self.setState( {
@@ -61,10 +70,18 @@ var DashboardScreen = React.createClass( {
           } );
         }
         if ( section == 'revenue' ) {
-          self.setState( {
+          if(from == -1){
+            self.setState( {
 
-            revenue: result.revenue
-          } );
+              revenue: (result.revenue + result.past_revenue)
+            } );
+          }else{
+            self.setState( {
+
+              revenue: result.revenue
+            } );
+          }
+          
         }
         if ( section == 'reviews' ) {
           self.setState( {
@@ -79,19 +96,20 @@ var DashboardScreen = React.createClass( {
         self.props.route.notification._addNotification( window.event, 'error', message.message );
       }
     );
+
   },
   getData: function ( dataTime, section ) {
     var from = -1;
     var to = -1;
     if ( dataTime == 'Today' ) {
-      from = moment().format( 'X' );
-      to = moment().format( 'X' );
+      from = moment().subtract( 24, 'H' ).format( 'X' ) * 1000;
+      to = moment().format( 'X' ) * 1000;
     } else if ( dataTime == 'LastSeven' ) {
-      from = moment().subtract( 7, 'd' ).format( 'X' );
-      to = moment().format( 'X' );
+      from = moment().subtract( 7, 'd' ).format( 'X' ) * 1000;
+      to = moment().format( 'X' ) * 1000;
     } else if ( dataTime == 'ThisMonth' ) {
-      from = moment( moment().year() + '-' + moment().month() + '-01' ).format( 'X' );
-      to = moment().format( 'X' );
+      from = moment( moment().year() + '-' + (moment().month()+1) + '-01' ).format( 'X' ) * 1000;
+      to = moment().format( 'X' ) * 1000;
     }
     this.getDashboardData( from, to, section );
 
@@ -127,7 +145,7 @@ var DashboardScreen = React.createClass( {
           bookingCount: result.bookings_count,
           enquiryCount: result.enquiry_count,
           pastRevenue: result.past_revenue,
-          revenue: result.revenue,
+          revenue: result.revenue + result.past_revenue,
           reviewsCount: result.reviews_count,
           viewsCount: result.views_count
         } );
@@ -139,48 +157,14 @@ var DashboardScreen = React.createClass( {
         self.props.route.notification._addNotification( window.event, 'error', message.message );
       }
     );
-    var data = {
-
-    }
-    var url_params = {
-      page: 1,
-      per_page: 5
-    }
-    var clientInfo = this.props.route.config().getClientInfo();
-    var headers = {
-      'X-Thrill-Client-Id': clientInfo.client_id,
-      'X-Thrill-Auth-Token': clientInfo.auth_token
-    }
-    this.props.route.config().httpInterceptor( this.props.route.config().url().NOTIFICATIONS, 'GET', data, headers, url_params ).then(
-      function ( result ) {
-
-        console.log( result );
-        self.setState( {
-          notifications: result.user_notifications,
-          notificationCount: result.unread_count
-        } );
-        $( '.badge' ).html( result.unread_count );
-
-      },
-      function ( result ) {
-        let message = JSON.parse( result.responseText );
-        self.props.route.notification._addNotification( window.event, 'error', message.message );
-      }
-    );
-
+    
+    
   },
   render: function () {
 
 
 
-    var notificationsList = $.map( this.state.notifications, function ( val, i ) {
-
-      return (
-      <p>
-        { val.message }
-      </p>
-      );
-    } );
+    
 
 
     return (
@@ -227,16 +211,16 @@ var DashboardScreen = React.createClass( {
                     </button>
                     <ul className="dropdown-menu" aria-labelledby="dropdownMenuViews">
                       <li>
-                        <a href="javascript:(0);" onClick={ () => this.getData( 'Today', 'views' ) }>Today</a>
+                        <a href="javascript:void(0);" onClick={ () => this.getData( 'Today', 'views' ) }>Today</a>
                       </li>
                       <li>
-                        <a href="javascript:(0);" onClick={ () => this.getData( 'LastSeven', 'views' ) }>Last Seven Days</a>
+                        <a href="javascript:void(0);" onClick={ () => this.getData( 'LastSeven', 'views' ) }>Last Seven Days</a>
                       </li>
                       <li>
-                        <a href="javascript:(0);" onClick={ () => this.getData( 'ThisMonth', 'views' ) }>This Month</a>
+                        <a href="javascript:void(0);" onClick={ () => this.getData( 'ThisMonth', 'views' ) }>This Month</a>
                       </li>
                       <li>
-                        <a href="javascript:(0);" onClick={ () => this.getData( 'Lifetime', 'views' ) }>Lifetime</a>
+                        <a href="javascript:void(0);" onClick={ () => this.getData( 'Lifetime', 'views' ) }>Lifetime</a>
                       </li>
                     </ul>
                   </div>
@@ -264,22 +248,22 @@ var DashboardScreen = React.createClass( {
                     </button>
                     <ul className="dropdown-menu" aria-labelledby="dropdownMenuViews">
                       <li>
-                        <a href="javascript:(0);" onClick={ () => this.getData( 'Today', 'bookings' ) }>Today</a>
+                        <a href="javascript:void(0);" onClick={ () => this.getData( 'Today', 'bookings' ) }>Today</a>
                       </li>
                       <li>
-                        <a href="javascript:(0);" onClick={ () => this.getData( 'LastSeven', 'bookings' ) }>Last Seven Days</a>
+                        <a href="javascript:void(0);" onClick={ () => this.getData( 'LastSeven', 'bookings' ) }>Last Seven Days</a>
                       </li>
                       <li>
-                        <a href="javascript:(0);" onClick={ () => this.getData( 'ThisMonth', 'bookings' ) }>This Month</a>
+                        <a href="javascript:void(0);" onClick={ () => this.getData( 'ThisMonth', 'bookings' ) }>This Month</a>
                       </li>
                       <li>
-                        <a href="javascript:(0);" onClick={ () => this.getData( 'Lifetime', 'bookings' ) }>Lifetime</a>
+                        <a href="javascript:void(0);" onClick={ () => this.getData( 'Lifetime', 'bookings' ) }>Lifetime</a>
                       </li>
                     </ul>
                   </div>
                 </div>
                 <div className="number">
-                  { this.state.bookingCount }
+                  { this.state.bookingCount.toFixed(0) }
                 </div>
               </div>
             </div>
@@ -303,22 +287,22 @@ var DashboardScreen = React.createClass( {
                     </button>
                     <ul className="dropdown-menu" aria-labelledby="dropdownMenuViews">
                       <li>
-                        <a href="javascript:(0);" onClick={ () => this.getData( 'Today', 'enquries' ) }>Today</a>
+                        <a href="javascript:void(0);" onClick={ () => this.getData( 'Today', 'enquries' ) }>Today</a>
                       </li>
                       <li>
-                        <a href="javascript:(0);" onClick={ () => this.getData( 'LastSeven', 'enquries' ) }>Last Seven Days</a>
+                        <a href="javascript:void(0);" onClick={ () => this.getData( 'LastSeven', 'enquries' ) }>Last Seven Days</a>
                       </li>
                       <li>
-                        <a href="javascript:(0);" onClick={ () => this.getData( 'ThisMonth', 'enquries' ) }>This Month</a>
+                        <a href="javascript:void(0);" onClick={ () => this.getData( 'ThisMonth', 'enquries' ) }>This Month</a>
                       </li>
                       <li>
-                        <a href="javascript:(0);" onClick={ () => this.getData( 'Lifetime', 'enquries' ) }>Lifetime</a>
+                        <a href="javascript:void(0);" onClick={ () => this.getData( 'Lifetime', 'enquries' ) }>Lifetime</a>
                       </li>
                     </ul>
                   </div>
                 </div>
                 <div className="number">
-                  { this.state.enquiryCount }
+                  { this.state.enquiryCount.toFixed(0) }
                 </div>
               </div>
             </div>
@@ -340,22 +324,22 @@ var DashboardScreen = React.createClass( {
                     </button>
                     <ul className="dropdown-menu" aria-labelledby="dropdownMenuViews">
                       <li>
-                        <a href="javascript:(0);" onClick={ () => this.getData( 'Today', 'reviews' ) }>Today</a>
+                        <a href="javascript:void(0);" onClick={ () => this.getData( 'Today', 'reviews' ) }>Today</a>
                       </li>
                       <li>
-                        <a href="javascript:(0);" onClick={ () => this.getData( 'LastSeven', 'reviews' ) }>Last Seven Days</a>
+                        <a href="javascript:void(0);" onClick={ () => this.getData( 'LastSeven', 'reviews' ) }>Last Seven Days</a>
                       </li>
                       <li>
-                        <a href="javascript:(0);" onClick={ () => this.getData( 'ThisMonth', 'reviews' ) }>This Month</a>
+                        <a href="javascript:void(0);" onClick={ () => this.getData( 'ThisMonth', 'reviews' ) }>This Month</a>
                       </li>
                       <li>
-                        <a href="javascript:(0);" onClick={ () => this.getData( 'Lifetime', 'reviews' ) }>Lifetime</a>
+                        <a href="javascript:void(0);" onClick={ () => this.getData( 'Lifetime', 'reviews' ) }>Lifetime</a>
                       </li>
                     </ul>
                   </div>
                 </div>
                 <div className="number">
-                  { this.state.reviewsCount }
+                  { this.state.reviewsCount.toFixed(0) }
                 </div>
               </div>
             </div>
@@ -377,30 +361,38 @@ var DashboardScreen = React.createClass( {
                     </button>
                     <ul className="dropdown-menu" aria-labelledby="dropdownMenuViews">
                       <li>
-                        <a href="javascript:(0);" onClick={ () => this.getData( 'Today', 'revenue' ) }>Today</a>
+                        <a href="javascript:void(0);" onClick={ () => this.getData( 'Today', 'revenue' ) }>Today</a>
                       </li>
                       <li>
-                        <a href="javascript:(0);" onClick={ () => this.getData( 'LastSeven', 'revenue' ) }>Last Seven Days</a>
+                        <a href="javascript:void(0);" onClick={ () => this.getData( 'LastSeven', 'revenue' ) }>Last Seven Days</a>
                       </li>
                       <li>
-                        <a href="javascript:(0);" onClick={ () => this.getData( 'ThisMonth', 'revenue' ) }>This Month</a>
+                        <a href="javascript:void(0);" onClick={ () => this.getData( 'ThisMonth', 'revenue' ) }>This Month</a>
                       </li>
                       <li>
-                        <a href="javascript:(0);" onClick={ () => this.getData( 'Lifetime', 'revenue' ) }>Lifetime</a>
+                        <a href="javascript:void(0);" onClick={ () => this.getData( 'Lifetime', 'revenue' ) }>Lifetime</a>
                       </li>
                     </ul>
                   </div>
                 </div>
                 <div className="number">
-                  { this.state.revenue }
+                  { this.state.revenue.toFixed(2) }
                 </div>
               </div>
             </div>
           </div>
-          <div className="notify">
-            <h3>Notifications({ this.state.notificationCount })</h3>
-            { notificationsList }
-          </div>
+          <br />
+          <br/>
+          <br />
+          <br/>
+          <br />
+          <br/>
+          <br />
+          <br/>
+          <br />
+          <br/>
+          <br />
+          <br/>
         </div>
       </div>
     </div>

@@ -23,20 +23,67 @@ const CalendarComponent = React.createClass( {
     } );
   },
 
+  
 
   componentDidMount: function () {
     $( '.rc-calendar-next-month-btn-day' ).hide();
     $( '.rc-calendar-full-header-switcher' ).hide();
-    if ( $( '.rc-calendar-table' ).length == 2 ) {
-      $( '.rc-calendar-table' ).first().find( 'th' ).each( function ( i ) {
+    if ( $( '.rc-calendar-table' ).length == 3 ) {
+     $( '.rc-calendar-table' ).first().find( 'th' ).each( function ( i ) {
         var weekday = (i == 0) ? 7 : i;
-        $( this ).html( '<span class=\'rc-calendar-column-header item\'><input type=\'checkbox\' value=\'' + weekday + '\' class=\'weekday\' id=\'week1_' + i + '\'><label for=\'week1_' + i + '\'> ' + moment().day( $( this ).prop( 'title' ) ).format( 'ddd' ) + '</label><input type=\'text\' placeholder=\'Seats\'></span>' );
+        var objHTML = <span className='rc-calendar-column-header item'>
+                        <input type='checkbox' value={weekday} className='weekday' id={'week1_' + i } />
+                        <label htmlFor={'week1_' + i }> {moment().day( $( this ).prop( 'title' ) ).format( 'ddd' ) }</label>
+                        <input type='text' placeholder='Seats' />
+                      </span>
+        ReactDOM.render(objHTML, this);          
+        
       } );
     }
 
+$( '.rc-calendar-table:first').find( 'td' ).each( function ( i ) {
+  var DateDay = parseInt(new moment($( this ).prop("title"),"YYYY-MM-D", false).format("D")) ;
+  var today = parseInt(new moment($( '.rc-calendar-today' ).prop("title"),"YYYY-MM-D", false).format("D")) ;
+      if (  DateDay < today) {
+        var objHTML = <div className="rc-calendar-date">
+                        <a className="link" href="#">Edit</a>
+                        <p className=" grey">{DateDay}</p>
+                      </div>;
+        ReactDOM.render(objHTML, this);
+      } else {  
+        var objHTML = <div className="rc-calendar-date">
+                        <a className="link edit-link" href="javascript:void(0)">Edit</a>
+                        <a className="link save-link hide" href="javascript:void(0)">Save</a>
+                        <p>{DateDay}</p>
+                        <div className="gray-section">
+                          <div className="total">0/0</div>
+                        </div>
+                        <div className="gray-section2">
+                          <div className="total">Total seats <input type="text" /></div>
+                        </div>
+                      </div>;
+       ReactDOM.render(objHTML, this);
+      }
 
 
+    } );
 
+$( '.rc-calendar-table:not(:first)').find( 'td' ).each( function ( i ) {
+      var DateDay = new moment($( this ).prop("title"),"YYYY-MM-D", false).format("D") ;
+        var objHTML = <div className="rc-calendar-date">
+                        <a className="link edit-link" href="javascript:void(0)">Edit</a>
+                        <a className="link save-link hide" href="javascript:void(0)">Save</a>
+                        <p>{DateDay}</p>
+                        <div className="gray-section">
+                          <div className="total">0/0</div>
+                        </div>
+                        <div className="gray-section2">
+                          <div className="total">Total seats <input type="text" /></div>
+                        </div>
+                      </div>;
+       ReactDOM.render(objHTML, this);
+  
+    } );
 
 
     $( document ).off( 'click', 'td' ).on( 'click', 'td', function ( e ) {
@@ -49,18 +96,8 @@ const CalendarComponent = React.createClass( {
     } );
   },
   render() {
-    console.log( this.props.weekdaysFlag )
     var self = this;
-    $( '.rc-calendar-table' ).find( 'td' ).each( function ( i ) {
-
-      if ( parseInt( $( this ).find( 'div' ).html() ) < parseInt( $( '.rc-calendar-today' ).find( 'div' ).html() ) ) {
-        $( this ).html( '<div class="rc-calendar-date"><a class="link" href="#">Edit</a><p class=" grey">' + $( this ).find( 'div' ).html() + '</p></div>' );
-      } else {
-        $( this ).html( '<div class="rc-calendar-date"><a class="link edit-link" href="javascript:void(0)">Edit</a><a class="link save-link hide" href="javascript:void(0)">Save</a><p>' + $( this ).find( 'div' ).html() + '</p><div class="gray-section"><div class="total">0/0</div></div><div class="gray-section2"><div class="total">Total seats <input type="text" ></div></div></div>' );
-      }
-
-
-    } );
+    
     console.log( 'step5' );
     $( '.rc-calendar-table' ).find( 'td' ).each( function ( i ) {
       $( this ).removeClass( 'active' );
@@ -70,19 +107,18 @@ const CalendarComponent = React.createClass( {
       $( '.rc-calendar-table' ).find( 'td' ).each( function ( i ) {
         console.log( self.props.weekdaysFlag.indexOf( parseInt( moment( $( this ).prop( 'title' ) ).isoWeekday() ) ) );
         $( this ).removeClass( 'active' );
-        if ( self.props.variantDates[ moment( $( this ).prop( 'title' ) ).format( 'YYYY-MM-DD' ) ] ) {
-          $( this ).find( '.gray-section .total' ).html( self.props.variantDates[ moment( $( this ).prop( 'title' ) ).format( 'YYYY-MM-DD' ) ].sold_count + '/' + self.props.variantDates[ moment( $( this ).prop( 'title' ) ).format( 'YYYY-MM-DD' ) ].capacity );
-          $( this ).find( '.gray-section2 .total input' ).val( self.props.variantDates[ moment( $( this ).prop( 'title' ) ).format( 'YYYY-MM-DD' ) ].capacity );
+        if ( self.props.variantDates[ moment( $( this ).prop( 'title' ) , "YYYY-MM-D").format( 'YYYY-MM-DD',false ) ] ) {
+          $( this ).find( '.gray-section .total' ).html( self.props.variantDates[ moment( $( this ).prop( 'title' ) , "YYYY-MM-D").format( 'YYYY-MM-DD' ) ].sold_count + '/' + self.props.variantDates[ moment( $( this ).prop( 'title' ) , "YYYY-MM-D").format( 'YYYY-MM-DD' ) ].capacity );
+          $( this ).find( '.gray-section2 .total input' ).val( self.props.variantDates[ moment( $( this ).prop( 'title' ), "YYYY-MM-D" ).format( 'YYYY-MM-DD' ) ].capacity );
 
-          if ( self.props.variantDates[ moment( $( this ).prop( 'title' ) ).format( 'YYYY-MM-DD' ) ].is_customized_date ) {
+          if ( self.props.variantDates[ moment( $( this ).prop( 'title' ), "YYYY-MM-D" ).format( 'YYYY-MM-DD', false ) ].is_customized_date ) {
             $( this ).addClass( 'active' );
           }
         }
 
-        if ( self.props.weekdaysFlag.indexOf( parseInt( moment( $( this ).prop( 'title' ) ).isoWeekday() ) ) != -1 ) {
+        if ( self.props.weekdaysFlag.indexOf( parseInt( moment( $( this ).prop( 'title' ), "YYYY-MM-D" ).isoWeekday() ) ) != -1 ) {
           console.log( 'step2' );
           if ( !$( this ).find( 'p' ).hasClass( 'grey' ) ) {
-            console.log( self.props.weekdaysFlag.indexOf( parseInt( moment( $( this ).prop( 'title' ) ).isoWeekday() ) ) );
             $( this ).addClass( 'active' );
           }
         }
@@ -92,7 +128,16 @@ const CalendarComponent = React.createClass( {
       $( '.rc-calendar-table' ).first().find( 'td' ).each( function ( i ) {
         $( this ).removeClass( 'active' );
 
-        if ( self.props.weekdaysFlag.indexOf( parseInt( moment( $( this ).prop( 'title' ) ).isoWeekday() ) ) != -1 ) {
+        if ( self.props.variantDates[ moment( $( this ).prop( 'title' ), "YYYY-MM-D" ).format( 'YYYY-MM-DD',false ) ] ) {
+          $( this ).find( '.gray-section .total' ).html( self.props.variantDates[ moment( $( this ).prop( 'title' ) , "YYYY-MM-D").format( 'YYYY-MM-DD' ) ].sold_count + '/' + self.props.variantDates[ moment( $( this ).prop( 'title' ), "YYYY-MM-D" ).format( 'YYYY-MM-DD' ) ].capacity );
+          $( this ).find( '.gray-section2 .total input' ).val( self.props.variantDates[ moment( $( this ).prop( 'title' ) , "YYYY-MM-D").format( 'YYYY-MM-DD' ) ].capacity );
+
+          if ( self.props.variantDates[ moment( $( this ).prop( 'title' ), "YYYY-MM-D" ).format( 'YYYY-MM-DD', false ) ].is_customized_date ) {
+            $( this ).addClass( 'active' );
+          }
+        }
+        console.log(self.props.weekdaysFlag); 
+        if ( self.props.weekdaysFlag.indexOf( parseInt( moment( $( this ).prop( 'title' ), "YYYY-MM-D" ).isoWeekday() ) ) != -1 ) {
 
           if ( !$( this ).find( 'p' ).hasClass( 'grey' ) ) {
 

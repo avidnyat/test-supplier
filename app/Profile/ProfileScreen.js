@@ -5,6 +5,7 @@ var TabProfileComponent = require( './TabProfileComponent.js' );
 import React, { Component, PropTypes } from 'react'
 var STATES = require( '../components/data/states' );
 import ReactPaginate from 'react-paginate';
+var _ = require("underscore");
 var ProfileScreen = React.createClass( {
   getInitialState: function () {
     return {
@@ -31,6 +32,9 @@ var ProfileScreen = React.createClass( {
       },
       Tabsheader: [ 'Vendor Profile', 'Details', 'Contact Info', 'Bank Details' ],
       country: [],
+      states: [],
+      cities: [],
+      countries: {}
 
     }
   },
@@ -38,25 +42,7 @@ var ProfileScreen = React.createClass( {
   componentDidMount: function () {
     this.props.route.config().redirectWithoutSession();
     this.loadfromServer( 1 );
-    var data = {
-
-    }
-    var header = {
-    }
-    var clientInfo = this.props.route.config().getClientInfo();
-    var self = this;
-    this.props.route.config().httpInterceptor( this.props.route.config().url().COUNTRIES, 'GET', data, header, clientInfo ).then(
-      function ( result ) {
-        self.setState( {
-          country: result.countries
-        } );
-
-      },
-      function ( result ) {
-        let message = JSON.parse( result.responseText );
-        console.log( message );
-        // self.props.config.notification._addNotification(window.event, "error", message.message);
-      } );
+   
   },
   loadfromServer: function ( pageNo ) {
 
@@ -78,7 +64,78 @@ var ProfileScreen = React.createClass( {
         self.setState( {
           profile: result
         } );
-        console.log( result );
+         var data = {
+
+          }
+          var header = {
+          }
+          var clientInfo = self.props.route.config().getClientInfo();
+          self.props.route.config().httpInterceptor( self.props.route.config().url().COUNTRIES, 'GET', data, header, clientInfo ).then(
+            function ( result ) {
+              self.setState( {
+                country: result.countries
+              } );
+               console.log("=-=-=-=");
+               console.log(result.countries);
+               console.log(self.state.profile.country); 
+               var countryObj = _.where(result.countries, {name: self.state.profile.country});
+               console.log(countryObj[0].id);
+               if(countryObj.length >0){
+                var data = {
+
+                }
+                var header = {
+                }
+                var clientInfo = self.props.route.config().getClientInfo();
+                clientInfo[ 'country_id' ] = countryObj[0].id;
+
+                self.props.route.config().httpInterceptor( self.props.route.config().url().STATE, 'GET', data, header, clientInfo ).then(
+                  function ( result ) {
+                    self.setState( {
+                      states: result.states
+                    } );
+                    console.log(result.states);
+                    console.log(self.state.profile.state);
+                    var stateObj = _.where(result.states, {name: self.state.profile.state});
+                    console.log(stateObj[0].id);
+                    if(stateObj.length >0){
+                      var data = {
+
+                      }
+                      var header = {
+                      }
+                      var clientInfo = self.props.route.config().getClientInfo();
+                      clientInfo[ 'state_id' ] = stateObj[0].id;
+
+                      self.props.route.config().httpInterceptor( self.props.route.config().url().CITIES, 'GET', data, header, clientInfo ).then(
+                        function ( result ) {
+                          self.setState( {
+                            cities: result.cities
+                          } );
+                          
+                          
+                          
+                        },
+                        function ( result ) {
+                          let message = JSON.parse( result.responseText );
+                          console.log( message );
+                          // self.props.config.notification._addNotification(window.event, "error", message.message);
+                        } );
+                    }
+
+                  },
+                  function ( result ) {
+                    let message = JSON.parse( result.responseText );
+                    console.log( message );
+                    // self.props.config.notification._addNotification(window.event, "error", message.message);
+                  } );
+               }
+            },
+            function ( result ) {
+              let message = JSON.parse( result.responseText );
+              console.log( message );
+              // self.props.config.notification._addNotification(window.event, "error", message.message);
+            } );
       },
       function ( result ) {
         let message = JSON.parse( result.responseText );
@@ -103,7 +160,9 @@ var ProfileScreen = React.createClass( {
       <TabProfileComponent headers={ this.state.Tabsheader }
                            profile={ this.state.profile }
                            config={ this.props.route }
-                           countries={ this.state.country } />
+                           countries={ this.state.country }
+                           states={this.state.states} 
+                           cities={this.state.cities} />
     </div>
     );
   }

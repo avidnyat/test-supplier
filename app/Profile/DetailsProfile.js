@@ -69,12 +69,11 @@ var DetailsProfile = React.createClass( {
 
         $( '.details-section' ).removeClass( 'hide' );
         $( '.details-section-edit' ).addClass( 'hide' );
-
+        self.props.config.notification._addNotification(window.event, "success", "Updated details successfully!!!");
       },
       function ( result ) {
         let message = JSON.parse( result.responseText );
-        console.log( message );
-        // self.props.config.notification._addNotification(window.event, "error", message.message);
+         self.props.config.notification._addNotification(window.event, "error", "Unable to save details!!!");
       } );
 
   },
@@ -179,7 +178,7 @@ var DetailsProfile = React.createClass( {
               <td>
                 <input type="text"
                        value={ this.state.companyName }
-                       onChange={ this.updateCompanyName } />
+                       onChange={ this.updateCompanyName } maxLength="30"/>
               </td>
             </tr>
             <tr>
@@ -189,7 +188,7 @@ var DetailsProfile = React.createClass( {
               <td>
                 <input type="text"
                        value={ this.state.companyWebsite }
-                       onChange={ this.updateCompanyWebsite } />
+                       onChange={ this.updateCompanyWebsite } maxLength="150"/>
               </td>
             </tr>
           </table>

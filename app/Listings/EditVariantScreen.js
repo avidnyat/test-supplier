@@ -91,10 +91,10 @@ var EditVariantScreen = React.createClass( {
         <div className="container">
           <ol className="breadcrumb">
             <li>
-              <img src="images/icon-home.png" /><a href="/#/dashboard">Dashboard</a>
+              <img src="images/icon-home.png" /><a href="/#/supplier/dashboard">Dashboard</a>
             </li>
             <li>
-              <a href="/#/listings">Listing</a>
+              <a href="/#/supplier/listings">Listing</a>
             </li>
             <li className="active">
               { this.state.listing.name }
@@ -145,6 +145,7 @@ var EditVariantScreen = React.createClass( {
         <div className="container">
           <TabVariantEditComponent variantDates={ this.state.variantDates }
                                    config={ this.props.route.config }
+                                   notification={this.props.route.notification}
                                    listObj={ this }
                                    listing={ this.state.listing } />
         </div>

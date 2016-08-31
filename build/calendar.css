@@ -1055,7 +1055,7 @@
 .rc-calendar-fullscreen .rc-calendar-cell .rc-calendar-date,
 .rc-calendar-fullscreen .rc-calendar-month-panel-cell .rc-calendar-month-panel-month {
   display: block;
-  height: 116px;
+  height: 81px;
   width: auto;
   border-radius: 0;
     

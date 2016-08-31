@@ -42,9 +42,9 @@ var ListingScreen = React.createClass( {
     var self = this;
     var detailsItems = this.state.listing.tours.map( function ( items ) {
       return (
-      <div className="col-sm-4 pointer" onClick={ () => self.showDetails( items.id ) }>
+      <div className="col-sm-4 pointer tours-padding" onClick={ () => self.showDetails( items.id ) }>
         <div className="listing-card">
-          <img src={ items.nearest_metro_city.thumbnail_image.size_large } />
+          <img src={ items.thumbnail_image? items.thumbnail_image.size_large : "" } />
           <div className="text">
             <h3>{ items.name }</h3>
             <div className="highlights">
@@ -61,7 +61,7 @@ var ListingScreen = React.createClass( {
                 <span>{ items.sold_count || 'NA' }</span> Bookings
               </div>
             </div>
-            <h2>Total Worth : <span ><i className="fa fa-inr" aria-hidden="true"></i> { items.price }</span></h2>
+            <h2>Total Worth : <span ><i className="fa fa-inr" aria-hidden="true"></i> { items.total_bookings_amount.toFixed(2) }</span></h2>
           </div>
         </div>
       </div>
@@ -76,10 +76,10 @@ var ListingScreen = React.createClass( {
         <div className="container">
           <ol className="breadcrumb">
             <li>
-              <img src="images/icon-home.png" /><a href="/#/dashboard">Dashboard</a>
+              <img src="images/icon-home.png" /><a href="/#/supplier/dashboard">Dashboard</a>
             </li>
             <li>
-              <a href="/#/listings">Listing</a>
+              <a href="/#/supplier/listings">Listing</a>
             </li>
           </ol>
         </div>

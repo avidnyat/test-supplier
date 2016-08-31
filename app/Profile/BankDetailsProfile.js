@@ -112,12 +112,10 @@ var BankDetailsProfile = React.createClass( {
         } );
         $( '.bank-details' ).removeClass( 'hide' );
         $( '.bank-details-edit' ).addClass( 'hide' );
-
+        self.props.config.notification._addNotification(window.event, "success", "Updated details successfully!!!");
       },
       function ( result ) {
-        let message = JSON.parse( result.responseText );
-        console.log( message );
-        // self.props.config.notification._addNotification(window.event, "error", message.message);
+         self.props.config.notification._addNotification(window.event, "error", JSON.stringify(result));
       } );
 
   },

@@ -15,6 +15,7 @@ var Input = React.createClass( {
     return {
       valid: valid,
       empty: _.isEmpty( this.props.value ),
+      maxlength: this.props.maxlength,
       focus: false,
       value: null,
       iconsVisible: !this.props.validator,

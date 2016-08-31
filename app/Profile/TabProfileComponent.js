@@ -24,18 +24,20 @@ var TabProfileComponent = React.createClass( {
     <div>
       <Tabs headers={ this.props.headers }>
         <Tab>
-          <VendorProfile data={ this.props.profile } />
+          <VendorProfile data={ this.props.profile } config={this.props.config}/>
         </Tab>
         <Tab>
-          <DetailsProfile profile={ this.props.profile } />
+          <DetailsProfile profile={ this.props.profile } config={this.props.config}/>
         </Tab>
         <Tab>
           <ContactInfoProfile profile={ this.props.profile }
                               countries={ this.props.countries }
-                              bank_details={ this.props.profile.bank_detail } />
+                              bank_details={ this.props.profile.bank_detail }
+                              states={this.props.states}
+                              cities={this.props.cities} />
         </Tab>
         <Tab>
-          <BankDetailsProfile profile={ this.props.profile } />
+          <BankDetailsProfile profile={ this.props.profile } config={this.props.config}/>
         </Tab>
       </Tabs>
     </div>

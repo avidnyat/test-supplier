@@ -17,12 +17,12 @@ var BookingScreen = React.createClass( {
       pageSelectedHistory: 1,
       contactNumber: '',
       modalName: '',
-      tour: []
+      tour: [],
+      dateData: ""
     }
   },
-  getData: function ( from, to, tourId, tabSection ) {
-
-    if ( tabSection == 'history' ) {
+  getData: function ( from, to, tourId, tabSection , dateFlag = null) {
+     if ( tabSection == 'history' ) {
       var urlparams = {
         'page': 1,
         'per_page': 10,
@@ -31,8 +31,7 @@ var BookingScreen = React.createClass( {
     } else {
       var urlparams = {
         'page': 1,
-        'per_page': 10,
-        'history': 1
+        'per_page': 10
       }
     }
     if ( from != -1 ) {
@@ -80,16 +79,23 @@ var BookingScreen = React.createClass( {
             $( '.no-message-bookings' ).hide();
           }
         }
-
+         
 
         $( '.odd' ).addClass( 'animated bounceInLeft' );
-        $( '.even' ).addClass( 'animated bounceInRight' )
+        $( '.even' ).addClass( 'animated bounceInRight' );
+        
+         
+        
       },
       function ( result ) {
         console.log( result );
         //let message = JSON.parse(result.responseText);
         //self.props.route.notification._addNotification(window.event, "error", message.message);
       } );
+      self.state.dateData = dateFlag;
+      if(dateFlag != null){
+        $("label").removeClass("label-grey");
+      }
 
   },
   componentDidMount: function () {
@@ -102,11 +108,15 @@ var BookingScreen = React.createClass( {
     $( '#bookings_menu' ).addClass( 'active' );
     this.loadfromServer( 1, 'bookings' );
     this.loadfromServer( 1, 'history' );
-    $( document ).on( 'click', '.dropdown-menu li', function ( e ) {
-
-      $( e.target ).parents( '.dropdown' ).find( '.selection' ).text( $( this ).text() );
-      $( e.target ).parents( '.dropdown' ).find( '.selection' ).val( $( this ).text() );
-      $( e.target ).parents( '.dropdown' ).find( '.selection' ).data( 'id', $( this ).data( 'id' ) );
+    $( document ).off("click", '.sort-dropdown .dropdown-menu li').on( 'click', '.sort-dropdown .dropdown-menu li', function ( e ) {
+      console.log("asdfasdfafasdfadsf")
+      $( e.target ).closest( '.dropdown' ).find( '.selection' ).text( $( this ).text() );
+      $( e.target ).closest( '.dropdown' ).find( '.selection' ).val( $( this ).text() );
+      $( e.target ).closest( '.dropdown' ).find( '.selection' ).data( 'id', $( this ).data( 'id' ) );
+      $( e.target ).closest( '.dropdown' ).find( '.selectionHistory' ).text( $( this ).text() );
+      $( e.target ).closest( '.dropdown' ).find( '.selectionHistory' ).val( $( this ).text() );
+      $( e.target ).closest( '.dropdown' ).find( '.selectionHistory' ).data( 'id', $( this ).data( 'id' ) );
+   
     } );
     var urlparams = {
       'page': 1,
@@ -121,7 +131,9 @@ var BookingScreen = React.createClass( {
     }
     var self = this;
     this.props.route.config().httpInterceptor( this.props.route.config().url().LISTING, 'GET', data, header, urlparams ).then(
+
       function ( result ) {
+        result.tours.push({'id': 'All', 'name': 'All'});
         self.setState( {
           tour: result.tours
         } );
@@ -132,7 +144,12 @@ var BookingScreen = React.createClass( {
         //let message = JSON.parse(result.responseText);
         //self.props.route.notification._addNotification(window.event, "error", message.message);
       } );
-
+      $("#listing_menu").find("a").on("click",function(){
+        window.location.href = "/#/supplier/listings";
+      })
+      $("#dashboard_menu").find("a").on("click",function(){
+        window.location.href = "/#/supplier/dashboard";
+      })
   },
   loadfromServer: function ( pageNo, tabSection ) {
 
@@ -142,8 +159,7 @@ var BookingScreen = React.createClass( {
       //console.log(JSON.parse(localStorage.getItem("clientInfo")).client.client_id);
       var urlparams = {
         'page': pageNo,
-        'per_page': 10,
-        'history': 1
+        'per_page': 10
 
       }
       var data = {}
@@ -230,7 +246,7 @@ var BookingScreen = React.createClass( {
         <div className="container">
           <ol className="breadcrumb">
             <li>
-              <img src="images/icon-home.png" /><a href="/#/dashboard">Dashboard</a>
+              <img src="images/icon-home.png" /><a href="/#/supplier/dashboard">Dashboard</a>
             </li>
             <li className="active">
               Bookings
@@ -249,6 +265,7 @@ var BookingScreen = React.createClass( {
                                 contact={ this.state.contactNumber }
                                 pagenum={ this.state.pageNum }
                                 pagenumHistory={ this.state.pageNumHistory }
+                                dateData = {this.state.dateData}
                                 tours={ this.state.tour } />
         </div>
       </div>
@@ -262,6 +279,7 @@ var BookingScreen = React.createClass( {
               <button type="button"
                       className="close"
                       data-dismiss="modal"
+
                       aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>

@@ -56,40 +56,31 @@ var TabVariantEditComponent = React.createClass( {
   getNextDate: function () {
     var date = new GregorianCalendar(); // defaults to en_US
     var now = new Date();
-    console.log(now.getTimezoneOffset());
-    var current = new Date(Date.UTC( now.getFullYear(), now.getMonth() + this.state.calendarDates.length +1, 1, 0 , 0, 0 ));
+    var current = new Date( now.getFullYear(), now.getMonth() + this.state.calendarDates.length + 1, 1 );
     date.setTime( current );
     var arrayDates = this.state.calendarDates;
     arrayDates.push( date );
-    var date1 = new GregorianCalendar(); // defaults to en_US
-    console.log(now.getMonth() +">>>>>====="+ this.state.calendarDates.length +">>>>>>>");
-    var current = new Date( now.getFullYear(), now.getMonth() + this.state.calendarDates.length +1, 1 );
-    date1.setTime( current );
-    arrayDates.push( date1 );
-    var date2 = new GregorianCalendar(); // defaults to en_US
-    
-    var current = new Date( now.getFullYear(), now.getMonth() + this.state.calendarDates.length +1, 1 );
-    date2.setTime( current );
-    arrayDates.push( date2 );
-    for(var i=3;i<12;i++){
-      var date3 = new GregorianCalendar(); // defaults to en_US
-    
-    var current = new Date( now.getFullYear(), now.getMonth() + this.state.calendarDates.length +1, 1 );
-    date3.setTime( current );
-    arrayDates.push( date3 );
-    }
+    var current = new Date( now.getFullYear(), now.getMonth() + this.state.calendarDates.length + 1, 1 );
+    date.setTime( current );
+    var arrayDates = this.state.calendarDates;
+    arrayDates.push( date );
+    var current = new Date( now.getFullYear(), now.getMonth() + this.state.calendarDates.length + 1, 1 );
+    date.setTime( current );
+    var arrayDates = this.state.calendarDates;
+    arrayDates.push( date );
     this.setState( {
       calendarDates: arrayDates
     } )
   },
   componentDidMount: function () {
     this.getNextDate();
-    $('#container1').mCustomScrollbar({ 
-            theme:"dark-3",
-            alwaysShowScrollbar: 2        
-    });
+    this.getNextDate();
     var self = this;
-    
+    $( '.scroll-bar' ).bind( 'scroll', function () {
+      if ( $( this ).scrollTop() + $( this ).innerHeight() >= $( this )[ 0 ].scrollHeight-250  ) {
+        self.getNextDate();
+      }
+    } )
     $( document ).on( 'click', '.edit-link', function ( e ) {
       $( e.target ).closest( 'td' ).find( '.gray-section' ).hide();
       $( e.target ).closest( 'td' ).find( '.gray-section2' ).show();
@@ -155,18 +146,17 @@ var TabVariantEditComponent = React.createClass( {
     $( '.rc-calendar-table' ).first().find( 'td' ).each( function ( i ) {
       console.log( 'step' + i );
       if ( parseInt( $( this ).find( 'div' ).html() ) < parseInt( $( '.rc-calendar-today' ).find( 'div' ).html() ) ) {
-        $( this ).html( '<div class="rc-calendar-date"><a class="link" href="#">Edit</a><p class=" grey">' + (new moment($( this ).prop("title")).format("D")) + '</p></div>' );
+        $( this ).html( '<div class="rc-calendar-date"><a class="link" href="#">Edit</a><p class=" grey">' + $( this ).find( 'div' ).html() + '</p></div>' );
       } else {
-        $( this ).html( '<div class="rc-calendar-date"><a class="link" href="#">Edit</a><p>' + (new moment($( this ).prop("title")).format("D")) + '</p><div class="gray-section"><div class="total">0/0</div></div><div class="gray-section2"><div class="total">Total seats <input type="text" ></div></div></div>' );
+        $( this ).html( '<div class="rc-calendar-date"><a class="link" href="#">Edit</a><p>' + $( this ).find( 'div' ).html() + '</p><div class="gray-section"><div class="total">0/0</div></div><div class="gray-section2"><div class="total">Total seats <input type="text" ></div></div></div>' );
       }
 
 
     } );
     $( '.rc-calendar-table:not(:first)' ).find( 'td' ).each( function ( i ) {
 
-       console.log("9-9-");
-       console.log(new moment($( this ).prop("title")).format("D"));
-      $( this ).html( '<div class="rc-calendar-date"><a class="link" href="#">Edit</a><p>' + (new moment($( this ).prop("title")).format("D"))+ '</p><div class="gray-section"><div class="total">0/0</div></div><div class="gray-section2"><div class="total">Total seats <input type="text" ></div></div></div>' );
+
+      $( this ).html( '<div class="rc-calendar-date"><a class="link" href="#">Edit</a><p>' + $( this ).find( 'div' ).html() + '</p><div class="gray-section"><div class="total">0/0</div></div><div class="gray-section2"><div class="total">Total seats <input type="text" ></div></div></div>' );
 
 
     } );
@@ -211,24 +201,10 @@ var TabVariantEditComponent = React.createClass( {
           6,
           7
         ];
-        var flagAllDays = false;
         $.each( result.variants[ self.props.listObj.getUrls().variantid ].pattern, function ( key, val ) {
             console.log("variant",result)
           if ( val.enabled ) {
             if ( $.isArray( arrayDaysCount[ arrayDays.indexOf( key ) ] ) ) {
-              if(key == "all_days"){
-                $( '.weekday').prop( 'checked', 'checked' );
-                flagAllDays = true;
-              }else if (key == "all_weekdays"){
-                 $( '.weekday[value=1]' ).prop( 'checked', 'checked' );  
-                 $( '.weekday[value=2]' ).prop( 'checked', 'checked' );  
-                 $( '.weekday[value=3]' ).prop( 'checked', 'checked' );  
-                 $( '.weekday[value=4]' ).prop( 'checked', 'checked' );  
-                 $( '.weekday[value=5]' ).prop( 'checked', 'checked' );  
-              }else{
-                 $( '.weekday[value=6]' ).prop( 'checked', 'checked' );  
-                 $( '.weekday[value=7]' ).prop( 'checked', 'checked' );  
-              }
                let checkSelection =`check_${key}`;
                self.setState({
                    weekdaysFlag : arrayDaysCount[ arrayDays.indexOf( key ) ],
@@ -236,18 +212,12 @@ var TabVariantEditComponent = React.createClass( {
                    [key] : val.capacity
                })
               $('#'+key ).addClass( 'active' );
-              
-              $( '.weekday' ).next().next().val( val.capacity );
             } else {
-              if(!flagAllDays){
-
-
                 let weekdaysFlag=self.state.weekdaysFlag;
                 weekdaysFlag.push( arrayDaysCount[ arrayDays.indexOf( key ) ] );
                 self.setState({
                     weekdaysFlag : weekdaysFlag
                 })
-              }
               $( '.weekday[value=\'' + arrayDaysCount[ arrayDays.indexOf( key ) ] + '\']' ).prop( 'checked', 'checked' );
               $( '.weekday[value=\'' + arrayDaysCount[ arrayDays.indexOf( key ) ] + '\']' ).next().next().val( val.capacity );
             }
@@ -268,7 +238,7 @@ var TabVariantEditComponent = React.createClass( {
       },
       function ( result ) {
         let message = JSON.parse( result.responseText );
-        self.props.notification._addNotification( window.event, 'error', message.message );
+        self.props.route.notification._addNotification( window.event, 'error', message.message );
       } );
 
     var self1 = this;
@@ -284,11 +254,10 @@ var TabVariantEditComponent = React.createClass( {
           var weeks = self.state.weekdaysFlag;
           weeks.push( parseInt( $( e.target ).val() ) );
         }
-         $('.patterns' ).removeClass( 'active' );
+
         self.setState( {
           weekdaysFlag: weeks
         } );
-
       //   $(e.target).closest(".rc-calendar-table").find("td").each(function(i) {
       //     if(parseInt($(self).val()) == parseInt(moment($(this).prop("title")).isoWeekday())){
       //       console.log($(this).find("div").html());
@@ -308,52 +277,18 @@ var TabVariantEditComponent = React.createClass( {
         // });
 
         if ( self.state.weekdaysFlag.indexOf( parseInt( $( e.target ).val() ) ) != -1 ) {
-          self.state.weekdaysFlag.splice( self.state.weekdaysFlag.indexOf( parseInt( $( e.target ).val() ) ), 1 );;
-          console.log(self.state.weekdaysFlag);
+          var weeks = self.state.weekdaysFlag;
+          weeks.splice( weeks.indexOf( parseInt( $( e.target ).val() ) ), 1 );
+        }
 
-        }
-        if(parseInt($(e.target).val()) >0 &&  parseInt($(e.target).val()) < 6 ){
-          self.state.check_all_weekdays = false;
-          self.state.check_all_days = false;
-        } else if(parseInt($(e.target).val()) ==6 ||  parseInt($(e.target).val()) == 7 ){
-          self.state.check_all_weekends = false;
-          self.state.check_all_days = false;
-        }
-         $('.patterns' ).removeClass( 'active' );
-         $( '.patterns input[type="radio"]' ).prop("checked", false);
-      
-    
+        self.setState( {
+          weekdaysFlag: weeks
+        } );
       }
-if(self.state.weekdaysFlag.length == 7){
-          $( ".patterns[data-pattern='1']" ).addClass("active");
-          $( ".patterns[data-pattern='1'] input[type='radio']" ).prop("checked", true);
-        }
-        if((self.state.weekdaysFlag.length == 5) && ($.inArray(6, self.state.weekdaysFlag)==-1) && ($.inArray(7, self.state.weekdaysFlag)==-1)){
-          $( ".patterns[data-pattern='3']" ).addClass("active");
-          $( ".patterns[data-pattern='3'] input[type='radio']" ).prop("checked", true);
-        }
-        if((self.state.weekdaysFlag.length == 2) && ($.inArray(6, self.state.weekdaysFlag)!=-1) && ($.inArray(7, self.state.weekdaysFlag)!=-1)){
-          $( ".patterns[data-pattern='2']" ).addClass("active");
-          $( ".patterns[data-pattern='2'] input[type='radio']" ).prop("checked", true);
-        }
-        $( '.rc-calendar-table' ).first().find( 'td' ).each( function ( i ) {
-          if ( (self.state.variantDates[ moment( $( this ).prop( 'title' ) ).format( 'YYYY-MM-DD' ) ]!=undefined) && !self.state.variantDates[ moment( $( this ).prop( 'title' ) ).format( 'YYYY-MM-DD' ) ].is_customized_date ) {
-            $( this ).removeClass( 'active' );
-          }
-          
-          if ( self.state.weekdaysFlag.indexOf( parseInt( moment( $( this ).prop( 'title' ) ).isoWeekday() ) ) != -1 ) {
 
-            if ( !$( this ).find( 'p' ).hasClass( 'grey' ) ) {
-
-              $( this ).addClass( 'active' );
-            }
-          }
-        });
     } );
     var self = this;
     $( '#repeat_action' ).on( 'click', function ( e ) {
-      $(".pace").addClass("pace-inactive").removeClass("pace-active");
-      $(e.target).css("disabled",true);
       if ( $( '#repeat_action' ).is( ':checked' ) ) {
 
         self.setState( {
@@ -466,12 +401,9 @@ if(self.state.weekdaysFlag.length == 7){
       },
       function ( result ) {
         let message = JSON.parse( result.responseText );
-        self.props.notification._addNotification( window.event, 'error', message.message );
+        self.props.route.notification._addNotification( window.event, 'error', message.message );
       } );
 
-  },
-  componentDidUpdate: function() {
-    $(".pace").addClass("pace-active").removeClass("pace-inactive");
   },
   onChangeCapacityValue:function(type,e){
     console.log(type,e.target.value)
@@ -498,7 +430,7 @@ if(self.state.weekdaysFlag.length == 7){
           <p className="price-edit">
             <input type="text"
                    placeholder="Amount"
-                   defaultValue={ val.mrp }
+                   defaultValue={ val.price }
                    data-id={ val.id } />
             { '  ' + inventoryObj[ 0 ].name }
           </p>
@@ -523,7 +455,8 @@ if(self.state.weekdaysFlag.length == 7){
 
 
     var calendarItems = $.map( this.state.calendarDates, function ( item ) {
-console.log(item);
+
+
       return (
       <div className="calendar">
         <CalendarComponent month={ item }
@@ -587,11 +520,11 @@ console.log(item);
                 <div className="item item-border">
                   <input type="checkbox" id="repeat_action" />
                   <label htmlFor="repeat_action">
-                    Repeat for next 12 months
+                    Repeat for upcoming months
                   </label>
                 </div>
               </div>
-              <div className="scroll-bar" id="container1">
+              <div className="scroll-bar">
                 { calendarItems }
               </div>
               <hr />
@@ -614,51 +547,24 @@ console.log(item);
         let self =this;
         var data = self.props.config().getClientInfo();
         data['variants_date_capacity'] = {};
-        var patternFlagTemp  = false;
+
         var patternParams = {};
         if(self.state.check_all_days){
             patternParams["all_days"]=self.state.check_all_days;
-            patternParams["all_days_seats"]=parseInt(self.state.all_days)||0;
-            patternFlagTemp = true;
+            patternParams["all_days_seats"]=parseInt(self.state.all_days);
         }
         if(self.state.check_all_weekends){
             patternParams["all_weekends"]=self.state.check_all_weekends;
-            patternParams["all_weekends_seats"]=parseInt(self.state.all_weekends)||0;
-            patternFlagTemp = true;
+            patternParams["all_weekends_seats"]=parseInt(self.state.all_weekends);
         }
         if(self.state.check_all_weekdays){
             patternParams["all_weekdays"]=self.state.check_all_weekdays;
-            patternParams["all_weekdays_seats"]=parseInt(self.state.all_weekdays)||0;
-            patternFlagTemp = true;
+            patternParams["all_weekdays_seats"]=parseInt(self.state.all_weekdays);
         }
-        var weekdays = [1, 2, 3, 4, 5, 6, 7];
-        var weekdaysInWords = [
-          'all_mondays',
-          'all_tuesdays',
-          'all_wednesdays',
-          'all_thursdays',
-          'all_fridays',
-          'all_saturdays',
-          'all_sundays'
-        ];
-        var weekdaysInWordsSeats = [
-          'all_mondays_seats',
-          'all_tuesdays_seats',
-          'all_wednesdays_seats',
-          'all_thursdays_seats',
-          'all_fridays_seats',
-          'all_saturdays_seats',
-          'all_sundays_seats'
-       
-          ];
-        if(!patternFlagTemp){
-            for(var keyDay in self.state.weekdaysFlag){
-              patternParams[weekdaysInWords[weekdays.indexOf(self.state.weekdaysFlag[keyDay])]] = true;
-              patternParams[weekdaysInWordsSeats[weekdays.indexOf(self.state.weekdaysFlag[keyDay])]] = $(".weekday[value='"+self.state.weekdaysFlag[keyDay]+"']").next().next().val() || 0;
-            }
-        }
-        
-
+        //TODO update weekdaysdata eg patternParams["all_sunday"]=true patternParams["all_sunday_seats"]=seats use jquery
+        _.map(self.state.weekdaysFlag, function(weekday){
+        console.log(weekday)
+        });
 
         data['variants_date_capacity'][self.props.listObj.getUrls().variantid] = {
             "pattern" : patternParams,
@@ -672,11 +578,11 @@ console.log(item);
 
         self.props.config().httpInterceptor(self.props.config().url().VARIANT + self.props.listObj.getUrls().listingid + '/add_update_date_capacity?', 'POST', JSON.stringify(data), header, self.props.config().getClientInfo()).then(
             function (result) {
-                self.props.notification._addNotification(window.event, 'success', "Updated Successfully !!!");
+                window.location.href = '/#/listingDetails/' + self.props.listObj.getUrls().listingid;
 
             }, function (result) {
                 let message = JSON.parse(result.responseText);
-                self.props.notification._addNotification(window.event, 'error', message.message);
+                self.props.route.notification._addNotification(window.event, 'error', message.message);
 
             });
     },

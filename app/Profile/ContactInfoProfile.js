@@ -1,11 +1,13 @@
 var React = require( 'react' );
 import { Router, Route, Link, hashHistory } from 'react-router';
+var _ = require("underscore");
 var ContactInfoProfile = React.createClass( {
   mixins: [ ConfigMixin ],
   getInitialState: function () {
     return {
       country: {},
       city: {},
+
       states: [],
       cities: [],
       countryId: '',
@@ -30,17 +32,33 @@ var ContactInfoProfile = React.createClass( {
     $( '#zipcodeTxt' ).val( $( '#zipcode' ).text() );
     $( '.contact-details' ).addClass( 'hide' );
     $( '.contact-details-edit' ).removeClass( 'hide' );
+    console.log(this.props.states);
+    this.state.states = this.props.states;
+    this.state.cities = this.props.cities;
+    for(var obj in this.props.states){
+      $("#dropdownstates").append("<li data-id='"+this.props.states[obj].id+"'>"+this.props.states[obj].name+"</li>");
+    }
+    for(var obj in this.props.cities){
+      $("#dropdowncities").append("<li data-id='"+this.props.cities[obj].id+"'>"+this.props.cities[obj].name+"</li>");
+    }
+    
   },
   componentDidMount: function () {
     $( '.contact-details' ).addClass( 'animated bounceInRight' );
     var self = this;
-
+    console.log(this.props.states);
+    
+    console.log(this.props.profile);
 
     $( document ).on( 'click', '.country-dropdown .dropdown-menu li', function ( e ) {
 
       $( e.target ).closest( '.dropdown' ).find( '.selection-country' ).text( $( e.target ).text() );
       $( e.target ).closest( '.dropdown' ).find( '.selection-country' ).val( $( e.target ).text() );
       $( e.target ).closest( '.dropdown' ).find( '.selection-country' ).prop( 'data-id', $( e.target ).data( 'id' ) );
+      for(var obj in self.props.states){
+              $("#dropdownstates li[data-id='"+self.props.states[obj].id+"']").remove();
+            }
+            $(".selection-state").html("Choose");
       self.setState( {
         countryId: $( e.target ).data( 'id' )
       } );
@@ -54,6 +72,7 @@ var ContactInfoProfile = React.createClass( {
 
       self.utils().httpInterceptor( self.utils().url().STATE, 'GET', data, header, clientInfo ).then(
         function ( result ) {
+          
           self.setState( {
             states: result.states
           } );
@@ -69,24 +88,39 @@ var ContactInfoProfile = React.createClass( {
       $( e.target ).closest( '.dropdown' ).find( '.selection-state' ).text( $( e.target ).text() );
       $( e.target ).closest( '.dropdown' ).find( '.selection-state' ).val( $( e.target ).text() );
       $( e.target ).closest( '.dropdown' ).find( '.selection-state' ).prop( 'data-id', $( e.target ).data( 'id' ) );
+       for(var obj in self.props.cities){
+              $("#dropdowncities li[data-id='"+self.props.cities[obj].id+"']").remove();
+            }
+      $(".selection-city").html("Choose");
       self.setState( {
         stateId: $( e.target ).data( 'id' )
       } );
+     
       var data = {
 
       }
       var header = {
       }
       var clientInfo = self.utils().getClientInfo();
-      clientInfo[ 'country_id' ] = parseInt( $( '.selection-country' ).prop( 'data-id' ) );
+      var countryObj = _.where(self.props.countries, {name: $( '.selection-country' ).html()});
+      clientInfo[ 'country_id' ] = countryObj[0].id;
       clientInfo[ 'state_id' ] = parseInt( $( e.target ).data( 'id' ) );
 
 
       self.utils().httpInterceptor( self.utils().url().CITIES, 'GET', data, header, clientInfo ).then(
         function ( result ) {
-          self.setState( {
-            cities: result.cities
-          } );
+           
+            if(!$.isEmptyObject(result)){
+              self.setState( {
+                cities: result.cities
+              });
+            }else{
+              self.setState( {
+                cities: []
+              });
+            }
+           
+          
 
         },
         function ( result ) {
@@ -103,6 +137,8 @@ var ContactInfoProfile = React.createClass( {
       $( e.target ).closest( '.dropdown' ).find( '.selection-city' ).val( $( e.target ).text() );
       $( e.target ).closest( '.dropdown' ).find( '.selection-city' ).prop( 'data-id', $( e.target ).data( 'id' ) );
     } );
+      this.state.states = this.props.states;
+    this.state.cities = this.props.cities;
 
   },
   save: function () {
@@ -129,6 +165,17 @@ var ContactInfoProfile = React.createClass( {
     var self = this;
     this.utils().httpInterceptor( this.utils().url().PROFILE_SAVE, 'PUT', data, header, clientInfo ).then(
       function ( result ) {
+        $("#sEmail").html($("sEmailTxt").val());
+        $("#sPhone").html($("#sPhoneTxt").val());
+        $("#address1").html($("#address1Txt").val());
+        $("#address2").html($("#address2Txt").val());
+        $("#zipcode").html($("#zipcodeTxt").val());
+        $("#assistName").html($("#assistNameTxt").val());
+        $("#assistPhone").html($("#assistPhoneTxt").val());
+        $("#assistEmail").html($("#assistEmailTxt").val());
+        $("#sCountry").html($(".selection-country").html());
+        $("#sState").html($(".selection-state").html());
+        $("#sCity").html($(".selection-city").html());
         $( '.contact-details' ).removeClass( 'hide' );
         $( '.contact-details-edit' ).addClass( 'hide' );
 
@@ -136,7 +183,7 @@ var ContactInfoProfile = React.createClass( {
       function ( result ) {
         let message = JSON.parse( result.responseText );
         console.log( message );
-        // self.props.config.notification._addNotification(window.event, "error", message.message);
+       self.props.config.notification._addNotification(window.event, "error", JSON.stringify(result));
       } );
 
   },
@@ -246,7 +293,7 @@ var ContactInfoProfile = React.createClass( {
             <td>
               City/ Town
             </td>
-            <td>
+            <td id="sCity">
               { this.props.profile.city }
             </td>
           </tr>
@@ -254,7 +301,7 @@ var ContactInfoProfile = React.createClass( {
             <td>
               State/ Province
             </td>
-            <td>
+            <td id="sState">
               { this.props.profile.state }
             </td>
           </tr>
@@ -270,7 +317,7 @@ var ContactInfoProfile = React.createClass( {
             <td>
               Country
             </td>
-            <td>
+            <td id="sCountry">
               { this.props.profile.country }
             </td>
           </tr>
@@ -310,7 +357,7 @@ var ContactInfoProfile = React.createClass( {
               Email
             </td>
             <td>
-              email@gmail.com
+              { this.props.profile.email }
             </td>
           </tr>
           <tr>
@@ -383,7 +430,7 @@ var ContactInfoProfile = React.createClass( {
                   <span className="selection-state">{ this.props.profile.state || 'Choose' }</span>
                   <span className="glyphicon glyphicon-triangle-bottom"></span>
                 </button>
-                <ul className="dropdown-menu">
+                <ul className="dropdown-menu" id="dropdownstates">
                   { listStateItems }
                 </ul>
               </div>
@@ -401,7 +448,7 @@ var ContactInfoProfile = React.createClass( {
                   <span className="selection-city">{ this.props.profile.city || 'Choose' }</span>
                   <span className="glyphicon glyphicon-triangle-bottom"></span>
                 </button>
-                <ul className="dropdown-menu">
+                <ul className="dropdown-menu" id="dropdowncities">
                   { listCitiesItems }
                 </ul>
               </div>
